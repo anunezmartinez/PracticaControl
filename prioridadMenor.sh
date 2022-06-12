@@ -1302,9 +1302,9 @@ echo -e "#                                                          #"
 echo -e "#                                                          #"
 echo -e "#  ANTIGUOS ALUMNOS:                                       #"
 echo -e "#  Gonzalo Murillo Montes y Gonzalo Cuesta Marín (2017)    #"
-echo -e "#                                                          #"
-echo -e "#  NUEVOS ALUMNOS:                                         #"
 echo -e "#  Álvaro Manjón Vara (2020)                               #"
+echo -e "#  NUEVOS ALUMNOS:                                         #"
+echo -e "#  Adrián Núñez Martínez (2022)                            #"
 echo -e "############################################################"
 echo ""
 
@@ -1319,9 +1319,9 @@ echo -e "#                                                          #" >> inform
 echo -e "#                                                          #" >> informePrioridadColor.txt 
 echo -e "#  ANTIGUOS ALUMNOS:                                       #" >> informePrioridadColor.txt 
 echo -e "#  Gonzalo Murillo Montes y Gonzalo Cuesta Marín (2017)    #" >> informePrioridadColor.txt 
-echo -e "#                                                          #" >> informePrioridadColor.txt 
-echo -e "#  NUEVOS ALUMNOS:                                         #" >> informePrioridadColor.txt 
 echo -e "#  Álvaro Manjón Vara (2020)                               #" >> informePrioridadColor.txt 
+echo -e "#  NUEVOS ALUMNOS:                                         #" >> informePrioridadColor.txt 
+echo -e "#  Adrián Núñez Martínez (2022)                            #" >> informePrioridadColor.txt 
 echo -e "############################################################" >> informePrioridadColor.txt 
 echo "" >> informePrioridadColor.txt 
 
@@ -1336,9 +1336,9 @@ echo -e "#                                                          #" >> inform
 echo -e "#                                                          #" >> informePrioridadMenor.txt 
 echo -e "#  ANTIGUOS ALUMNOS:                                       #" >> informePrioridadMenor.txt 
 echo -e "#  Gonzalo Murillo Montes y Gonzalo Cuesta Marín (2017)    #" >> informePrioridadMenor.txt 
-echo -e "#                                                          #" >> informePrioridadMenor.txt 
-echo -e "#  NUEVOS ALUMNOS:                                         #" >> informePrioridadMenor.txt 
 echo -e "#  Álvaro Manjón Vara (2020)                               #" >> informePrioridadMenor.txt 
+echo -e "#  NUEVOS ALUMNOS:                                         #" >> informePrioridadMenor.txt 
+echo -e "#  Adrián Núñez Martínez (2022)                            #" >> informePrioridadMenor.txt 
 echo -e "############################################################" >> informePrioridadMenor.txt 
 echo "" >> informePrioridadMenor.txt 
 
