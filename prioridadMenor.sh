@@ -845,28 +845,29 @@ function AsignaMemoriaMejorAjuste {
 		fi
 	fi
 
-	for (( cont_amma=0;cont_amma<n_particiones;cont_amma++ ));do
+	for (( i=0;i<n_particiones;i++ ));do
 		if [[ $flag_stop -eq 1 ]];then
 			break;
 		fi
-		if [[ ${part_cap[$cont_amma]} -ge ${memori[$proc]} ]];then
-			CalculaDiferenciaMinima
-			let diferencia=part_cap[$cont_amma]-memori[$proc]
-			if [[ $diferencia -eq $dif_minima ]];then
-				if [[ ${partition[$cont_amma]} -eq 0 && ${proc_status[$proc]} -eq 1 ]];then
-					partition[$cont_amma]=1
-					partition_pos[$proc]=$cont_amma
-					let partition_free[$cont_amma]=part_init[$cont_amma]+memori[$proc]
-					OcupaMemoria ${part_init[$cont_amma]} ${memori[$proc]} ${proceso[$proc]}
-					OcupaProceso ${part_init[$cont_amma]} ${procesosc[$proc]}	
-					OcupaProcesoBW ${part_init[$cont_amma]} ${procesosc[$proc]}	
+		if [[ ${part_cap[$i]} -ge ${memori[$proc]} ]];then
+				if [[ ${partition[$i]} -eq 0 && ${proc_status[$proc]} -eq 1 ]];then
+					partition[$i]=1
+					partition_pos[$proc]=$i
+
+					let partition_free[$i]=part_init[$i]+memori[$proc]
+
+					OcupaMemoria ${part_init[$i]} ${memori[$proc]} ${proceso[$proc]}
+					OcupaProceso ${part_init[$i]} ${procesosc[$proc]}	
+					OcupaProcesoBW ${part_init[$i]} ${procesosc[$proc]}	
+
 					evento=1		
-					proc_partition[$proc]=${part_init[$cont_amma]}
-					proc_partition_end[$proc]=${part_fin[$cont_amma]}
+
+					proc_partition[$proc]=${part_init[$i]}
+					proc_partition_end[$proc]=${part_fin[$i]}
 					proc_status[$proc]=2
 				fi
 			fi
-		fi
+		
 	done
 }
 
