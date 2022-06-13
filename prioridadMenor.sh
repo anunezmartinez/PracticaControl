@@ -1010,9 +1010,9 @@ function GestionDeMemoria {
 		fi
 		#Impresión de datos en caso de que haya ocurrido algo
 		if [[ $evento -eq 1 || $clock -eq 0 ]];then
-			printf " PriMenor-FNI-Mejor\n"
-			printf " PriMenor-FNI-Mejor\n" >> informePrioridadColor.txt
-			printf " PriMenor-FNI-Mejor\n" >> informePrioridadMenor.txt
+			printf " PriMenor-FNI-Primer\n"
+			printf " PriMenor-FNI-Primer\n" >> informePrioridadColor.txt
+			printf " PriMenor-FNI-Primer\n" >> informePrioridadMenor.txt
 			printf " T=$clock\tPart="
 			printf " T=$clock\tPart=" >> informePrioridadColor.txt
 			printf " T=$clock\tPart=" >> informePrioridadMenor.txt
@@ -1294,7 +1294,7 @@ echo -e "#                  INFORME DE PRÁCTICA                     #"
 echo -e "#                   GESTIÓN DE MEMORIA                     #"
 echo -e "#            -----------------------------                 #"
 echo -e "#     ALGORITMO DE GESTIÓN DE MEMORIA: PRIORIDAD MENOR     #"
-echo -e "#      PARTICIONES FIJAS Y NO IGUALES - MEJOR AJUSTE       #"
+echo -e "#      PARTICIONES FIJAS Y NO IGUALES - PRIMER AJUSTE      #"
 echo -e "#                                                          #"
 echo -e "#                                                          #"
 echo -e "#  ANTIGUOS ALUMNOS:                                       #"
@@ -1311,7 +1311,7 @@ echo -e "#                  INFORME DE PRÁCTICA                     #" >> infor
 echo -e "#                   GESTIÓN DE MEMORIA                     #" >> informePrioridadColor.txt 
 echo -e "#            -----------------------------                 #" >> informePrioridadColor.txt 
 echo -e "#     ALGORITMO DE GESTIÓN DE MEMORIA: PRIORIDAD MENOR     #" >> informePrioridadColor.txt 
-echo -e "#      PARTICIONES FIJAS Y NO IGUALES - MEJOR AJUSTE       #" >> informePrioridadColor.txt 
+echo -e "#      PARTICIONES FIJAS Y NO IGUALES - PRIMER AJUSTE      #" >> informePrioridadColor.txt 
 echo -e "#                                                          #" >> informePrioridadColor.txt 
 echo -e "#                                                          #" >> informePrioridadColor.txt 
 echo -e "#  ANTIGUOS ALUMNOS:                                       #" >> informePrioridadColor.txt 
@@ -1328,7 +1328,7 @@ echo -e "#                  INFORME DE PRÁCTICA                     #" >> infor
 echo -e "#                   GESTIÓN DE MEMORIA                     #" >> informePrioridadMenor.txt 
 echo -e "#            -----------------------------                 #" >> informePrioridadMenor.txt 
 echo -e "#     ALGORITMO DE GESTIÓN DE MEMORIA: PRIORIDAD MENOR     #" >> informePrioridadMenor.txt 
-echo -e "#      PARTICIONES FIJAS Y NO IGUALES - MEJOR AJUSTE       #" >> informePrioridadMenor.txt 
+echo -e "#      PARTICIONES FIJAS Y NO IGUALES - PRIMER AJUSTE      #" >> informePrioridadMenor.txt 
 echo -e "#                                                          #" >> informePrioridadMenor.txt 
 echo -e "#                                                          #" >> informePrioridadMenor.txt 
 echo -e "#  ANTIGUOS ALUMNOS:                                       #" >> informePrioridadMenor.txt 
