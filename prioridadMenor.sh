@@ -2,9 +2,9 @@
 rm prioridad.temp;
 rm datosIntroducidos.txt; # borra archivos para relizar programa con nuevos datos
 clear                # borra lo anterior por pantalla
-
 #DECLARACION DE VARIABLES DE COLORES
-
+colorOriginal='\e]11;?\a'
+echo -ne '\e]11;#77216F\e\\'
 #Variables que asignan colores con sus respectivos nombres. (R=resaltado)
 amarilloR='\E[1;33m'
 amarillo='\E[0;33m'
@@ -32,6 +32,7 @@ for (( a=0; a<20; a++ ))do
 	    let ir++
     	done
 done
+
 
 #Declaramos algunos de los vectores y variables que vamos a utilizar a lo largo del programa.
 memor=0;    	#Acoge el valor del tamaño de cada proceso
@@ -1852,3 +1853,4 @@ else
 		gedit informePrioridadMenor.txt
 	fi
 fi
+echo -ne '\e]11m\e\\'
