@@ -1003,8 +1003,10 @@ function GestionDeMemoria {
 			fi
 		done
 		if [[ $contador_division -gt 0 ]];then
-			medEspera=$(printf "%3.2f\n" $(echo "scale=2; $sumaEspera/$contador_division" | bc))
-			medRetorno=$(printf "%3.2f\n" $(echo "scale=2; $sumaRetorno/$contador_division" | bc))
+			#medEspera=$(printf "%3.2f\n" $(echo "scale=2; $sumaEspera/$contador_division" | bc))
+			medEspera=$(echo "$sumaEspera $contador_division" | awk '{printf "%f", $1 / $2}')
+			medRetorno=$(echo "$sumaRetorno $contador_division" | awk '{printf "%f", $1 / $2}')
+
 		else
 			medEspera=0.00
 			medRetorno=0.00
