@@ -4,7 +4,7 @@ rm datosIntroducidos.txt; # borra archivos para relizar programa con nuevos dato
 clear                # borra lo anterior por pantalla
 #DECLARACION DE VARIABLES DE COLORES
 colorOriginal='\e]11;?\a'
-echo -ne '\e]11;#77216F\e\\'
+echo -ne '\e]11;#000000\e\\'
 #Variables que asignan colores con sus respectivos nombres. (R=resaltado)
 amarilloR='\E[1;33m'
 amarillo='\E[0;33m'
@@ -1853,4 +1853,4 @@ else
 		gedit informePrioridadMenor.txt
 	fi
 fi
-echo -ne '\e]11m\e\\'
+echo -ne "\e]111\a"
