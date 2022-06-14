@@ -1,28 +1,28 @@
 #!/bin/bash
 rm prioridad.temp;
 rm datosIntroducidos.txt; # borra archivos para relizar programa con nuevos datos
+echo -ne "\x1B]11;#000000\x1B\\"
 clear                # borra lo anterior por pantalla
 #DECLARACION DE VARIABLES DE COLORES
-colorOriginal='\e]11;?\a'
-echo -ne '\e]11;#000000\e\\'
+
 #Variables que asignan colores con sus respectivos nombres. (R=resaltado)
-amarilloR='\E[1;33m'
-amarillo='\E[0;33m'
-verdeR='\E[1;32m'
-verde='\E[0;32m'
-moradoR='\E[1;35m'
-morado='\E[0;35m'
-rojoR='\E[1;31m'
-rojo='\E[0;31m'
-cyanR='\e[1;36m'
-cyan='\e[0;36m'
-negroR='\e[1;30m'
-negro='\e[0;30m'
-azulR='\e[1;34m'
-azul='\e[0;34m'
-blancoR='\e[1;39m'
-blanco='\e[0;39m'
-NC='\e[0m' # No Color
+amarilloR='\x1B[1;33m'
+amarillo='\x1B[0;33m'
+verdeR='\x1B[1;32m'
+verde='\x1B[0;32m'
+moradoR='\x1B[1;35m'
+morado='\x1B[0;35m'
+rojoR='\x1B[1;31m'
+rojo='\x1B[0;31m'
+cyanR='\x1B[1;36m'
+cyan='\x1B[0;36m'
+negroR='\x1B[1;30m'
+negro='\x1B[0;30m'
+azulR='\x1B[1;34m'
+azul='\x1B[0;34m'
+blancoR='\x1B[1;39m'
+blanco='\x1B[0;39m'
+NC='\x1B[0m' # No Color
 
 #A través de este bucle elaboramos un vector de colores
 ir=0
@@ -1855,4 +1855,4 @@ else
 		gedit informePrioridadMenor.txt
 	fi
 fi
-echo -ne "\e]111\a"
+echo -ne "\x1B]111\a"
