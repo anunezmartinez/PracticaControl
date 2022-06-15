@@ -834,7 +834,7 @@ function CalculaDiferenciaMinima {
 }
 
 #Función que introduce los procesos en la partición que mejor se ajuste, para ello, mediante un bucle, realizamos las comprobaciones pertinentes.
-function AsignaMemoriaMejorAjuste {
+function AsignaMemoriaPrimerAjuste {
 	#Se pone en espera a los procesos fuera del sistema
 		proc=$1
 	if [ ${proc_status[$proc]} -eq 0 ];then
@@ -926,7 +926,7 @@ function GestionDeMemoria {
 	flag_stop=0
 		for (( i=0;i<num_proc;i++ ));do
 			if [[ ${templl[$i]} -le $clock && ${proc_status[$i]} -ne 4 ]];then
-				AsignaMemoriaMejorAjuste $i
+				AsignaMemoriaPrimerAjuste $i
 			fi
 		done
 		clear
@@ -1389,7 +1389,6 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 	echo -e "¿Desea introducir los datos de forma manual? (s/n)" $opcion >> informePrioridadMenor.txt
 fi
 
-
 if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manual	
 	esunsi=1
 	
@@ -1668,6 +1667,7 @@ if [ $opcion = 2 ];then #si el usuario desea introducir los datos desde un fiche
 		echo -e "La prioridad máxima es	$pri_maxima" >> informePrioridadMenor.txt
 		echo "" >> informePrioridadMenor.txt
 	fi
+	
 	for ((p=0;p<$num_proc;p++));do
 		if [ $ppp -lt 10 ]; then
 			nombre=P0$ppp
@@ -1696,11 +1696,11 @@ if [ $opcion = 2 ];then #si el usuario desea introducir los datos desde un fiche
 		ComprobarPrioridad
 		prioridad[$p]=$priorida
 		dato_prioridad[$p]=$dato_priorid
-		#let pp++
-		#echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
-		#echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
+		let pp++
+		echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
+		echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
 		let ppp++
-		#Ordenar
+		Ordenar
 	done
 	Ordenar
 
@@ -1733,7 +1733,7 @@ if [ $opcion = 2 ];then #si el usuario desea introducir los datos desde un fiche
 	done
 fi
 
-if [ $opcion = 3 ];then
+if [ $opcion = 3 ];then #crear fichero aleatorio y leerlo
 
 		wait < <(CrearFichero -p)
 
@@ -1855,7 +1855,7 @@ if [ $opcion = 3 ];then
 	
 fi
 
-if [ $opcion = 4 ];then
+if [ $opcion = 4 ];then #leer ultima ejecucion del fichero aleatorio
 	esunsi=0
 	sed "/^ *$/d" datosEntradaRand.txt > datos.txt
 	mv datos.txt datosEntradaRand.txt
@@ -1971,10 +1971,6 @@ if [ $opcion = 4 ];then
 			echo "" >> informePrioridadMenor.txt
 	done
 fi
-
-
-
-
 
 
 echo "" >> informePrioridadColor.txt
