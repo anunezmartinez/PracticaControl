@@ -2729,6 +2729,7 @@ fi
 
 if [ $opcion = 6 ];then #leer ultima ejecucion del fichero aleatorio
 
+	echo ""
 	rutaFich=0
 	echo "Introduce el nombre o ruta del fichero a leer :"
 	echo ""
