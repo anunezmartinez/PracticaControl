@@ -217,10 +217,11 @@ function ImprimeLineaProcesos {
 	printf "    |"
 	printf "    |" >> informePrioridadColor.txt
 	l=0
+	
     for (( je1;je1<$cap_memoria;je1++ ));do
     	if [[ $je1 -eq ${part_init[$wr1]} ]];then
 			let carac1=carac1+3
-			if [[ `expr longitud-carac1` -ge 0 ]];then
+			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "   "
 				printf "   " >> informePrioridadColor.txt
 			else
@@ -228,7 +229,7 @@ function ImprimeLineaProcesos {
 			fi
 
 			let carac1=carac1+3
-			if [[ `expr longitud-carac1` -ge 0 ]];then
+			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "${mapp[$je1]}"
 				printf "${mapp[$je1]}" >> informePrioridadColor.txt
 			else
@@ -237,7 +238,7 @@ function ImprimeLineaProcesos {
 			let wr1++      
     	else
 			let carac1=carac1+3
-			if [[ `expr longitud-carac1` -ge 0 ]];then
+			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "${mapp[$je1]}"
         		printf "${mapp[$je1]}" >> informePrioridadColor.txt
 			else
@@ -409,6 +410,11 @@ function ImprimeLineaFinal {
     done
 }
 
+function ImprimeParticiones {
+
+	echo "hola"
+}
+
 #Función (B&W) encargada de representar gráficamente el tamaño inicial y final asociado a cada partición.
 function ImprimeLineaFinalBW {
 	l=0
@@ -453,6 +459,7 @@ function ImprimeLineaFinalBW {
 
 #Función encargada de asociar procesos a la gráfica del tiempo.
 function ImprimeProcesos {
+
 	l=0
 	printf "    |"
 	printf "    |" >> informePrioridadColor.txt
@@ -485,6 +492,7 @@ function ImprimeProcesosBW {
 function ImprimeGrafica {
 	l=0
 	if [[ $je2 -eq 0 ]];then
+		#printf "    |"
 		printf " BT |"
 		printf " BT |" >> informePrioridadColor.txt
 	else
@@ -763,6 +771,7 @@ function OcupaMemoria() {
 	let r=t+u
 	for((y=$t;y<$r;y++));do
 		map[$y]="${colores[$proc]}███${NC}"
+
 	done
 }
 
@@ -784,6 +793,7 @@ function OcupaProcesoDos() {
 #Función encargada de situar encima de cada intervalo temporal el nombre del proceso correspondiente.
 function OcupaProcesoDosBW() {
 	mappdb[$1]="${procesosc[$proc_exe]}"
+
 }
 
 #Función encargada de rellenar cada intervalo temporal
@@ -915,14 +925,6 @@ function GestionDeMemoria {
 	procEjecutados=0
 	estadosiniciales
 
-	#Inicio de la ejecución
-	echo ""
-    echo -e "${NC}La ejecución empezará en 3 segundos..."
-    sleep 1
-	echo -e "${NC}La ejecución empezará en 2 segundos..."
-	sleep 1
-	echo -e "${NC}La ejecución empezará en 1 segundo..."
-	sleep 1
 
 	while [ $finbucle -eq 0 ];do
 	flag_stop=0
@@ -1041,8 +1043,11 @@ function GestionDeMemoria {
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima"
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadColor.txt
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadMenor.txt
+			
 			State
+			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n"
+			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadColor.txt
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadMenor.txt
 			longitud=$(tput cols)
@@ -1209,14 +1214,6 @@ function GestionDeMemoriaAutomatico {
 	procEjecutados=0
 	estadosiniciales
 
-	#Inicio de la ejecución
-	echo ""
-    echo -e "${NC}La ejecución empezará en 3 segundos..."
-    sleep 1
-	echo -e "${NC}La ejecución empezará en 2 segundos..."
-	sleep 1
-	echo -e "${NC}La ejecución empezará en 1 segundo..."
-	sleep 1
 
 	while [ $finbucle -eq 0 ];do
 	flag_stop=0
@@ -1478,6 +1475,290 @@ function GestionDeMemoriaAutomatico {
 		fi
 	done
 }
+function GestionDeMemoriaCompleta {
+	declare partition[${#part_init[@]}]
+	declare partition_free[${#part_init[@]}]
+	declare partition_pos[${#memori[@]}]
+	declare proc_partition[${#memori[@]}]
+	declare proc_partition_end[${#memori[@]}]
+	declare proc_status[${#memori[@]}]
+	mapa #Dibuja los cuadrados en $map
+	mapaBW
+	mapaprocesos #Inserta espacios en $mapp
+	mapaprocesosBW
+	mapafinal #Inserta espacios en $mapf
+	mapagrafica 
+	mapagraficaBW
+	mapatemporal
+	mapaprocesosdos
+	mapaprocesosdosBW
+	mapatiempos
+	finbucle=0
+	clock=0
+	evento=0
+	enEjecucion=0
+	procEjecutados=0
+	estadosiniciales
+
+
+	while [ $finbucle -eq 0 ];do
+	flag_stop=0
+		for (( i=0;i<num_proc;i++ ));do
+			if [[ ${templl[$i]} -le $clock && ${proc_status[$i]} -ne 4 ]];then
+				AsignaMemoriaPrimerAjuste $i
+			fi
+		done
+		clear
+
+		if [[ $clock -eq 0 ]];then
+			ocupamapatiempos $clock
+		fi
+
+		if [[ $enEjecucion -eq 0 ]];then
+			priorit=$dato_primax
+			momintro=-1
+			for (( j=0;j<num_proc;j++ ));do
+				if [[ ${templl[$j]} -le $clock && ${proc_status[$j]} -eq 2 ]];then
+					if [[ ${dato_prioridad[$j]} -lt $priorit ]];then
+		    			proc_exe=$j
+		    			priorit=${dato_prioridad[$j]}
+						momintro=${tiempintro[$j]}		
+		    		elif [[ ${dato_prioridad[$j]} -eq $priorit ]];then
+						if [[ $momintro -ne -1 ]];then
+							if [[ ${tiempintro[$j]} -lt $momintro ]];then
+								proc_exe=$j
+		    					priorit=${dato_prioridad[$j]}
+								momintro=${tiempintro[$j]}
+							fi
+						fi
+					fi
+				fi
+			done	
+			if [ -n "$proc_exe" ];then
+				evento=1
+				enEjecucion=1	
+				proc_status[$proc_exe]=3
+				OcupaProcesoDos $clock
+				OcupaProcesoDosBW $clock
+				flag_siguienteProceso=0				
+				ocupamapatiempos $clock
+			fi
+		fi
+
+		for (( i=0;i<num_proc;i++ ));do
+		case ${proc_status[$i]} in
+			0)
+			estado[i]="Fuera del sistema"
+			;;
+			1)
+			estado[i]="En espera"
+			;;
+			2)
+			estado[i]="En memoria"
+			;;
+			3)
+			estado[i]="En ejecución"
+			;;
+			4)
+			estado[i]="Terminado"
+		esac
+		done
+
+		if [[ $enEjecucion -eq 1 ]];then
+			let momento_ejec=$clock+1
+			OcupaTiempo $momento_ejec
+		fi
+
+		if [[ $flag_siguienteProceso -eq 1 ]];then
+			#let momento_ejec=$clock+1
+			ocupamapatiempos $clock
+			flag_siguienteProceso=0
+		fi
+		
+		contador_division=0
+		sumaEspera=0
+		sumaRetorno=0
+		for (( cont_numprocm=0;cont_numprocm<num_proc;cont_numprocm++ ));do
+			if [[ ${proc_status[$cont_numprocm]} -ge 1 ]];then
+				let sumaEspera=sumaEspera+esperav[$cont_numprocm]
+				let sumaRetorno=sumaRetorno+retornov[$cont_numprocm]
+				let contador_division++
+			fi
+		done
+		if [[ $contador_division -gt 0 ]];then
+			#medEspera=$(printf "%3.2f\n" $(echo "scale=2; $sumaEspera/$contador_division" | bc))
+			medEspera=$(echo "$sumaEspera $contador_division" | awk '{printf "%f", $1 / $2}')
+			medRetorno=$(echo "$sumaRetorno $contador_division" | awk '{printf "%f", $1 / $2}')
+
+		else
+			medEspera=0.00
+			medRetorno=0.00
+		fi
+		#Impresión de datos en caso de que haya ocurrido algo
+		if [[ $evento -eq 1 || $clock -eq 0 ]];then
+			printf " PriMenor-FNI-Primer\n"
+			printf " PriMenor-FNI-Primer\n" >> informePrioridadColor.txt
+			printf " PriMenor-FNI-Primer\n" >> informePrioridadMenor.txt
+			printf " T=$clock\tPart="
+			printf " T=$clock\tPart=" >> informePrioridadColor.txt
+			printf " T=$clock\tPart=" >> informePrioridadMenor.txt
+			local count=0
+			for (( i=0; i<$n_particiones; i++ )); do
+			count=`expr $i + 1`
+				if [ $count -eq "$n_particiones" ]; then
+					printf "%d" "${part_cap[$i]}"
+					printf "%d" "${part_cap[$i]}" >> informePrioridadColor.txt
+					printf "%d" "${part_cap[$i]}" >> informePrioridadMenor.txt
+				else
+					printf "%d-" "${part_cap[$i]}" 
+					printf "%d-" "${part_cap[$i]}" >> informePrioridadColor.txt
+					printf "%d-" "${part_cap[$i]}" >> informePrioridadMenor.txt
+				fi
+			done
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima"
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadColor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadMenor.txt
+			State
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n"
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadColor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadMenor.txt
+			longitud=$(tput cols)
+			#let longitud=longitud-1
+			je1=0
+			carac1=5
+			wr1=1
+			je2=0
+			carac2=5
+			wr2=1
+			je3=0
+			carac3=5
+			wr3=0
+			terminar=0
+			while [[ $terminar -eq 0 ]];do
+				ImprimeLineaProcesos
+				printf "\n"
+				printf "\n" >> informePrioridadColor.txt
+ 				ImprimeMemoria
+				printf "\n"
+				printf "\n" >> informePrioridadColor.txt
+				ImprimeLineaFinal
+				printf "\n"
+				printf "\n" >> informePrioridadColor.txt
+				carac1=5
+				carac2=5
+				carac3=5
+			done
+			je1=0
+			carac1=5
+			wr1=1
+			je2=0
+			carac2=5
+			wr2=1
+			je3=0
+			carac3=5
+			wr3=0
+			terminar=0
+			while [[ $terminar -eq 0 ]];do
+				ImprimeLineaProcesosBW
+				printf "\n" >> informePrioridadMenor.txt
+ 				ImprimeMemoriaBW
+				printf "\n" >> informePrioridadMenor.txt
+				ImprimeLineaFinalBW
+				printf "\n" >> informePrioridadMenor.txt
+				carac1=5
+				carac2=5
+				carac3=5
+			done
+			je1=0
+			carac1=5
+			wr1=0
+			je2=0
+			carac2=2
+			wr2=0
+			je3=0
+			carac3=5
+			wr3=0
+			terminar=0
+			imprimir_status=-1
+			while [[ $terminar -eq 0 ]];do
+				ImprimeProcesos
+				printf "\n"
+				printf "\n" >> informePrioridadColor.txt
+				ImprimeGrafica
+				printf "\n"
+				printf "\n" >> informePrioridadColor.txt
+				ImprimeLineaTemporal
+				printf "\n"
+				printf "\n" >> informePrioridadColor.txt
+				carac1=5
+				carac2=5
+				carac3=5
+			done
+			je1=0
+			carac1=5
+			wr1=0
+			je2=0
+			carac2=2
+			wr2=0
+			je3=0
+			carac3=5
+			wr3=0
+			terminar=0
+			imprimir_status=-1
+			while [[ $terminar -eq 0 ]];do
+				ImprimeProcesosBW
+				printf "\n" >> informePrioridadMenor.txt
+				ImprimeGraficaBW
+				printf "\n" >> informePrioridadMenor.txt
+				ImprimeLineaTemporalBW
+				printf "\n" >> informePrioridadMenor.txt
+				carac1=5
+				carac2=5
+				carac3=5
+			done
+			printf "\n" >> informePrioridadColor.txt
+			printf "\n" >> informePrioridadMenor.txt
+		fi 
+
+		evento=0
+		if [ -n "$proc_exe" ];then
+			let tiempo[$proc_exe]--
+			let retornov[$proc_exe]++
+			if [ ${tiempo[$proc_exe]} -eq 0 ];then
+				proc_status[$proc_exe]=4
+				evento=1
+				resta
+				OcupaLineaTemporal $clock
+				let intervalo=clock-ini_ejec
+				let intervalo=intervalo+1
+				DesocupaMemoria ${proc_partition[$proc_exe]} ${proc_partition_end[$proc_exe]}
+				DesocupaProceso ${proc_partition[$proc_exe]} ${proc_partition_end[$proc_exe]}
+				DesocupaProcesoBW ${proc_partition[$proc_exe]} ${proc_partition_end[$proc_exe]}
+				t=${partition_pos[$proc_exe]}
+    			partition[$t]=0
+				partition_free[$t]=0
+				enEjecucion=0
+				let procEjecutados++
+				proc_exe=""
+				flag_siguienteProceso=1
+			fi
+		fi
+
+		for ((i=0;i<$num_proc;i++));do
+			if [[ ${proc_status[$i]} -eq 2 || ${proc_status[$i]} -eq 1 ]];then
+				let esperav[$i]++
+				let retornov[$i]++
+			fi
+		done
+		
+		let clock++
+		clear
+
+		if [ $procEjecutados -eq ${#memori[@]} ];then
+			finbucle=1
+		fi
+	done
+}
 function GestionDeMemoriaFinal {
 	declare partition[${#part_init[@]}]
 	declare partition_free[${#part_init[@]}]
@@ -1503,14 +1784,6 @@ function GestionDeMemoriaFinal {
 	procEjecutados=0 > /dev/null 2>&1
 	estadosiniciales > /dev/null 2>&1
  
-	#Inicio de la ejecución
-	echo ""
-    echo -e "${NC}La ejecución empezará en 3 segundos..." 
-    sleep 1
-	echo -e "${NC}La ejecución empezará en 2 segundos..." 
-	sleep 1
-	echo -e "${NC}La ejecución empezará en 1 segundo..." 
-	sleep 1
 
 	while [ $finbucle -eq 0 ];do
 	flag_stop=0
@@ -2017,7 +2290,7 @@ if [ $p2 = 0 ];then #condición para preguntar la forma a leer los datos
 	echo ""
 	read opcion2	#variable que almacena la opción leída
 	ComprobarPalabras $opcion2
-	while [ $opcion2 != "1" -a $opcion2 != "2" -a $opcion2 != "3"  -a $opcion2 != "4"];do
+	while [ $opcion2 != "1" -a $opcion2 != "2" -a $opcion2 != "3"  -a $opcion2 != "4" ];do
 		echo -e "${rojoR}ERROR: ${rojo} No has introducido una opción válida ${NC}"
 		echo -e "${azulR}Vuelve a introducir una opción${NC}"
 		read opcion2
@@ -2909,8 +3182,12 @@ if [ $opcion2 = 2 ];then
 GestionDeMemoriaAutomatico
 fi
 if [ $opcion2 = 3 ];then
+GestionDeMemoriaCompleta
+fi
+if [ $opcion2 = 4 ];then
 GestionDeMemoriaFinal
 fi
+
 
 
 #Gráfica que indica la ejecución de cada uno de los procesos respecto al tiempo.
