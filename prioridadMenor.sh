@@ -1987,12 +1987,12 @@ tiempintro={}
 if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 	echo ""
 	echo -e "############################################################"		
-	echo -e "1 - Desea introducir los datos de forma manual?"
-	echo -e "2 - Leer datos de ultima ejecución manual?"
-	echo -e "3 - Desea introducir los datos desde fichero generado aleatoriamente?"
-	echo -e "4 - Leer datos del fichero generado aleatoriamente?"
-	echo -e "5 - Generar fichero aleatorio introduciendo rangos"
-	echo -e "6 - Leer fichero introducido a mano?"
+	echo -e "1 - Introducir los datos de forma manual?"
+	echo -e "2 - Fichero de datos de ultima ejecucion (datos.txt)"
+	echo -e "3 - Otro fichero de datos"
+	echo -e "4 - Introduccion de rangos manualmente"
+	echo -e "5 - Fichero de rangos de ultima ejecucion (datosrangos.txt)"
+	echo -e "6 - Otro fichero de rangos?"
 	echo -e "############################################################"
 	echo ""
 	read opcion	#variable que almacena la opción leída
@@ -2009,14 +2009,15 @@ fi
 if [ $p2 = 0 ];then #condición para preguntar la forma a leer los datos	
 	echo ""
 	echo -e "############################################################"
-	echo -e "1 - Eventos manuales presionando enter."
-	echo -e "2 - Eventos automáticos o introduciendo segundos."
-	echo -e "3 - Ir directamente al final de la ejecución."
+	echo -e "1 - Por eventos (presionando enter)."
+	echo -e "2 - Eventos automáticos (introduciendo segundos de espera)."
+	echo -e "3 - Completa (sin tiempos de espera)."
+	echo -e "4 - Resumen final."
 	echo -e "############################################################"
 	echo ""
 	read opcion2	#variable que almacena la opción leída
 	ComprobarPalabras $opcion2
-	while [ $opcion2 != "1" -a $opcion2 != "2" -a $opcion2 != "3" ];do
+	while [ $opcion2 != "1" -a $opcion2 != "2" -a $opcion2 != "3"  -a $opcion2 != "4"];do
 		echo -e "${rojoR}ERROR: ${rojo} No has introducido una opción válida ${NC}"
 		echo -e "${azulR}Vuelve a introducir una opción${NC}"
 		read opcion2
@@ -2490,7 +2491,7 @@ if [ $opcion = 3 ];then #crear fichero aleatorio y leerlo
 	
 fi
 
-if [ $opcion = 4 ];then #leer ultima ejecucion del fichero aleatorio
+if [ $opcion = 5 ];then #leer ultima ejecucion del fichero aleatorio
 	esunsi=0
 	sed "/^ *$/d" datosEntradaRand.txt > datos.txt
 	mv datos.txt datosEntradaRand.txt
@@ -2607,7 +2608,7 @@ if [ $opcion = 4 ];then #leer ultima ejecucion del fichero aleatorio
 	done
 fi
 
-if [ $opcion = 5 ];then #leer ultima ejecucion del fichero aleatorio
+if [ $opcion = 4 ];then #leer ultima ejecucion del fichero aleatorio
 
 	wait < <(CrearFicheroRangos -p)
 
