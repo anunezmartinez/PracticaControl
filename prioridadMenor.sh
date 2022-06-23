@@ -410,11 +410,6 @@ function ImprimeLineaFinal {
     done
 }
 
-function ImprimeParticiones {
-
-	echo "hola"
-}
-
 #Función (B&W) encargada de representar gráficamente el tamaño inicial y final asociado a cada partición.
 function ImprimeLineaFinalBW {
 	l=0
@@ -454,6 +449,45 @@ function ImprimeLineaFinalBW {
 				break;
 			fi
 		fi
+    done
+}
+
+function ImprimeLineaParticiones {
+	printf "    |"
+	printf "    |" >> informePrioridadColor.txt
+	l=0
+	count=0
+    for (( je1;je1<$cap_memoria;je1++ ));do
+    	if [[ $je1 -eq ${part_init[$wr1]} ]];then
+			let carac1=carac1+3
+			if [[ $(expr longitud-carac1) -ge 0 ]];then
+				printf "  "
+				printf "   " >> informePrioridadColor.txt
+			else
+				break;
+			fi
+
+			let carac1=carac1+3
+			if [[ $(expr longitud-carac1) -ge 0 ]];then
+				#printf "${mapp[$je1]}"
+
+				printf "PT${count}"
+
+				printf "${mapp[$je1]}" >> informePrioridadColor.txt
+			else
+				break;
+			fi
+			let "count++"
+			let wr1++      
+    	else
+			let carac1=carac1+3
+			if [[ $(expr longitud-carac1) -ge 0 ]];then
+				printf "${mapp[$je1]}"
+        		printf "${mapp[$je1]}" >> informePrioridadColor.txt
+			else
+				break;
+			fi
+        fi
     done
 }
 
@@ -1109,6 +1143,8 @@ function GestionDeMemoria {
 			terminar=0
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
+				ImprimeLineaParticiones
+				printf "\n"
 				ImprimeProcesos
 				printf "\n"
 				printf "\n" >> informePrioridadColor.txt
@@ -2275,8 +2311,6 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 		echo -e "${azulR}Vuelve a introducir una opción${NC}"
 		read opcion
 	done
-	echo -e "¿Desea introducir los datos de forma manual? (s/n)" $opcion >> informePrioridadColor.txt
-	echo -e "¿Desea introducir los datos de forma manual? (s/n)" $opcion >> informePrioridadMenor.txt
 fi
 
 if [ $p2 = 0 ];then #condición para preguntar la forma a leer los datos	
