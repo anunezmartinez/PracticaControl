@@ -2296,12 +2296,12 @@ tiempintro={}
 if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 	echo ""
 	echo -e "############################################################"		
-	echo -e "1 - Introducir los datos de forma manual?"
+	echo -e "1 - Introducir los datos de forma manual"
 	echo -e "2 - Fichero de datos de ultima ejecucion (datos.txt)"
 	echo -e "3 - Otro fichero de datos"
 	echo -e "4 - Introduccion de rangos manualmente"
 	echo -e "5 - Fichero de rangos de ultima ejecucion (datosrangos.txt)"
-	echo -e "6 - Otro fichero de rangos?"
+	echo -e "6 - Otro fichero de rangos"
 	echo -e "############################################################"
 	echo ""
 	read opcion	#variable que almacena la opción leída
