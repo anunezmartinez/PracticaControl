@@ -935,6 +935,7 @@ function estadosiniciales {
 
 #Función encargada de todo lo relacionado con la ejecución del algoritmo
 function GestionDeMemoria {
+
 	declare partition[${#part_init[@]}]
 	declare partition_free[${#part_init[@]}]
 	declare partition_pos[${#memori[@]}]
@@ -1431,6 +1432,8 @@ function GestionDeMemoriaAutomatico {
 			terminar=0
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
+				ImprimeLineaParticiones
+				printf "\n"
 				ImprimeProcesos
 				printf "\n"
 				printf "\n" >> informePrioridadColor.txt
@@ -1468,8 +1471,8 @@ function GestionDeMemoriaAutomatico {
 			done
 			printf "\n" >> informePrioridadColor.txt
 			printf "\n" >> informePrioridadMenor.txt
-    		printf " Esperando "
-			sleep 5
+    		printf " Esperando $secs segundos."
+			sleep $secs
 		fi 
 
 		evento=0
@@ -2290,6 +2293,7 @@ espera=0;
 respuesta=0;
 ti=0;
 tiempintro={}
+secs=0
 
 #Comienzo de la lectura de datos de un fichero o por teclado
 
@@ -2557,7 +2561,7 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 	done
 fi
 
-if [ $opcion = 2 ];then #si el usuario desea introducir los datos desde un fichero, es decir, datosPrederteminados.
+if [ $opcion = 2 ];then #leer fichero de datos
 
 	esunsi=0
 	sed "/^ *$/d" datosEntradaPred.txt > datos.txt
@@ -2798,7 +2802,7 @@ if [ $opcion = 3 ];then #crear fichero aleatorio y leerlo
 	
 fi
 
-if [ $opcion = 5 ];then #leer ultima ejecucion del fichero aleatorio
+if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 	esunsi=0
 	sed "/^ *$/d" datosEntradaRand.txt > datos.txt
 	mv datos.txt datosEntradaRand.txt
@@ -2915,7 +2919,7 @@ if [ $opcion = 5 ];then #leer ultima ejecucion del fichero aleatorio
 	done
 fi
 
-if [ $opcion = 4 ];then #leer ultima ejecucion del fichero aleatorio
+if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 
 	wait < <(CrearFicheroRangos -p)
 
@@ -3035,7 +3039,7 @@ if [ $opcion = 4 ];then #leer ultima ejecucion del fichero aleatorio
 	done
 fi
 
-if [ $opcion = 6 ];then #leer ultima ejecucion del fichero aleatorio
+if [ $opcion = 6 ];then #leer fichero intrudocido a mano
 
 	echo ""
 	rutaFich=0
@@ -3200,7 +3204,7 @@ for ((i=0;i<${#tiempo[@]};i++));do
 		if [ $i -gt "0" ];then
 			espera=`expr $espera + ${tiempo[$(($i-1))]}`
 		fi                     #variable que almacena el tiempo de espera de ese proceso, es decir, el tiempo de respuesta anterior
-		respuesta=`expr $espera + ${tiempo[$i]}`  #variable que almacena la suma del tiempo de espera, mas el contenido del vector tiempo en esa posición
+		respuesta=`expr $espera + ${tiempo[$i]}`  #variabl quee que almacena la suma del tiempo de espera, mas el contenido del vector tiempo en esa posición
 		suma_espera=`expr $suma_espera + $espera`            #suma para sacar su promedio de espera
 		promedio_espera=`expr $suma_espera / ${#tiempo[@]}`  #promedio del tiempo de espera
 		suma_respuesta=`expr $suma_respuesta + $respuesta`   #suma para sacar su promedio de respuesta
@@ -3213,6 +3217,11 @@ if [ $opcion2 = 1 ];then
 GestionDeMemoria
 fi
 if [ $opcion2 = 2 ];then
+printf  "\n"
+echo -e "############################################################" 
+echo "Introduce el tiempo de espera."
+printf  "\n"
+read secs
 GestionDeMemoriaAutomatico
 fi
 if [ $opcion2 = 3 ];then
