@@ -128,9 +128,9 @@ function crea_particiones {
 	done
 
 	for ((k=0;k<$i;k++));do
-		printf "${part_cap[$k]};">>datosEntradaPred.txt
+		printf "${part_cap[$k]};">>$ENTRADA
 	done
-	echo -e "">>datosEntradaPred.txt
+	echo -e "">>$ENTRADA
 
 	echo -e ""
 	echo -e "${verdeR}Todas las particiones estan creadas${NC}"
@@ -164,7 +164,7 @@ function crea_prioridad {
 	printf "Introduce la prioridad mínima: $pri_minima\n" >> informePrioridadMenor.txt
 	printf "Introduce la prioridad máxima: $pri_maxima\n" >> informePrioridadMenor.txt
 
-	echo "$pri_minima;$pri_maxima;" >> datosEntradaPred.txt
+	echo "$pri_minima;$pri_maxima;" >> $ENTRADA
 	calcularTipoPrioridad $pri_minima $pri_maxima
 
 	echo -e "${NC}La prioridad de cada proceso debe de estar entre ${NC}$pri_minima y $pri_maxima${NC}"
@@ -2338,13 +2338,12 @@ fi
 
 if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manual	
 	mkdir -p FicherosDatos
-	cd FicherosDatos
 
 	esunsi=1
 	
-	ENTRADA=datosEntradaPred.txt
+	ENTRADA=FicherosDatos/datosEntradaPred.txt
 	if [ -f "$ENTRADA" ]; then
-		rm datosEntradaPred.txt
+		rm FicherosDatos/datosEntradaPred.txt
 	fi
 
 	mas=0;
@@ -2501,7 +2500,7 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 			echo ""
 		done
 
-		echo -e "$temp;$tiemp;$memor;$priorida;" >> datosEntradaPred.txt			
+		echo -e "$temp;$tiemp;$memor;$priorida;" >> $ENTRADA			
 		p=`expr $p + 1` #incremento el contador
 		pp=`expr $pp + 1` #incremento el contador
 		ppp=`expr $ppp + 1` #incremento el contador
@@ -2566,20 +2565,20 @@ fi
 
 if [ $opcion = 2 ];then #leer fichero de datos
 	mkdir -p FicherosDatos
-	cd FicherosDatos
+
 	esunsi=0
-	sed "/^ *$/d" datosEntradaPred.txt > datos.txt
-	mv datos.txt datosEntradaPred.txt
-	num_proc=`expr $(cat datosEntradaPred.txt | wc -l) - 2`
+	sed "/^ *$/d" FicherosDatos/datosEntradaPred.txt > datos.txt
+	mv datos.txt FicherosDatos/datosEntradaPred.txt
+	num_proc=`expr $(cat FicherosDatos/datosEntradaPred.txt | wc -l) - 2`
 	if [ $p = 0 ];then
-		pri_minima=`cat datosEntradaPred.txt | cut -f 1 -d";" | sed -n 2p`
-		pri_maxima=`cat datosEntradaPred.txt | cut -f 2 -d";" | sed -n 2p`
-		n_particiones=`cat datosEntradaPred.txt | sed -n 1p | grep -o ";" | wc -l`
+		pri_minima=`cat FicherosDatos/datosEntradaPred.txt| cut -f 1 -d";" | sed -n 2p`
+		pri_maxima=`cat FicherosDatos/datosEntradaPred.txt | cut -f 2 -d";" | sed -n 2p`
+		n_particiones=`cat FicherosDatos/datosEntradaPred.txt | sed -n 1p | grep -o ";" | wc -l`
 
 		calcularTipoPrioridad $pri_minima $pri_maxima
 
 		for (( jka=0; jka<n_particiones; jka++ ));do
-			part_cap[$jka]=$(cat datosEntradaPred.txt | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
+			part_cap[$jka]=$(cat FicherosDatos/datosEntradaPred.txt | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
 			let cap_memoria=cap_memoria+part_cap[$jka]
 			if [ $jka -eq 0 ];then
 				part_init[$jka]=0
@@ -2632,17 +2631,17 @@ if [ $opcion = 2 ];then #leer fichero de datos
 		let contar_lineas=p+3
 		contar_lineas_p=$contar_lineas'p'
 		pp=1
-		temp=`cat datosEntradaPred.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		temp=`cat FicherosDatos/datosEntradaPred.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		templl[$p]=$temp
 		let pp++		
-		tiemp=`cat datosEntradaPred.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		tiemp=`cat FicherosDatos/datosEntradaPred.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		tiempo[$p]="$tiemp"
 		tiempofijo[$p]="$tiemp"
 		let pp++			
-		memor=`cat datosEntradaPred.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		memor=`cat FicherosDatos/datosEntradaPred.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		memori[$p]=$memor
 		let pp++
-		priorida=`cat datosEntradaPred.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		priorida=`cat FicherosDatos/datosEntradaPred.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		dato_priorid=$(calculoSegunTipoPrioridad $tipo_prioridad $priorida)
 		ComprobarPrioridad
 		prioridad[$p]=$priorida
