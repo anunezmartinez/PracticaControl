@@ -2185,20 +2185,19 @@ function CrearFichero {
 }
 
 function CrearFicheroRangos {
-		rm datosEntradaRandR.txt
 		echo "Introduce el rango de la primera particion, primero rango inferior y luego superior."
 		rango1=
 		rango2= 
 		rangomedia= rango1/rango2
-		echo "$(seq 20 30 | shuf -n 1);$(shuf -i 0-20 -n 1);" >> datosEntradaRandR.txt
-		echo "$(seq -20 9 | shuf -n 1);$(shuf -i 10-20 -n 1);" >> datosEntradaRandR.txt
+		echo "$(seq 20 30 | shuf -n 1);$(shuf -i 0-20 -n 1);" >> $ENTRADA2
+		echo "$(seq -20 9 | shuf -n 1);$(shuf -i 10-20 -n 1);" >> $ENTRADA2
 		p=0; while [[ $p -lt 2 ]]; do 
    		e=0; while [[ $e -lt 4 ]];do
-    	echo -n "$(shuf -i 0-15 -n 1);" >> datosEntradaRandR.txt;
+    	echo -n "$(shuf -i 0-15 -n 1);" >> $ENTRADA2;
         e=$((e+1));
     	done
     	p=$((p+1));
-		echo "">>datosEntradaRandR.txt
+		echo "">>$ENTRADA2
 		done
 }
 
@@ -2340,10 +2339,21 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 	mkdir -p FicherosDatos
 
 	esunsi=1
-	
-	ENTRADA=FicherosDatos/datosEntradaPred.txt
+	nombre=0
+
+	resp=0
+	echo "Quieres guardar el fichero con el nombre por defecto?(y/n)"
+	read resp
+	if [ $resp = y ];then
+	nombre=datosEntradaPred.txt
+	elif [ $resp = n ];then
+	echo "Introduce el nombre del fichero (con extension .txt)"
+	read nombre
+	fi
+
+	ENTRADA=FicherosDatos/$nombre
 	if [ -f "$ENTRADA" ]; then
-		rm FicherosDatos/datosEntradaPred.txt
+		rm FicherosDatos/$nombre
 	fi
 
 	mas=0;
@@ -2685,20 +2695,18 @@ fi
 
 if [ $opcion = 3 ];then #leer fichero intrudocido a mano
 	mkdir -p FicherosDatos
-	cd FicherosDatos
+
 	echo ""
 	rutaFich=0
+	cd FicherosDatos
 	echo "Introduce el nombre o ruta del fichero a leer :"
 	echo ""
 	ls *.txt 2>/dev/null
 	echo ""
 	read rutaFich
-
-	if test -f "$rutaFich"; then
-    echo "$rutaFich exists."
-	else
-	echo "El fichero no existe."
-	fi
+	rutaFich=FicherosDatos/$rutaFich
+	echo "$rutaFich"
+	cd ..
 
 	esunsi=0
 	sed "/^ *$/d" $rutaFich > datos.txt
@@ -2818,23 +2826,40 @@ fi
 
 if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 
-	mkdir -p FicheroRangos
-	cd FicheroRangos
+	mkdir -p FicherosRangos
+
+	esunsi=1
+	nombre2=0
+	resp2=0
+	echo "Quieres guardar el fichero con el nombre por defecto?(y/n)"
+	read resp2
+	if [ $resp2 = y ];then
+	nombre2=datosEntradaRand.txt
+	elif [ $resp2 = n ];then
+	echo "Introduce el nombre del fichero (con extension .txt)"
+	read nombre2
+	fi
+
+	ENTRADA2=FicherosRangos/$nombre2
+	if [ -f "$ENTRADA2" ]; then
+		rm FicherosRangos/$nombre2
+	fi
+
 	wait < <(CrearFicheroRangos -p)
 
 	esunsi=0
-	sed "/^ *$/d" datosEntradaRand.txt > datos.txt
-	mv datos.txt datosEntradaRand.txt
-	num_proc=`expr $(cat datosEntradaRand.txt | wc -l) - 2`
+	sed "/^ *$/d" $ENTRADA2 > datos.txt
+	mv datos.txt $ENTRADA2
+	num_proc=`expr $(cat $ENTRADA2 | wc -l) - 2`
 	if [ $p = 0 ];then
-		pri_minima=`cat datosEntradaRand.txt | cut -f 1 -d";" | sed -n 2p`
-		pri_maxima=`cat datosEntradaRand.txt | cut -f 2 -d";" | sed -n 2p`
-		n_particiones=`cat datosEntradaRand.txt | sed -n 1p | grep -o ";" | wc -l`
+		pri_minima=`cat $ENTRADA2 | cut -f 1 -d";" | sed -n 2p`
+		pri_maxima=`cat $ENTRADA2 | cut -f 2 -d";" | sed -n 2p`
+		n_particiones=`cat $ENTRADA2 | sed -n 1p | grep -o ";" | wc -l`
 
 		calcularTipoPrioridad $pri_minima $pri_maxima
 
 		for (( jka=0; jka<n_particiones; jka++ ));do
-			part_cap[$jka]=$(cat datosEntradaRand.txt | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
+			part_cap[$jka]=$(cat $ENTRADA2 | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
 			let cap_memoria=cap_memoria+part_cap[$jka]
 			if [ $jka -eq 0 ];then
 				part_init[$jka]=0
@@ -2886,17 +2911,17 @@ if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 		let contar_lineas=p+3
 		contar_lineas_p=$contar_lineas'p'
 		pp=1
-		temp=`cat datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		temp=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		templl[$p]=$temp
 		let pp++		
-		tiemp=`cat datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		tiemp=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		tiempo[$p]="$tiemp"
 		tiempofijo[$p]="$tiemp"
 		let pp++			
-		memor=`cat datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		memor=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		memori[$p]=$memor
 		let pp++
-		priorida=`cat datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		priorida=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		dato_priorid=$(calculoSegunTipoPrioridad $tipo_prioridad $priorida)
 		ComprobarPrioridad
 		prioridad[$p]=$priorida
@@ -2940,20 +2965,20 @@ fi
 
 if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 	mkdir -p FicherosRangos
-	cd FicherosRangos
+
 	esunsi=0
-	sed "/^ *$/d" datosEntradaRand.txt > datos.txt
-	mv datos.txt datosEntradaRand.txt
-	num_proc=`expr $(cat datosEntradaRand.txt | wc -l) - 2`
+	sed "/^ *$/d" FicherosRangos/datosEntradaRand.txt > datos.txt
+	mv datos.txt FicherosRangos/datosEntradaRand.txt
+	num_proc=`expr $(cat FicherosRangos/datosEntradaRand.txt | wc -l) - 2`
 	if [ $p = 0 ];then
-		pri_minima=`cat datosEntradaRand.txt | cut -f 1 -d";" | sed -n 2p`
-		pri_maxima=`cat datosEntradaRand.txt | cut -f 2 -d";" | sed -n 2p`
-		n_particiones=`cat datosEntradaRand.txt | sed -n 1p | grep -o ";" | wc -l`
+		pri_minima=`cat FicherosRangos/datosEntradaRand.txt| cut -f 1 -d";" | sed -n 2p`
+		pri_maxima=`cat FicherosRangos/datosEntradaRand.txt | cut -f 2 -d";" | sed -n 2p`
+		n_particiones=`cat FicherosRangos/datosEntradaRand.txt | sed -n 1p | grep -o ";" | wc -l`
 
 		calcularTipoPrioridad $pri_minima $pri_maxima
 
 		for (( jka=0; jka<n_particiones; jka++ ));do
-			part_cap[$jka]=$(cat datosEntradaRand.txt | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
+			part_cap[$jka]=$(cat FicherosRangos/datosEntradaRand.txt | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
 			let cap_memoria=cap_memoria+part_cap[$jka]
 			if [ $jka -eq 0 ];then
 				part_init[$jka]=0
@@ -2992,6 +3017,7 @@ if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 		echo -e "La prioridad máxima es	$pri_maxima" >> informePrioridadMenor.txt
 		echo "" >> informePrioridadMenor.txt
 	fi
+	
 	for ((p=0;p<$num_proc;p++));do
 		if [ $ppp -lt 10 ]; then
 			nombre=P0$ppp
@@ -3005,26 +3031,26 @@ if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 		let contar_lineas=p+3
 		contar_lineas_p=$contar_lineas'p'
 		pp=1
-		temp=`cat datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		temp=`cat FicherosRangos/datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		templl[$p]=$temp
 		let pp++		
-		tiemp=`cat datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		tiemp=`cat FicherosRangos/datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		tiempo[$p]="$tiemp"
 		tiempofijo[$p]="$tiemp"
 		let pp++			
-		memor=`cat datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		memor=`cat FicherosRangos/datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		memori[$p]=$memor
 		let pp++
-		priorida=`cat datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		priorida=`cat FicherosRangos/datosEntradaRand.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		dato_priorid=$(calculoSegunTipoPrioridad $tipo_prioridad $priorida)
 		ComprobarPrioridad
 		prioridad[$p]=$priorida
 		dato_prioridad[$p]=$dato_priorid
-		#let pp++
-		#echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
-		#echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
+		let pp++
+		echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
+		echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
 		let ppp++
-		#Ordenar
+		Ordenar
 	done
 	Ordenar
 
@@ -3059,20 +3085,18 @@ fi
 
 if [ $opcion = 6 ];then #leer fichero intrudocido a mano
 	mkdir -p FicherosRangos
-	cd FicherosRangos
+
 	echo ""
 	rutaFich=0
+	cd FicherosRangos
 	echo "Introduce el nombre o ruta del fichero a leer :"
 	echo ""
 	ls *.txt 2>/dev/null
 	echo ""
 	read rutaFich
-
-	if test -f "$rutaFich"; then
-    echo "$rutaFich exists."
-	else
-	echo "El fichero no existe."
-	fi
+	rutaFich=FicherosRangos/$rutaFich
+	echo "$rutaFich"
+	cd ..
 
 	esunsi=0
 	sed "/^ *$/d" $rutaFich > datos.txt
