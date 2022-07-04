@@ -2171,18 +2171,46 @@ function ComprobarPrioridad {
 }
 
 function CrearFicheroRangos {
+		cantidadMinParticion=█
+		cantidadMaxParticion=█
+		tamanoMinParticion=█
+		tamanoMaxParticion=█
+		prioMin=█
+		prioMax=█
+		cantidadMinProcesos=█
+		cantidadMaxProcesos=█
+		tiempoMinLlegada=█
+		tiempoMaxLlegada=█
+		tiempoMinEjecucion=█
+		tiempoMaxEjecucion=█
+		tamanoMinProceso=█
+		tamanoMaxProceso=█
+		
+		clear
+		tablaRangos
+
 		echo "Introduce el minimo del rango del numero de particiones"
-		read minimoParticion
+		read cantidadMinParticion
 		echo "Introduce el maximo del rango del numero de particiones"
-		read maximoParticion
-		echo "Introduce el numero de particiones"
-		read numParticiones
+		read cantidadMaxParticion
+		clear
+
+		tablaRangos
+
+		echo "Introduce el minimo del rango del tamaño de las particiones"
+		read tamanoMinParticion
+		echo "Introduce el maximo del rango del tamaño de las particiones"
+		read tamanoMaxParticion
+		clear
+
+		tablaRangos
+
+		cantPart="$(seq $cantidadMinParticion $cantidadMaxParticion | shuf -n 1)"
 
 
+    	val1="$(seq $tamanoMinParticion $tamanoMaxParticion | shuf -n 1)"
 
-    	val1="$(seq $minimoParticion $maximoParticion | shuf -n 1)"
-
-		contadorsinmas=0; while [[ $contadorsinmas -lt $numParticiones ]];do
+		contadorsinmas=0; while [[ $contadorsinmas -lt $cantPart ]];do
 
 		val1=$((val1-2))
 		echo -n "$val1;" >> $ENTRADA2
@@ -2191,20 +2219,78 @@ function CrearFicheroRangos {
     	done
 
 		printf "\n" >> $ENTRADA2
-		echo "$(seq -20 9 | shuf -n 1);$(shuf -i 10-20 -n 1);" >> $ENTRADA2
-		echo "Introduce el numero de procesos a crear."
-		read numProcesos
+
+		echo "Introduce el minimo de la prioridad de los procesos"
+		read prioMin
+		echo "Introduce el maximo de la prioridad de los procesos"
+		read prioMax
+		clear
+
+		prioMed=$((prioMax/2));
+
+		valPrio1="$(seq $prioMin $prioMed | shuf -n 1)"
+		valPrio2="$(shuf -i $prioMed-$prioMax -n 1)"
+
+		echo -n "$valPrio1;" >> $ENTRADA2
+		echo -n "$valPrio2;" >> $ENTRADA2
+		
+		tablaRangos
+
+		echo "Introduce el minimo del rango del numero de procesos"
+		read cantidadMinProcesos
+		echo "Introduce el maximo del rango del numero de procesos"
+		read cantidadMaxProcesos
+		numProcesos="$(seq $cantidadMinProcesos $cantidadMaxProcesos | shuf -n 1)"
+		clear
+
+		tablaRangos
+
+		echo "Introduce el minimo del rango del tiempo de llegada"
+		read tiempoMinLlegada
+		echo "Introduce el maximo del rango del tiempo de llegada"
+		read tiempoMaxLlegada
+		clear
+
+		tablaRangos
+
+		echo "Introduce el minimo del rango del tiempo de ejecucion"
+		read tiempoMinEjecucion
+		echo "Introduce el maximo del rango del tiempo de ejecucion"
+		read tiempoMaxEjecucion
+		clear
+
+		tablaRangos
+
+		echo "Introduce el minimo del rango de memoria de proceso"
+		read tamanoMinProceso
+		echo "Introduce el maximo del rango de memoria de proceso"
+		read tamanoMaxProceso
+		clear
+
+		printf "\n" >> $ENTRADA2
+
 		numproc=0; while [[ $numproc -lt $numProcesos ]]; do 
-   		e=0; while [[ $e -lt 4 ]];do
-    	echo -n "$(shuf -i 0-15 -n 1);" >> $ENTRADA2;
-        e=$((e+1));
-    	done
+
+    	echo "$(seq $tiempoMinLlegada $tiempoMaxLlegada | shuf -n 1);$(shuf -i $tiempoMinEjecucion-$tiempoMaxEjecucion -n 1);$(shuf -i $tamanoMinProceso-$tamanoMaxProceso -n 1);$(shuf -i $valPrio1-$valPrio2 -n 1);" >> $ENTRADA2
+
     	numproc=$((numproc+1));
 		echo "">>$ENTRADA2
 		done
 
 }
-
+function tablaRangos {
+		echo "Resumen de los datos introducidos"
+		echo "------------------------------------------------------------------------"
+		echo "Minimo del rango del numero de particiones $cantidadMinParticion y máximo $cantidadMaxParticion"
+		echo "Minimo del rango del tamaño de las particiones $tamanoMinParticion y máximo $tamanoMaxParticion"
+		echo "Minimo de la prioridad de los procesos $prioMin y máximo $prioMax"
+		echo "Minimo del rango del numero de procesos $cantidadMinProcesos y máximo $cantidadMaxProcesos"
+		echo "Minimo del rango del tiempo de llegada $tiempoMinLlegada y máximo $tiempoMaxLlegada"
+		echo "Minimo del rango del rango del tiempo de ejecucion $tiempoMinEjecucion máximo $tiempoMaxEjecucion"
+		echo "Minimo del rango de memoria de proceso $tamanoMinProceso y máximo $tamanoMaxProceso"
+		echo "-------------------------------------------------------------------------"
+		echo ""
+}
 
 #Comienzo del programa
 
