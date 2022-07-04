@@ -2269,10 +2269,12 @@ function CrearFicheroRangos {
 
 		printf "\n" >> $ENTRADA2
 
+		valPrio1=5
+		valPrio2=15
 		numproc=0; while [[ $numproc -lt $numProcesos ]]; do 
 
-    	echo "$(seq $tiempoMinLlegada $tiempoMaxLlegada | shuf -n 1);$(shuf -i $tiempoMinEjecucion-$tiempoMaxEjecucion -n 1);$(shuf -i $tamanoMinProceso-$tamanoMaxProceso -n 1);$(shuf -i $valPrio1-$valPrio2 -n 1);" >> $ENTRADA2
-
+    	echo "$(seq $tiempoMinLlegada $tiempoMaxLlegada | shuf -n 1);$(seq $tiempoMinEjecucion $tiempoMaxEjecucion | shuf -n 1);$(seq $tamanoMinProceso $tamanoMaxProceso | shuf -n 1);$(seq $valPrio1 $valPrio2 | shuf -n 1);" >> $ENTRADA2
+		
     	numproc=$((numproc+1));
 		echo "">>$ENTRADA2
 		done
