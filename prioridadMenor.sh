@@ -1369,8 +1369,11 @@ function GestionDeMemoriaAutomatico {
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima"
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadColor.txt
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadMenor.txt
+			
 			State
+			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n"
+			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadColor.txt
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadMenor.txt
 			longitud=$(tput cols)
@@ -1513,6 +1516,8 @@ function GestionDeMemoriaAutomatico {
 			finbucle=1
 		fi
 	done
+
+		
 }
 function GestionDeMemoriaCompleta {
 	declare partition[${#part_init[@]}]
@@ -1657,8 +1662,11 @@ function GestionDeMemoriaCompleta {
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima"
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadColor.txt
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadMenor.txt
+			
 			State
+			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n"
+			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadColor.txt
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadMenor.txt
 			longitud=$(tput cols)
@@ -1720,6 +1728,8 @@ function GestionDeMemoriaCompleta {
 			terminar=0
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
+				ImprimeLineaParticiones
+				printf "\n"
 				ImprimeProcesos
 				printf "\n"
 				printf "\n" >> informePrioridadColor.txt
@@ -2421,7 +2431,7 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 		else
 				rutaFich=0
 				cd FicherosDatos
-				echo "En que fichero quieres guardar los datos?"
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará."
 				echo ""
 				ls *.txt 2>/dev/null
 				echo ""
@@ -2461,7 +2471,7 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 		else
 				rutaFich=0
 				cd FicherosRangos
-				echo "Introduce el nombre o ruta del fichero a leer :"
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará."
 				echo ""
 				ls *.txt 2>/dev/null
 				echo ""
