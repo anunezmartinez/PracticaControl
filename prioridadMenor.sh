@@ -2170,28 +2170,31 @@ function ComprobarPrioridad {
 	fi	
 }
 
-function CrearFichero {
-		rm datosEntradaRand.txt
-		echo "$(seq 20 30 | shuf -n 1);$(shuf -i 0-20 -n 1);" >> datosEntradaRand.txt
-		echo "$(seq -20 9 | shuf -n 1);$(shuf -i 10-20 -n 1);" >> datosEntradaRand.txt
-		p=0; while [[ $p -lt 2 ]]; do 
-   		e=0; while [[ $e -lt 4 ]];do
-    	echo -n "$(shuf -i 0-15 -n 1);" >> datosEntradaRand.txt;
+function CrearFicheroRangos {
+		echo "Introduce el rango minimo de las particiones"
+		read minimoParticion
+		echo "Introduce el rango maximo de las particiones"
+		read maximoParticion
+		echo "Introduce el numero de particiones"
+		read numParticiones
+
+
+
+    	val1="$(seq $minimoParticion $maximoParticion | shuf -n 1)"
+
+		e=0; while [[ $e -lt $numParticiones ]];do
+
+		val1=$((val1-2))
+		echo -n "$val1;" >> $ENTRADA2
+
         e=$((e+1));
     	done
-    	p=$((p+1));
-		echo "">>datosEntradaRand.txt
-		done
-}
 
-function CrearFicheroRangos {
-		echo "Introduce el rango de la primera particion, primero rango inferior y luego superior."
-		rango1=
-		rango2= 
-		rangomedia= rango1/rango2
-		echo "$(seq 20 30 | shuf -n 1);$(shuf -i 0-20 -n 1);" >> $ENTRADA2
+		printf "\n" >> $ENTRADA2
 		echo "$(seq -20 9 | shuf -n 1);$(shuf -i 10-20 -n 1);" >> $ENTRADA2
-		p=0; while [[ $p -lt 2 ]]; do 
+		echo "Introduce el numero de procesos a crear."
+		read numProcesos
+		p=0; while [[ $p -lt $numProcesos ]]; do 
    		e=0; while [[ $e -lt 4 ]];do
     	echo -n "$(shuf -i 0-15 -n 1);" >> $ENTRADA2;
         e=$((e+1));
@@ -2826,6 +2829,8 @@ fi
 
 if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 
+
+
 	mkdir -p FicherosRangos
 
 	esunsi=1
@@ -2845,7 +2850,9 @@ if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 		rm FicherosRangos/$nombre2
 	fi
 
-	wait < <(CrearFicheroRangos -p)
+
+	CrearFicheroRangos
+
 
 	esunsi=0
 	sed "/^ *$/d" $ENTRADA2 > datos.txt
