@@ -475,6 +475,7 @@ function ImprimeLineaParticiones {
 			let carac4=carac4+3
 			if [[ $(expr longitud-carac4) -ge 0 ]];then
 				printf "RT${wr4}"
+				printf "RT${wr4}" >> informeColor.txt
 				printf "${mapp[$je4]}" >> informeColor.txt
 			else
 				break;
@@ -484,7 +485,7 @@ function ImprimeLineaParticiones {
 			let carac4=carac4+3
 			if [[ $(expr longitud-carac4) -ge 0 ]];then
 				printf "${mapp[$je4]}"
-        		printf "${mapp[$je1]}" >> informeColor.txt
+        		printf "${mapp[$je4]}" >> informeColor.txt
 			else
 				break;
 			fi
