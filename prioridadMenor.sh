@@ -218,7 +218,7 @@ function ImprimeLineaProcesos {
 	printf "    |" >> informeColor.txt
 	l=0
 	
-    for (( je1;je1<$cap_memoria;je1++ ));do
+    for (( je1=0;je1<$cap_memoria;je1++ ));do
     	if [[ $je1 -eq ${part_init[$wr1]} ]];then
 			let carac1=carac1+3
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
@@ -230,7 +230,9 @@ function ImprimeLineaProcesos {
 
 			let carac1=carac1+3
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
+
 				printf "${mapp[$je1]}"
+				
 				printf "${mapp[$je1]}" >> informeColor.txt
 			else
 				break;
@@ -309,7 +311,7 @@ function ImprimeMemoria {
 			let wr2++
 
 		elif [ $je2 -eq $cap_memoria ];then
-			printf "|"
+			printf "| M=$cap_memoria "	
 			printf "|" >> informeColor.txt
 			terminar=1
 		else
@@ -376,7 +378,7 @@ function ImprimeLineaFinal {
     for (( je3;je3<$cap_memoria;je3++ ));do
 		if [[ $je3 -eq ${part_init[$wr3]} ]]; then
 			if [ "${part_init[$wr3]}" -eq 0 ];then
-				let carac3=1
+				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
 					printf "%1d" "${part_init[0]}"
 					printf "%3d" "${part_init[0]}" >> informeColor.txt
@@ -384,32 +386,31 @@ function ImprimeLineaFinal {
 					break;
 				fi
 			else
-				let carac3
+				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
 					printf ""
 					printf "   " >> informeColor.txt
 				else
 					break;
 				fi
-				let carac3
+				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "%1d" "${part_init[$wr3]}"
-					printf "%1d" "${part_init[$wr3]}" >> informeColor.txt
+					printf "%4d" "${part_init[$wr3]}"
+					printf "%3d" "${part_init[$wr3]}" >> informeColor.txt
 				else
 					break;
 				fi
 			fi
 			let wr3++
 		else
-			let carac3
+			let carac3=carac3+3
 			if [[ `expr longitud-carac3` -ge 0 ]];then
-        		printf "%1s" "${mapf[$je3]}"
+        		printf "%3s" "${mapf[$je3]}"
         		printf "%3s" "${mapf[$je3]}" >> informeColor.txt
 			else
 				break;
 			fi
 		fi
-		
     done
 }
 
@@ -459,39 +460,37 @@ function ImprimeLineaParticiones {
 	printf "    |"
 	printf "    |" >> informeColor.txt
 	l=0
-	count=0
-    for (( je1;je1<$cap_memoria;je1++ ));do
-    	if [[ $je1 -eq ${part_init[$wr1]} ]];then
-			let carac1=carac1+4
-			if [[ $(expr longitud-carac1) -ge 0 ]];then
-				printf " "
+	
+    for (( je4=0;je4<$cap_memoria;je4++ ));do
+    	if [[ $je4 -eq ${part_init[$wr4]} ]];then
+			let carac4=carac4+3
+			if [[ $(expr longitud-carac4) -ge 0 ]];then
+				printf "P"
+
 				printf "   " >> informeColor.txt
 			else
 				break;
 			fi
 
-			let carac1=carac1+4
-			if [[ $(expr longitud-carac1) -ge 0 ]];then
-				#printf "${mapp[$je1]}"
-
-				printf "P${count}"
-
-				printf "${mapp[$je1]}" >> informeColor.txt
+			let carac4=carac4+3
+			if [[ $(expr longitud-carac4) -ge 0 ]];then
+				printf "RT${wr4}"
+				printf "${mapp[$je4]}" >> informeColor.txt
 			else
 				break;
 			fi
-			let "count++"
-			let wr1++      
+			let wr4++      
     	else
-			let carac1=carac1+4
-			if [[ $(expr longitud-carac1) -ge 0 ]];then
-				printf "${mapp[$je1]}"
+			let carac4=carac4+3
+			if [[ $(expr longitud-carac4) -ge 0 ]];then
+				printf "${mapp[$je4]}"
         		printf "${mapp[$je1]}" >> informeColor.txt
 			else
 				break;
 			fi
         fi
     done
+	
 }
 
 #Función encargada de asociar procesos a la gráfica del tiempo.
@@ -500,7 +499,7 @@ function ImprimeProcesos {
 	l=0
 	printf "    |"
 	printf "    |" >> informeColor.txt
-	for (( je1;je1<=$clock;je1++ ));do
+	for (( je1=0;je1<=$clock;je1++ ));do
 		let carac1=carac1+3
 		if [[ `expr longitud-carac1` -ge 0 ]];then
         	printf "${mappd[$je1]}"
@@ -560,7 +559,7 @@ function ImprimeGrafica {
 		elif [[ $imprimir_status -eq 0 ]];then
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
-				printf "|T="
+				printf "|T= "
 				printf "|T=" >> informeColor.txt
 				imprimir_status=1
 			else
@@ -751,6 +750,8 @@ function mapaprocesos {
 		mapp[$l]="   "
 	done
 }
+
+
 
 function mapaprocesosBW {
 	for(( l=0;l<cap_memoria;l++ ));do
@@ -1105,8 +1106,13 @@ function GestionDeMemoria {
 			je3=0
 			carac3=5
 			wr3=0
+			wr4=0
+			je4=0
+			carac4=5
 			terminar=0
 			while [[ $terminar -eq 0 ]];do
+				ImprimeLineaParticiones
+				printf "\n"
 				ImprimeLineaProcesos
 				printf "\n"
 				printf "\n" >> informeColor.txt
@@ -1119,6 +1125,7 @@ function GestionDeMemoria {
 				carac1=5
 				carac2=5
 				carac3=5
+				carac4=5
 			done
 			je1=0
 			carac1=5
@@ -1129,6 +1136,9 @@ function GestionDeMemoria {
 			je3=0
 			carac3=5
 			wr3=0
+			wr4=0
+			je4=0
+			carac4=5
 			terminar=0
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesosBW
@@ -1140,6 +1150,7 @@ function GestionDeMemoria {
 				carac1=5
 				carac2=5
 				carac3=5
+				carac4=5
 			done
 			je1=0
 			carac1=5
@@ -1151,10 +1162,11 @@ function GestionDeMemoria {
 			carac3=5
 			wr3=0
 			terminar=0
+			wr4=0
+			je4=0
+			carac4=5
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
-				ImprimeLineaParticiones
-				printf "\n"
 				ImprimeProcesos
 				printf "\n"
 				printf "\n" >> informeColor.txt
@@ -1167,6 +1179,7 @@ function GestionDeMemoria {
 				carac1=5
 				carac2=5
 				carac3=5
+				carac4=5
 			done
 			je1=0
 			carac1=5
@@ -1177,6 +1190,9 @@ function GestionDeMemoria {
 			je3=0
 			carac3=5
 			wr3=0
+			wr4=0
+			je4=0
+			carac4=5
 			terminar=0
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
@@ -1189,6 +1205,7 @@ function GestionDeMemoria {
 				carac1=5
 				carac2=5
 				carac3=5
+				carac4=5
 			done
 			printf "\n" >> informeColor.txt
 			printf "\n" >>informeBN.txt
