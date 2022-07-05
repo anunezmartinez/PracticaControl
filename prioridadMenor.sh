@@ -675,7 +675,7 @@ function State {
 	for (( i2=0;i2<${#memori[@]};i2++));do
 
 		if [[ ${proc_status[$i2]} -eq 0 ]];then
-			printf "│${colores[$i2]}%s${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │    ${colores[$i2]}-${NC} ${colores[$i2]}│    -${NC} ${colores[$i2]}│    -${NC} ${colores[$i2]}│    - │${NC} ${colores[$i2]}%s${NC} │\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}"
+			printf "│${colores[$i2]}%s${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │${blanco} ${colores[$i2]}%3d${blanco} │    ${colores[$i2]}-${NC} ${colores[$i2]}${blanco}│    -${NC} ${colores[$i2]}${blanco}│    -${NC} ${colores[$i2]}${blanco}│    - ${blanco}│${NC} ${colores[$i2]}%s${NC} │\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}"
 			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}" >> informeColor.txt
 			printf " %s %3d %3d %3d %3d -    -    -    - %s\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}" >> informeBN.txt
 		elif [[ ${proc_status[$i2]} -eq 1 || ${proc_status[$i2]} -eq 4 ]]; then
