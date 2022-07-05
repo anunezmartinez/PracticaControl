@@ -44,9 +44,9 @@
 1
 
 Todas las particiones estan creadas
-Las particiones empiezan en	0 20
-Las particiones acaban en	19 29
-Tamaño completo de la memoria	30
+Las particiones empiezan en	0 20 30
+Las particiones acaban en	19 29 34
+Tamaño completo de la memoria	35
 
 La prioridad mínima es	-10
 La prioridad máxima es	10
@@ -62,75 +62,44 @@ P03   5   4   4   1
 COMIENZO DE EJECUCIÓN
 
  PriMenor-FNI-Primer
- T=0	Part=20-10	Rango de pri=(-10,10)
+ T=0	Part=20-10-5	Rango de pri=(-10,10)
 Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
  P01   2   5   3   5 -    -    -    - Fuera del sistema
  P02   3   3   5   6 -    -    -    - Fuera del sistema
  P03   5   4   4   1 -    -    -    - Fuera del sistema
  Tiempo medio de espera=0.00	Tiempo medio de retorno=0.00
-    |                                                                                             
- BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
-    |  0                                                             20                           
+    |                                                                                                               
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████ | ███████████████|
+    |  0                                                             20                               30            
     |   
  BT |   |T=  0
     |  0
 
  PriMenor-FNI-Primer
- T=2	Part=20-10	Rango de pri=(-10,10)
+ T=2	Part=20-10-5	Rango de pri=(-10,10)
 Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
  P01   2   5   3   5    0    0    5    0 En ejecución
  P02   3   3   5   6 -    -    -    - Fuera del sistema
  P03   5   4   4   1 -    -    -    - Fuera del sistema
  Tiempo medio de espera=0.000000	Tiempo medio de retorno=0.000000
-    |P01                                                                                          
- BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
-    |  0        3                                                    20                           
+    |P01                                                                                                            
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████ | ███████████████|
+    |  0        3                                                    20                               30            
     |      P01
  BT |██████   |T=  2
     |  0     2
 
  PriMenor-FNI-Primer
- T=3	Part=20-10	Rango de pri=(-10,10)
+ T=3	Part=20-10-5	Rango de pri=(-10,10)
 Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
  P01   2   5   3   5    0    1    4    0 En ejecución
  P02   3   3   5   6    0    0    3    1 En memoria  
  P03   5   4   4   1 -    -    -    - Fuera del sistema
  Tiempo medio de espera=0.000000	Tiempo medio de retorno=0.500000
-    |P01                                                            P02                           
- BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
-    |  0        3                                                    20             25            
+    |P01                                                            P02                                             
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████ | ███████████████|
+    |  0        3                                                    20             25                30            
     |      P01   
  BT |█████████   |T=  3
     |  0     2   
-
- PriMenor-FNI-Primer
- T=5	Part=20-10	Rango de pri=(-10,10)
-Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
- P01   2   5   3   5    0    3    2    0 En ejecución
- P02   3   3   5   6    2    2    3    1 En memoria  
- P03   5   4   4   1    0    0    -    - En espera        
- Tiempo medio de espera=0.666667	Tiempo medio de retorno=1.666667
-    |P01                                                            P02               
- BM |████████████████████████████████████████████████████████████ | ██████████████████
-    |  0        3                                                    20             25
-    |            
-    |████████████|
-    |            
-    |      P01         
- BT |███████████████   |T=  5
-    |  0     2         
-
- PriMenor-FNI-Primer
- T=7	Part=20-10	Rango de pri=(-10,10)
-Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
- P01   2   5   3   5    0    5    -    - Terminado        
- P02   3   3   5   6    4    4    3    1 En memoria  
- P03   5   4   4   1    2    2    4    0 En ejecución
- Tiempo medio de espera=2.000000	Tiempo medio de retorno=3.666667
-    |P03                                                            P02                           
- BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
-    |  0           4                                                 20             25            
-    |      P01            P03
- BT |█████████████████████   |T=  7
-    |  0     2              7
 

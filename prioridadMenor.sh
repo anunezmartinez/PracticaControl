@@ -171,7 +171,7 @@ function crea_prioridad {
 	echo -e "${NC}La prioridad de cada proceso debe de estar entre ${NC}$pri_minima y $pri_maxima${NC}" >> informeColor.txt
 	printf "\n" >>informeColor.txt
 	echo -e "La prioridad de cada proceso debe de estar entre $pri_minima y $pri_maxima" >>informeBN.txt
-	printf "\n" informeBN.txt
+	printf "\n" >> informeBN.txt
 }
 
 #Función encargada de calcular qué tipo de prioridad se ha asignado, para transformar los valores dados en un rango de 0 a x
@@ -222,7 +222,7 @@ function ImprimeLineaProcesos {
     	if [[ $je1 -eq ${part_init[$wr1]} ]];then
 			let carac1=carac1+3
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
-				printf "   "
+				printf " "
 				printf "   " >> informeColor.txt
 			else
 				break;
@@ -320,7 +320,9 @@ function ImprimeMemoria {
 			else
 				break;
 			fi
+			
 		fi
+		
     done
 }
 
@@ -374,39 +376,40 @@ function ImprimeLineaFinal {
     for (( je3;je3<$cap_memoria;je3++ ));do
 		if [[ $je3 -eq ${part_init[$wr3]} ]]; then
 			if [ "${part_init[$wr3]}" -eq 0 ];then
-				let carac3=carac3+3
+				let carac3=1
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "%3d" "${part_init[0]}"
+					printf "%1d" "${part_init[0]}"
 					printf "%3d" "${part_init[0]}" >> informeColor.txt
 				else
 					break;
 				fi
 			else
-				let carac3=carac3+3
+				let carac3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "   "
+					printf ""
 					printf "   " >> informeColor.txt
 				else
 					break;
 				fi
-				let carac3=carac3+3
+				let carac3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "%3d" "${part_init[$wr3]}"
-					printf "%3d" "${part_init[$wr3]}" >> informeColor.txt
+					printf "%1d" "${part_init[$wr3]}"
+					printf "%1d" "${part_init[$wr3]}" >> informeColor.txt
 				else
 					break;
 				fi
 			fi
 			let wr3++
 		else
-			let carac3=carac3+3
+			let carac3
 			if [[ `expr longitud-carac3` -ge 0 ]];then
-        		printf "%3s" "${mapf[$je3]}"
+        		printf "%1s" "${mapf[$je3]}"
         		printf "%3s" "${mapf[$je3]}" >> informeColor.txt
 			else
 				break;
 			fi
 		fi
+		
     done
 }
 
@@ -459,19 +462,19 @@ function ImprimeLineaParticiones {
 	count=0
     for (( je1;je1<$cap_memoria;je1++ ));do
     	if [[ $je1 -eq ${part_init[$wr1]} ]];then
-			let carac1=carac1+3
+			let carac1=carac1+4
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
-				printf "  "
+				printf " "
 				printf "   " >> informeColor.txt
 			else
 				break;
 			fi
 
-			let carac1=carac1+3
+			let carac1=carac1+4
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				#printf "${mapp[$je1]}"
 
-				printf "PT${count}"
+				printf "P${count}"
 
 				printf "${mapp[$je1]}" >> informeColor.txt
 			else
@@ -480,7 +483,7 @@ function ImprimeLineaParticiones {
 			let "count++"
 			let wr1++      
     	else
-			let carac1=carac1+3
+			let carac1=carac1+4
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "${mapp[$je1]}"
         		printf "${mapp[$je1]}" >> informeColor.txt
@@ -506,6 +509,7 @@ function ImprimeProcesos {
 			break;
 		fi        
     done
+	
 }
 
 #Función (B&W) encargada de asociar procesos a la gráfica del tiempo.
