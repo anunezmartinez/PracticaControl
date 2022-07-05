@@ -624,7 +624,7 @@ function ImprimeGraficaBW {
 #Función encargada de asociar el tiempo a la gráfica del tiempo.
 function ImprimeLineaTemporal {
 	l=0
-	printf "|"
+	printf "    |"
 	printf "|" >> informeColor.txt
     for (( je3;je3<=$clock;je3++ ));do
 		let carac3=carac3+3

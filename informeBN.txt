@@ -41,7 +41,7 @@
 4 - Resumen final.
 ############################################################
 
-3
+1
 
 Todas las particiones estan creadas
 Las particiones empiezan en	0 20
@@ -124,3 +124,10 @@ Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Esta
  P02   3   3   5   6    4    4    3    1 En memoria  
  P03   5   4   4   1    2    2    4    0 En ejecución
  Tiempo medio de espera=2.000000	Tiempo medio de retorno=3.666667
+    |P03                                                            P02                           
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
+    |  0           4                                                 20             25            
+    |      P01            P03
+ BT |█████████████████████   |T=  7
+    |  0     2              7
+
