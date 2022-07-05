@@ -91,10 +91,10 @@ function crea_particiones {
 				echo -e "${rojoR}ERROR: ${rojo}El tamaño de partición es incorrecto${NC}"
 			fi
 		done
-		printf "\n" >> informePrioridadColor.txt
-		printf "Introduce el tamaño de la partición nº$n_particiones: $aux\n" >> informePrioridadColor.txt
-		printf "\n" >> informePrioridadMenor.txt
-		printf "Introduce el tamaño de la partición nº$n_particiones: $aux\n" >> informePrioridadMenor.txt
+		printf "\n" >> informeColor.txt
+		printf "Introduce el tamaño de la partición nº$n_particiones: $aux\n" >> informeColor.txt
+		printf "\n" >>informeBN.txt
+		printf "Introduce el tamaño de la partición nº$n_particiones: $aux\n" >>informeBN.txt
 		cap_memoria=`expr $cap_memoria + $aux`
 		part_cap[$i]=$aux
       	let part_fin[$i]=part_init[$i]+aux
@@ -113,8 +113,8 @@ function crea_particiones {
 				n_particiones=`expr $n_particiones + 1`
         	fi
       	done
-		printf "¿Quiere añadir mas particiones? [S]i, [n]o: $tecla\n" >> informePrioridadColor.txt
-		printf "¿Quiere añadir mas particiones? [S]i, [n]o: $tecla\n" >> informePrioridadMenor.txt
+		printf "¿Quiere añadir mas particiones? [S]i, [n]o: $tecla\n" >> informeColor.txt
+		printf "¿Quiere añadir mas particiones? [S]i, [n]o: $tecla\n" >>informeBN.txt
 		if [ $tecla = "N" -o $tecla = "n" ];then
 			n_particiones=`expr $n_particiones - 1`
 			j=1
@@ -137,16 +137,16 @@ function crea_particiones {
 	echo -e "Las particiones empiezan en	${part_init[@]}"
 	echo -e "Las particiones acaban en	${part_fin[@]}"
 	echo -e "Tamaño completo de la memoria	$cap_memoria"
-	echo -e "" >> informePrioridadColor.txt
-	echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informePrioridadColor.txt
-	echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadColor.txt
-	echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadColor.txt
-	echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadColor.txt
-	echo -e "" >> informePrioridadMenor.txt
-	echo -e "Todas las particiones estan creadas" >> informePrioridadMenor.txt
-	echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadMenor.txt
-	echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadMenor.txt
-	echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadMenor.txt
+	echo -e "" >> informeColor.txt
+	echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informeColor.txt
+	echo -e "Las particiones empiezan en	${part_init[@]}" >> informeColor.txt
+	echo -e "Las particiones acaban en	${part_fin[@]}" >> informeColor.txt
+	echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeColor.txt
+	echo -e "" >>informeBN.txt
+	echo -e "Todas las particiones estan creadas" >>informeBN.txt
+	echo -e "Las particiones empiezan en	${part_init[@]}" >>informeBN.txt
+	echo -e "Las particiones acaban en	${part_fin[@]}" >>informeBN.txt
+	echo -e "Tamaño completo de la memoria	$cap_memoria" >>informeBN.txt
 }
 
 #Función encarga de pedir por teclado los valores máximo y minimo correspondientes a la prioridad.
@@ -157,21 +157,21 @@ function crea_prioridad {
 	read pri_minima
 	printf "Introduce la prioridad máxima: " 
 	read pri_maxima
-	printf "\n" >> informePrioridadColor.txt
-	printf "Introduce la prioridad mínima: $pri_minima\n" >> informePrioridadColor.txt
-	printf "Introduce la prioridad máxima: $pri_maxima\n"  >> informePrioridadColor.txt
-	printf "\n" >> informePrioridadMenor.txt
-	printf "Introduce la prioridad mínima: $pri_minima\n" >> informePrioridadMenor.txt
-	printf "Introduce la prioridad máxima: $pri_maxima\n" >> informePrioridadMenor.txt
+	printf "\n" >> informeColor.txt
+	printf "Introduce la prioridad mínima: $pri_minima\n" >> informeColor.txt
+	printf "Introduce la prioridad máxima: $pri_maxima\n"  >> informeColor.txt
+	printf "\n" >>informeBN.txt
+	printf "Introduce la prioridad mínima: $pri_minima\n" >>informeBN.txt
+	printf "Introduce la prioridad máxima: $pri_maxima\n" >>informeBN.txt
 
 	echo "$pri_minima;$pri_maxima;" >> $ENTRADA
 	calcularTipoPrioridad $pri_minima $pri_maxima
 
 	echo -e "${NC}La prioridad de cada proceso debe de estar entre ${NC}$pri_minima y $pri_maxima${NC}"
-	echo -e "${NC}La prioridad de cada proceso debe de estar entre ${NC}$pri_minima y $pri_maxima${NC}" >> informePrioridadColor.txt
-	printf "\n" >>informePrioridadColor.txt
-	echo -e "La prioridad de cada proceso debe de estar entre $pri_minima y $pri_maxima" >> informePrioridadMenor.txt
-	printf "\n" >>informePrioridadMenor.txt
+	echo -e "${NC}La prioridad de cada proceso debe de estar entre ${NC}$pri_minima y $pri_maxima${NC}" >> informeColor.txt
+	printf "\n" >>informeColor.txt
+	echo -e "La prioridad de cada proceso debe de estar entre $pri_minima y $pri_maxima" >>informeBN.txt
+	printf "\n" informeBN.txt
 }
 
 #Función encargada de calcular qué tipo de prioridad se ha asignado, para transformar los valores dados en un rango de 0 a x
@@ -215,7 +215,7 @@ function calculoSegunTipoPrioridad {
 #Función encargada de representar gráficamente el nombre del proceso asociado a la memoria ocupada en cada partición.	
 function ImprimeLineaProcesos {
 	printf "    |"
-	printf "    |" >> informePrioridadColor.txt
+	printf "    |" >> informeColor.txt
 	l=0
 	
     for (( je1;je1<$cap_memoria;je1++ ));do
@@ -223,7 +223,7 @@ function ImprimeLineaProcesos {
 			let carac1=carac1+3
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "   "
-				printf "   " >> informePrioridadColor.txt
+				printf "   " >> informeColor.txt
 			else
 				break;
 			fi
@@ -231,7 +231,7 @@ function ImprimeLineaProcesos {
 			let carac1=carac1+3
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "${mapp[$je1]}"
-				printf "${mapp[$je1]}" >> informePrioridadColor.txt
+				printf "${mapp[$je1]}" >> informeColor.txt
 			else
 				break;
 			fi
@@ -240,7 +240,7 @@ function ImprimeLineaProcesos {
 			let carac1=carac1+3
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "${mapp[$je1]}"
-        		printf "${mapp[$je1]}" >> informePrioridadColor.txt
+        		printf "${mapp[$je1]}" >> informeColor.txt
 			else
 				break;
 			fi
@@ -250,20 +250,20 @@ function ImprimeLineaProcesos {
 
 #Función (B&W) encargada de representar gráficamente el nombre del proceso asociado a la memoria ocupada en cada partición.	
 function ImprimeLineaProcesosBW {
-	printf "    |" >> informePrioridadMenor.txt
+	printf "    |" >>informeBN.txt
 	l=0
     for (( je1;je1<$cap_memoria;je1++ ));do
     	if [[ $je1 -eq ${part_init[$wr1]} ]];then
 			let carac1=carac1+3
 			if [[ `expr longitud-carac1` -ge 0 ]];then
-				printf "   " >> informePrioridadMenor.txt
+				printf "   " >>informeBN.txt
 			else
 				break;
 			fi
 
 			let carac1=carac1+3
 			if [[ `expr longitud-carac1` -ge 0 ]];then
-				printf "${mappb[$je1]}" >> informePrioridadMenor.txt
+				printf "${mappb[$je1]}" >>informeBN.txt
 			else
 				break;
 			fi
@@ -271,7 +271,7 @@ function ImprimeLineaProcesosBW {
     	else
 			let carac1=carac1+3
 			if [[ `expr longitud-carac1` -ge 0 ]];then
-				printf "${mappb[$je1]}" >> informePrioridadMenor.txt
+				printf "${mappb[$je1]}" >>informeBN.txt
 			else
 				break;
 			fi
@@ -284,17 +284,17 @@ function ImprimeMemoria {
 	l=0
 	if [ $je2 -eq 0 ];then
 		printf " BM |"
-		printf " BM |" >> informePrioridadColor.txt
+		printf " BM |" >> informeColor.txt
 	else
 		printf "    |"
-		printf "    |" >> informePrioridadColor.txt
+		printf "    |" >> informeColor.txt
 	fi
     for (( je2;je2<=$cap_memoria;je2++ ));do
 		if [[ $je2 -eq ${part_init[$wr2]} ]];then
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
 				printf "|"
-				printf "|" >> informePrioridadColor.txt
+				printf "|" >> informeColor.txt
 			else
 				break;
 			fi
@@ -302,7 +302,7 @@ function ImprimeMemoria {
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
 				printf "${map[$je2]}"
-				printf "${map[$je2]}" >> informePrioridadColor.txt
+				printf "${map[$je2]}" >> informeColor.txt
 			else
 				break;
 			fi
@@ -310,13 +310,13 @@ function ImprimeMemoria {
 
 		elif [ $je2 -eq $cap_memoria ];then
 			printf "|"
-			printf "|" >> informePrioridadColor.txt
+			printf "|" >> informeColor.txt
 			terminar=1
 		else
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
 				printf "${map[$je2]}"
-    			printf "${map[$je2]}" >> informePrioridadColor.txt
+    			printf "${map[$je2]}" >> informeColor.txt
 			else
 				break;
 			fi
@@ -328,34 +328,34 @@ function ImprimeMemoria {
 function ImprimeMemoriaBW {
 	l=0
 	if [ $je2 -eq 0 ];then
-		printf " BM |" >> informePrioridadMenor.txt
+		printf " BM |" >>informeBN.txt
 	else
-		printf "    |" >> informePrioridadMenor.txt
+		printf "    |" >>informeBN.txt
 	fi
     for (( je2;je2<=$cap_memoria;je2++ ));do
 		if [[ $je2 -eq ${part_init[$wr2]} ]];then
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
-				printf " | " >> informePrioridadMenor.txt
+				printf " | " >>informeBN.txt
 			else
 				break;
 			fi
 
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
-				printf "${mapb[$je2]}" >> informePrioridadMenor.txt
+				printf "${mapb[$je2]}" >>informeBN.txt
 			else
 				break;
 			fi
 			let wr2++
 
 		elif [ $je2 -eq $cap_memoria ];then
-			printf "|" >> informePrioridadMenor.txt
+			printf "|" >>informeBN.txt
 			terminar=1
 		else
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
-				printf "${mapb[$je2]}" >> informePrioridadMenor.txt
+				printf "${mapb[$je2]}" >>informeBN.txt
 			else
 				break;
 			fi
@@ -369,7 +369,7 @@ function ImprimeLineaFinal {
 	mapafinal
 	mapamemorialibre
 	printf "    |"
-	printf "    |" >> informePrioridadColor.txt
+	printf "    |" >> informeColor.txt
 
     for (( je3;je3<$cap_memoria;je3++ ));do
 		if [[ $je3 -eq ${part_init[$wr3]} ]]; then
@@ -377,7 +377,7 @@ function ImprimeLineaFinal {
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
 					printf "%3d" "${part_init[0]}"
-					printf "%3d" "${part_init[0]}" >> informePrioridadColor.txt
+					printf "%3d" "${part_init[0]}" >> informeColor.txt
 				else
 					break;
 				fi
@@ -385,14 +385,14 @@ function ImprimeLineaFinal {
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
 					printf "   "
-					printf "   " >> informePrioridadColor.txt
+					printf "   " >> informeColor.txt
 				else
 					break;
 				fi
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
 					printf "%3d" "${part_init[$wr3]}"
-					printf "%3d" "${part_init[$wr3]}" >> informePrioridadColor.txt
+					printf "%3d" "${part_init[$wr3]}" >> informeColor.txt
 				else
 					break;
 				fi
@@ -402,7 +402,7 @@ function ImprimeLineaFinal {
 			let carac3=carac3+3
 			if [[ `expr longitud-carac3` -ge 0 ]];then
         		printf "%3s" "${mapf[$je3]}"
-        		printf "%3s" "${mapf[$je3]}" >> informePrioridadColor.txt
+        		printf "%3s" "${mapf[$je3]}" >> informeColor.txt
 			else
 				break;
 			fi
@@ -415,27 +415,27 @@ function ImprimeLineaFinalBW {
 	l=0
 	mapafinal
 	mapamemorialibre
-	printf "    |" >> informePrioridadMenor.txt
+	printf "    |" >>informeBN.txt
 
     for (( je3;je3<$cap_memoria;je3++ ));do
 		if [[ $je3 -eq ${part_init[$wr3]} ]]; then
 			if [ "${part_init[$wr3]}" -eq 0 ];then
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "%3d" "${part_init[0]}" >> informePrioridadMenor.txt
+					printf "%3d" "${part_init[0]}" >>informeBN.txt
 				else
 					break;
 				fi
 			else
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "   " >> informePrioridadMenor.txt
+					printf "   " >>informeBN.txt
 				else
 					break;
 				fi
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "%3d" "${part_init[$wr3]}" >> informePrioridadMenor.txt
+					printf "%3d" "${part_init[$wr3]}" >>informeBN.txt
 				else
 					break;
 				fi
@@ -444,7 +444,7 @@ function ImprimeLineaFinalBW {
 		else
 			let carac3=carac3+3
 			if [[ `expr longitud-carac3` -ge 0 ]];then
-        		printf "%3s" "${mapf[$je3]}" >> informePrioridadMenor.txt
+        		printf "%3s" "${mapf[$je3]}" >>informeBN.txt
 			else
 				break;
 			fi
@@ -454,7 +454,7 @@ function ImprimeLineaFinalBW {
 
 function ImprimeLineaParticiones {
 	printf "    |"
-	printf "    |" >> informePrioridadColor.txt
+	printf "    |" >> informeColor.txt
 	l=0
 	count=0
     for (( je1;je1<$cap_memoria;je1++ ));do
@@ -462,7 +462,7 @@ function ImprimeLineaParticiones {
 			let carac1=carac1+3
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "  "
-				printf "   " >> informePrioridadColor.txt
+				printf "   " >> informeColor.txt
 			else
 				break;
 			fi
@@ -473,7 +473,7 @@ function ImprimeLineaParticiones {
 
 				printf "PT${count}"
 
-				printf "${mapp[$je1]}" >> informePrioridadColor.txt
+				printf "${mapp[$je1]}" >> informeColor.txt
 			else
 				break;
 			fi
@@ -483,7 +483,7 @@ function ImprimeLineaParticiones {
 			let carac1=carac1+3
 			if [[ $(expr longitud-carac1) -ge 0 ]];then
 				printf "${mapp[$je1]}"
-        		printf "${mapp[$je1]}" >> informePrioridadColor.txt
+        		printf "${mapp[$je1]}" >> informeColor.txt
 			else
 				break;
 			fi
@@ -496,12 +496,12 @@ function ImprimeProcesos {
 
 	l=0
 	printf "    |"
-	printf "    |" >> informePrioridadColor.txt
+	printf "    |" >> informeColor.txt
 	for (( je1;je1<=$clock;je1++ ));do
 		let carac1=carac1+3
 		if [[ `expr longitud-carac1` -ge 0 ]];then
         	printf "${mappd[$je1]}"
-        	printf "${mappd[$je1]}" >> informePrioridadColor.txt
+        	printf "${mappd[$je1]}" >> informeColor.txt
 		else
 			break;
 		fi        
@@ -511,11 +511,11 @@ function ImprimeProcesos {
 #Función (B&W) encargada de asociar procesos a la gráfica del tiempo.
 function ImprimeProcesosBW {
 	l=0
-	printf "    |" >> informePrioridadMenor.txt
+	printf "    |" >>informeBN.txt
 	for (( je1;je1<=$clock;je1++ ));do
 		let carac1=carac1+3
 		if [[ `expr longitud-carac1` -ge 0 ]];then
-        	printf "${mappdb[$je1]}" >> informePrioridadMenor.txt
+        	printf "${mappdb[$je1]}" >>informeBN.txt
 		else
 			break;
 		fi        
@@ -528,16 +528,16 @@ function ImprimeGrafica {
 	if [[ $je2 -eq 0 ]];then
 		#printf "    |"
 		printf " BT |"
-		printf " BT |" >> informePrioridadColor.txt
+		printf " BT |" >> informeColor.txt
 	else
 		printf "    |"
-		printf "    |" >> informePrioridadColor.txt
+		printf "    |" >> informeColor.txt
 	fi
     for (( je2;je2<=$clock;je2++ ));do
 		let carac2=carac2+3
 		if [[ `expr longitud-carac2` -ge 0 ]];then
         	printf "${mapg[$je2]}"
-        	printf "${mapg[$je2]}" >> informePrioridadColor.txt
+        	printf "${mapg[$je2]}" >> informeColor.txt
 		else
 			break;
 		fi      
@@ -548,7 +548,7 @@ function ImprimeGrafica {
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
 				printf "   "
-				printf "   " >> informePrioridadColor.txt
+				printf "   " >> informeColor.txt
 				imprimir_status=0
 			else
 				break;
@@ -557,7 +557,7 @@ function ImprimeGrafica {
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
 				printf "|T="
-				printf "|T=" >> informePrioridadColor.txt
+				printf "|T=" >> informeColor.txt
 				imprimir_status=1
 			else
 				break;
@@ -566,7 +566,7 @@ function ImprimeGrafica {
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
 				printf "%3d" $clock
-				printf "%3d" $clock >> informePrioridadColor.txt
+				printf "%3d" $clock >> informeColor.txt
 				terminar=1
 			else
 				break;
@@ -579,14 +579,14 @@ function ImprimeGrafica {
 function ImprimeGraficaBW {
 	l=0
 	if [[ $je2 -eq 0 ]];then
-		printf " BT |" >> informePrioridadMenor.txt
+		printf " BT |" >>informeBN.txt
 	else
-		printf "    |" >> informePrioridadMenor.txt
+		printf "    |" >>informeBN.txt
 	fi
     for (( je2;je2<=$clock;je2++ ));do
 		let carac2=carac2+3
 		if [[ `expr longitud-carac2` -ge 0 ]];then
-        	printf "${mapgb[$je2]}" >> informePrioridadMenor.txt
+        	printf "${mapgb[$je2]}" >>informeBN.txt
 		else
 			break;
 		fi      
@@ -596,7 +596,7 @@ function ImprimeGraficaBW {
 		if [[ $imprimir_status -eq -1 ]];then
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
-				printf "   " >> informePrioridadMenor.txt
+				printf "   " >>informeBN.txt
 				imprimir_status=0
 			else
 				break;
@@ -604,7 +604,7 @@ function ImprimeGraficaBW {
 		elif [[ $imprimir_status -eq 0 ]];then
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
-				printf "|T=" >> informePrioridadMenor.txt
+				printf "|T=" >>informeBN.txt
 				imprimir_status=1
 			else
 				break;
@@ -612,7 +612,7 @@ function ImprimeGraficaBW {
 		else
 			let carac2=carac2+3
 			if [[ `expr longitud-carac2` -ge 0 ]];then
-				printf "%3d" $clock >> informePrioridadMenor.txt
+				printf "%3d" $clock >>informeBN.txt
 				terminar=1
 			else
 				break;
@@ -625,16 +625,16 @@ function ImprimeGraficaBW {
 function ImprimeLineaTemporal {
 	l=0
 	printf "|"
-	printf "|" >> informePrioridadColor.txt
+	printf "|" >> informeColor.txt
     for (( je3;je3<=$clock;je3++ ));do
 		let carac3=carac3+3
 		if [[ `expr longitud-carac3` -ge 0 ]];then
 			if [[ ${mapnum[$je3]} -ne "   " ]];then
         		printf "%3d" "${mapnum[$je3]}"
-        		printf "%3d" "${mapnum[$je3]}" >> informePrioridadColor.txt    
+        		printf "%3d" "${mapnum[$je3]}" >> informeColor.txt    
 			else
 				printf "${mapnum[$je3]}"
-				printf "${mapnum[$je3]}" >> informePrioridadColor.txt
+				printf "${mapnum[$je3]}" >> informeColor.txt
 			fi
 		else
 			break;
@@ -645,14 +645,14 @@ function ImprimeLineaTemporal {
 #Función (B&W) encargada de asociar el tiempo a la gráfica del tiempo.
 function ImprimeLineaTemporalBW {
 	l=0
-	printf "    |" >> informePrioridadMenor.txt
+	printf "    |" >>informeBN.txt
     for (( je3;je3<=$clock;je3++ ));do
 		let carac3=carac3+3
 		if [[ `expr longitud-carac3` -ge 0 ]];then
 			if [[ ${mapnum[$je3]} -ne "   " ]];then
-        		printf "%3d" "${mapnum[$je3]}" >> informePrioridadMenor.txt    
+        		printf "%3d" "${mapnum[$je3]}" >>informeBN.txt    
 			else
-				printf "${mapnum[$je3]}" >> informePrioridadMenor.txt
+				printf "${mapnum[$je3]}" >>informeBN.txt
 			fi
 		else
 			break;
@@ -663,27 +663,32 @@ function ImprimeLineaTemporalBW {
 #Función que imprime en pantalla y en el informe una tabla con cada una de las caracteristicas de los procesos introducidos.
 function State {
 	echo ""
-	echo "" >> informePrioridadColor.txt
-	echo "" >> informePrioridadMenor.txt
-	printf " Ref Tll Tej Mem Pri Tesp Tret Trej Part Estado\n"
-	printf " Ref Tll Tej Mem Pri Tesp Tret Trej Part Estado\n" >> informePrioridadColor.txt
-	printf " Ref Tll Tej Mem Pri Tesp Tret Trej Part Estado\n" >> informePrioridadMenor.txt
-	
+	echo "" >> informeColor.txt
+	echo "" >> informeBN.txt
+	printf "┌────┬─────┬─────┬─────┬─────┬──────┬──────┬──────┬──────┬───────────────────┐\n"	
+	printf "│Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado            │\n"
+	printf "├────┼─────┼─────┼─────┼─────┼──────┼──────┼──────┼──────┼───────────────────┤\n"
+
+	printf "Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado \n">> informeColor.txt
+	printf "Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado \n">> informeBN.txt
+
 	for (( i2=0;i2<${#memori[@]};i2++));do
+
 		if [[ ${proc_status[$i2]} -eq 0 ]];then
-			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}"
-			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}" >> informePrioridadColor.txt
-			printf " %s %3d %3d %3d %3d    -    -    -    - %s\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}" >> informePrioridadMenor.txt
+			printf "│${colores[$i2]}%s${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │    ${colores[$i2]}-${NC} ${colores[$i2]}│    -${NC} ${colores[$i2]}│    -${NC} ${colores[$i2]}│    - │${NC} ${colores[$i2]}%s${NC} │\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}"
+			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}" >> informeColor.txt
+			printf " %s %3d %3d %3d %3d -    -    -    - %s\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${estado[$i2]}" >> informeBN.txt
 		elif [[ ${proc_status[$i2]} -eq 1 || ${proc_status[$i2]} -eq 4 ]]; then
-			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${estado[$i2]}"
-			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${estado[$i2]}" >> informePrioridadColor.txt
-			printf " %s %3d %3d %3d %3d %4s %4s    -    - %s\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${estado[$i2]}" >> informePrioridadMenor.txt
+			printf "│${colores[$i2]}%s${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%3d${NC} │ ${colores[$i2]}%4s${NC} | ${colores[$i2]}%4s${NC} | ${colores[$i2]}   -${NC} | ${colores[$i2]}   - ${NC}| ${colores[$i2]}%s${NC} │\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${estado[$i2]}"
+			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}   -${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${estado[$i2]}" >> informeColor.txt
+			printf " %s %3d %3d %3d %3d %4s %4s    -    - %s\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${estado[$i2]}" >> informeBN.txt
 		else
-			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${tiempo[$i2]}" "${partition_pos[$i2]}" "${estado[$i2]}"
-			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${tiempo[$i2]}" "${partition_pos[$i2]}" "${estado[$i2]}" >> informePrioridadColor.txt
-			printf " %s %3d %3d %3d %3d %4s %4s %4s %4s %s\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${tiempo[$i2]}" "${partition_pos[$i2]}" "${estado[$i2]}" >> informePrioridadMenor.txt
+			printf "│${colores[$i2]}%s${NC} | ${colores[$i2]}%3d${NC} | ${colores[$i2]}%3d${NC} | ${colores[$i2]}%3d${NC} | ${colores[$i2]}%3d${NC} | ${colores[$i2]}%4s${NC} | ${colores[$i2]}%4s${NC} | ${colores[$i2]}%4s${NC} | ${colores[$i2]}%4s${NC} | ${colores[$i2]}%s${NC}      │\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${tiempo[$i2]}" "${partition_pos[$i2]}" "${estado[$i2]}"
+			printf " ${colores[$i2]}%s${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%3d${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%4s${NC} ${colores[$i2]}%s${NC}\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${tiempo[$i2]}" "${partition_pos[$i2]}" "${estado[$i2]}" >> informeColor.txt
+			printf " %s %3d %3d %3d %3d %4s %4s %4s %4s %s\n" "${procesosc[$i2]}" "${templl[$i2]}" "${tiempofijo[$i2]}" "${memori[$i2]}" "${prioridad[$i2]}" "${esperav[$i2]}" "${retornov[$i2]}" "${tiempo[$i2]}" "${partition_pos[$i2]}" "${estado[$i2]}" >> informeBN.txt
 		fi
 	done
+	printf "└────┴─────┴─────┴─────┴─────┴──────┴──────┴──────┴──────┴───────────────────┘\n"
 }
 
 #Función encargada de la implementación gráfica de las particiones.
@@ -1011,16 +1016,16 @@ function GestionDeMemoria {
 			estado[i]="Fuera del sistema"
 			;;
 			1)
-			estado[i]="En espera"
+			estado[i]="En espera        "
 			;;
 			2)
-			estado[i]="En memoria"
+			estado[i]="En memoria  "
 			;;
 			3)
 			estado[i]="En ejecución"
 			;;
 			4)
-			estado[i]="Terminado"
+			estado[i]="Terminado        "
 		esac
 		done
 
@@ -1057,34 +1062,34 @@ function GestionDeMemoria {
 		#Impresión de datos en caso de que haya ocurrido algo
 		if [[ $evento -eq 1 || $clock -eq 0 ]];then
 			printf " PriMenor-FNI-Primer\n"
-			printf " PriMenor-FNI-Primer\n" >> informePrioridadColor.txt
-			printf " PriMenor-FNI-Primer\n" >> informePrioridadMenor.txt
+			printf " PriMenor-FNI-Primer\n" >> informeColor.txt
+			printf " PriMenor-FNI-Primer\n" >>informeBN.txt
 			printf " T=$clock\tPart="
-			printf " T=$clock\tPart=" >> informePrioridadColor.txt
-			printf " T=$clock\tPart=" >> informePrioridadMenor.txt
+			printf " T=$clock\tPart=" >> informeColor.txt
+			printf " T=$clock\tPart=" >>informeBN.txt
 			local count=0
 			for (( i=0; i<$n_particiones; i++ )); do
 			count=`expr $i + 1`
 				if [ $count -eq "$n_particiones" ]; then
 					printf "%d" "${part_cap[$i]}"
-					printf "%d" "${part_cap[$i]}" >> informePrioridadColor.txt
-					printf "%d" "${part_cap[$i]}" >> informePrioridadMenor.txt
+					printf "%d" "${part_cap[$i]}" >> informeColor.txt
+					printf "%d" "${part_cap[$i]}" >>informeBN.txt
 				else
 					printf "%d-" "${part_cap[$i]}" 
-					printf "%d-" "${part_cap[$i]}" >> informePrioridadColor.txt
-					printf "%d-" "${part_cap[$i]}" >> informePrioridadMenor.txt
+					printf "%d-" "${part_cap[$i]}" >> informeColor.txt
+					printf "%d-" "${part_cap[$i]}" >>informeBN.txt
 				fi
 			done
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima"
-			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadColor.txt
-			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadMenor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informeColor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >>informeBN.txt
 			
 			State
 			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n"
 			echo "--------------------------------------------------------------------" 
-			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadColor.txt
-			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadMenor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informeColor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >>informeBN.txt
 			longitud=$(tput cols)
 			#let longitud=longitud-1
 			je1=0
@@ -1100,13 +1105,13 @@ function GestionDeMemoria {
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesos
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
  				ImprimeMemoria
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeLineaFinal
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1123,11 +1128,11 @@ function GestionDeMemoria {
 			terminar=0
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesosBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
  				ImprimeMemoriaBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeLineaFinalBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1148,13 +1153,13 @@ function GestionDeMemoria {
 				printf "\n"
 				ImprimeProcesos
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeGrafica
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeLineaTemporal
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1172,17 +1177,17 @@ function GestionDeMemoria {
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
 				ImprimeProcesosBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeGraficaBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeLineaTemporalBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				carac1=5
 				carac2=5
 				carac3=5
 			done
-			printf "\n" >> informePrioridadColor.txt
-			printf "\n" >> informePrioridadMenor.txt
+			printf "\n" >> informeColor.txt
+			printf "\n" >>informeBN.txt
     		printf " Pulsa Enter para ir al siguiente evento "
 			read -p ""
 		fi 
@@ -1302,16 +1307,16 @@ function GestionDeMemoriaAutomatico {
 			estado[i]="Fuera del sistema"
 			;;
 			1)
-			estado[i]="En espera"
+			estado[i]="En espera        "
 			;;
 			2)
-			estado[i]="En memoria"
+			estado[i]="En memoria  "
 			;;
 			3)
 			estado[i]="En ejecución"
 			;;
 			4)
-			estado[i]="Terminado"
+			estado[i]="Terminado        "
 		esac
 		done
 
@@ -1348,34 +1353,34 @@ function GestionDeMemoriaAutomatico {
 		#Impresión de datos en caso de que haya ocurrido algo
 		if [[ $evento -eq 1 || $clock -eq 0 ]];then
 			printf " PriMenor-FNI-Primer\n"
-			printf " PriMenor-FNI-Primer\n" >> informePrioridadColor.txt
-			printf " PriMenor-FNI-Primer\n" >> informePrioridadMenor.txt
+			printf " PriMenor-FNI-Primer\n" >> informeColor.txt
+			printf " PriMenor-FNI-Primer\n" >>informeBN.txt
 			printf " T=$clock\tPart="
-			printf " T=$clock\tPart=" >> informePrioridadColor.txt
-			printf " T=$clock\tPart=" >> informePrioridadMenor.txt
+			printf " T=$clock\tPart=" >> informeColor.txt
+			printf " T=$clock\tPart=" >>informeBN.txt
 			local count=0
 			for (( i=0; i<$n_particiones; i++ )); do
 			count=`expr $i + 1`
 				if [ $count -eq "$n_particiones" ]; then
 					printf "%d" "${part_cap[$i]}"
-					printf "%d" "${part_cap[$i]}" >> informePrioridadColor.txt
-					printf "%d" "${part_cap[$i]}" >> informePrioridadMenor.txt
+					printf "%d" "${part_cap[$i]}" >> informeColor.txt
+					printf "%d" "${part_cap[$i]}" >>informeBN.txt
 				else
 					printf "%d-" "${part_cap[$i]}" 
-					printf "%d-" "${part_cap[$i]}" >> informePrioridadColor.txt
-					printf "%d-" "${part_cap[$i]}" >> informePrioridadMenor.txt
+					printf "%d-" "${part_cap[$i]}" >> informeColor.txt
+					printf "%d-" "${part_cap[$i]}" >>informeBN.txt
 				fi
 			done
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima"
-			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadColor.txt
-			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadMenor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informeColor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >>informeBN.txt
 			
 			State
 			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n"
 			echo "--------------------------------------------------------------------" 
-			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadColor.txt
-			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadMenor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informeColor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >>informeBN.txt
 			longitud=$(tput cols)
 			#let longitud=longitud-1
 			je1=0
@@ -1391,13 +1396,13 @@ function GestionDeMemoriaAutomatico {
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesos
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
  				ImprimeMemoria
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeLineaFinal
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1414,11 +1419,11 @@ function GestionDeMemoriaAutomatico {
 			terminar=0
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesosBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
  				ImprimeMemoriaBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeLineaFinalBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1439,13 +1444,13 @@ function GestionDeMemoriaAutomatico {
 				printf "\n"
 				ImprimeProcesos
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeGrafica
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeLineaTemporal
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1463,17 +1468,17 @@ function GestionDeMemoriaAutomatico {
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
 				ImprimeProcesosBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeGraficaBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeLineaTemporalBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				carac1=5
 				carac2=5
 				carac3=5
 			done
-			printf "\n" >> informePrioridadColor.txt
-			printf "\n" >> informePrioridadMenor.txt
+			printf "\n" >> informeColor.txt
+			printf "\n" >>informeBN.txt
     		printf " Esperando $secs segundos."
 			sleep $secs
 		fi 
@@ -1595,16 +1600,16 @@ function GestionDeMemoriaCompleta {
 			estado[i]="Fuera del sistema"
 			;;
 			1)
-			estado[i]="En espera"
+			estado[i]="En espera        "
 			;;
 			2)
-			estado[i]="En memoria"
+			estado[i]="En memoria  "
 			;;
 			3)
 			estado[i]="En ejecución"
 			;;
 			4)
-			estado[i]="Terminado"
+			estado[i]="Terminado        "
 		esac
 		done
 
@@ -1641,34 +1646,34 @@ function GestionDeMemoriaCompleta {
 		#Impresión de datos en caso de que haya ocurrido algo
 		if [[ $evento -eq 1 || $clock -eq 0 ]];then
 			printf " PriMenor-FNI-Primer\n"
-			printf " PriMenor-FNI-Primer\n" >> informePrioridadColor.txt
-			printf " PriMenor-FNI-Primer\n" >> informePrioridadMenor.txt
+			printf " PriMenor-FNI-Primer\n" >> informeColor.txt
+			printf " PriMenor-FNI-Primer\n" >>informeBN.txt
 			printf " T=$clock\tPart="
-			printf " T=$clock\tPart=" >> informePrioridadColor.txt
-			printf " T=$clock\tPart=" >> informePrioridadMenor.txt
+			printf " T=$clock\tPart=" >> informeColor.txt
+			printf " T=$clock\tPart=" >>informeBN.txt
 			local count=0
 			for (( i=0; i<$n_particiones; i++ )); do
 			count=`expr $i + 1`
 				if [ $count -eq "$n_particiones" ]; then
 					printf "%d" "${part_cap[$i]}"
-					printf "%d" "${part_cap[$i]}" >> informePrioridadColor.txt
-					printf "%d" "${part_cap[$i]}" >> informePrioridadMenor.txt
+					printf "%d" "${part_cap[$i]}" >> informeColor.txt
+					printf "%d" "${part_cap[$i]}" >>informeBN.txt
 				else
 					printf "%d-" "${part_cap[$i]}" 
-					printf "%d-" "${part_cap[$i]}" >> informePrioridadColor.txt
-					printf "%d-" "${part_cap[$i]}" >> informePrioridadMenor.txt
+					printf "%d-" "${part_cap[$i]}" >> informeColor.txt
+					printf "%d-" "${part_cap[$i]}" >>informeBN.txt
 				fi
 			done
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima"
-			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadColor.txt
-			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadMenor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informeColor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >>informeBN.txt
 			
 			State
 			echo "--------------------------------------------------------------------" 
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n"
 			echo "--------------------------------------------------------------------" 
-			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadColor.txt
-			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadMenor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informeColor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >>informeBN.txt
 			longitud=$(tput cols)
 			#let longitud=longitud-1
 			je1=0
@@ -1684,13 +1689,13 @@ function GestionDeMemoriaCompleta {
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesos
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
  				ImprimeMemoria
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeLineaFinal
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1707,11 +1712,11 @@ function GestionDeMemoriaCompleta {
 			terminar=0
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesosBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
  				ImprimeMemoriaBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeLineaFinalBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1732,13 +1737,13 @@ function GestionDeMemoriaCompleta {
 				printf "\n"
 				ImprimeProcesos
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeGrafica
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeLineaTemporal
 				printf "\n"
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1756,17 +1761,17 @@ function GestionDeMemoriaCompleta {
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
 				ImprimeProcesosBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeGraficaBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeLineaTemporalBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				carac1=5
 				carac2=5
 				carac3=5
 			done
-			printf "\n" >> informePrioridadColor.txt
-			printf "\n" >> informePrioridadMenor.txt
+			printf "\n" >> informeColor.txt
+			printf "\n" >>informeBN.txt
 		fi 
 
 		evento=0
@@ -1884,16 +1889,16 @@ function GestionDeMemoriaFinal {
 			estado[i]="Fuera del sistema"
 			;;
 			1)
-			estado[i]="En espera"
+			estado[i]="En espera        "
 			;;
 			2)
-			estado[i]="En memoria"
+			estado[i]="En memoria  "
 			;;
 			3)
 			estado[i]="En ejecución"
 			;;
 			4)
-			estado[i]="Terminado"
+			estado[i]="Terminado        "
 		esac
 		done
 
@@ -1930,32 +1935,32 @@ function GestionDeMemoriaFinal {
 		#Impresión de datos en caso de que haya ocurrido algo
 		if [[ $evento -eq 1 || $clock -eq 0 ]];then
 			printf " PriMenor-FNI-Primer\n" > /dev/null 2>&1
-			printf " PriMenor-FNI-Primer\n" >> informePrioridadColor.txt
-			printf " PriMenor-FNI-Primer\n" >> informePrioridadMenor.txt
+			printf " PriMenor-FNI-Primer\n" >> informeColor.txt
+			printf " PriMenor-FNI-Primer\n" >>informeBN.txt
 			printf " T=$clock\tPart=" > /dev/null 2>&1
-			printf " T=$clock\tPart=" >> informePrioridadColor.txt
-			printf " T=$clock\tPart=" >> informePrioridadMenor.txt
+			printf " T=$clock\tPart=" >> informeColor.txt
+			printf " T=$clock\tPart=" >>informeBN.txt
 			local count=0
 			for (( i=0; i<$n_particiones; i++ )); do
 			count=`expr $i + 1`
 				if [ $count -eq "$n_particiones" ]; then
 					printf "%d" "${part_cap[$i]}" > /dev/null 2>&1
-					printf "%d" "${part_cap[$i]}" >> informePrioridadColor.txt
-					printf "%d" "${part_cap[$i]}" >> informePrioridadMenor.txt
+					printf "%d" "${part_cap[$i]}" >> informeColor.txt
+					printf "%d" "${part_cap[$i]}" >>informeBN.txt
 				else
 					printf "%d-" "${part_cap[$i]}" > /dev/null 2>&1
-					printf "%d-" "${part_cap[$i]}" >> informePrioridadColor.txt
-					printf "%d-" "${part_cap[$i]}" >> informePrioridadMenor.txt
+					printf "%d-" "${part_cap[$i]}" >> informeColor.txt
+					printf "%d-" "${part_cap[$i]}" >>informeBN.txt
 				fi
 			done
 			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" > /dev/null 2>&1
-			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadColor.txt
-			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informePrioridadMenor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >> informeColor.txt
+			printf "\tRango de pri=(%d,%d)" "$pri_minima" "$pri_maxima" >>informeBN.txt
 						printf "Calculando, por favor, espere."
 			State > /dev/null 2>&1
 			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" > /dev/null 2>&1
-			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadColor.txt
-			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informePrioridadMenor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >> informeColor.txt
+			printf " Tiempo medio de espera=$medEspera\tTiempo medio de retorno=$medRetorno\n" >>informeBN.txt
 			longitud=$(tput cols)
 			#let longitud=longitud-1
 			je1=0
@@ -1971,13 +1976,13 @@ function GestionDeMemoriaFinal {
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesos > /dev/null 2>&1
 				printf "\n" > /dev/null 2>&1
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
  				ImprimeMemoria > /dev/null 2>&1
 				printf "\n" > /dev/null 2>&1
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeLineaFinal > /dev/null 2>&1
 				printf "\n" > /dev/null 2>&1
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -1994,11 +1999,11 @@ function GestionDeMemoriaFinal {
 			terminar=0
 			while [[ $terminar -eq 0 ]];do
 				ImprimeLineaProcesosBW > /dev/null 2>&1
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
  				ImprimeMemoriaBW > /dev/null 2>&1
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeLineaFinalBW > /dev/null 2>&1
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -2017,13 +2022,13 @@ function GestionDeMemoriaFinal {
 			while [[ $terminar -eq 0 ]];do
 				ImprimeProcesos > /dev/null 2>&1
 				printf "\n" > /dev/null 2>&1
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeGrafica > /dev/null 2>&1
 				printf "\n" > /dev/null 2>&1
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				ImprimeLineaTemporal > /dev/null 2>&1
 				printf "\n" > /dev/null 2>&1
-				printf "\n" >> informePrioridadColor.txt
+				printf "\n" >> informeColor.txt
 				carac1=5
 				carac2=5
 				carac3=5
@@ -2041,17 +2046,17 @@ function GestionDeMemoriaFinal {
 			imprimir_status=-1
 			while [[ $terminar -eq 0 ]];do
 				ImprimeProcesosBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeGraficaBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				ImprimeLineaTemporalBW
-				printf "\n" >> informePrioridadMenor.txt
+				printf "\n" >>informeBN.txt
 				carac1=5
 				carac2=5
 				carac3=5
 			done
-			printf "\n" >> informePrioridadColor.txt
-			printf "\n" >> informePrioridadMenor.txt
+			printf "\n" >> informeColor.txt
+			printf "\n" >>informeBN.txt
 
 		fi 
 
@@ -2181,20 +2186,20 @@ function ComprobarPrioridad {
 }
 
 function CrearFicheroRangos {
-		cantidadMinParticion=█
-		cantidadMaxParticion=█
-		tamanoMinParticion=█
-		tamanoMaxParticion=█
-		prioMin=█
-		prioMax=█
-		cantidadMinProcesos=█
-		cantidadMaxProcesos=█
-		tiempoMinLlegada=█
-		tiempoMaxLlegada=█
-		tiempoMinEjecucion=█
-		tiempoMaxEjecucion=█
-		tamanoMinProceso=█
-		tamanoMaxProceso=█
+		cantidadMinParticion=■
+		cantidadMaxParticion=■
+		tamanoMinParticion=■
+		tamanoMaxParticion=■
+		prioMin=■
+		prioMax=■
+		cantidadMinProcesos=■
+		cantidadMaxProcesos=■
+		tiempoMinLlegada=■
+		tiempoMaxLlegada=■
+		tiempoMinEjecucion=■
+		tiempoMaxEjecucion=■
+		tamanoMinProceso=■
+		tamanoMaxProceso=■
 		
 		clear
 		tablaRangos
@@ -2237,9 +2242,9 @@ function CrearFicheroRangos {
 		clear
 
 		prioMed=$((prioMax/2));
-
+		
 		valPrio1="$(seq $prioMin $prioMed | shuf -n 1)"
-		valPrio2="$(shuf -i $prioMed-$prioMax -n 1)"
+		valPrio2="$(seq $prioMed $prioMax | shuf -n 1)"
 
 		echo -n "$valPrio1;" >> $ENTRADA2
 		echo -n "$valPrio2;" >> $ENTRADA2
@@ -2279,11 +2284,12 @@ function CrearFicheroRangos {
 
 		printf "\n" >> $ENTRADA2
 
-		valPrio1=5
-		valPrio2=15
 		numproc=0; while [[ $numproc -lt $numProcesos ]]; do 
-
-    	echo "$(seq $tiempoMinLlegada $tiempoMaxLlegada | shuf -n 1);$(seq $tiempoMinEjecucion $tiempoMaxEjecucion | shuf -n 1);$(seq $tamanoMinProceso $tamanoMaxProceso | shuf -n 1);$(seq $valPrio1 $valPrio2 | shuf -n 1);" >> $ENTRADA2
+		echo "prioridad minima $valPrio1"
+		echo "prioridad minima $valPrio2"
+		prioproc="$(seq $valPrio1 $valPrio2 | shuf -n 1)"
+		echo $prioproc
+    	echo "$(seq $tiempoMinLlegada $tiempoMaxLlegada | shuf -n 1);$(seq $tiempoMinEjecucion $tiempoMaxEjecucion | shuf -n 1);$(seq $tamanoMinProceso $tamanoMaxProceso | shuf -n 1);$prioproc;" >> $ENTRADA2
 		
     	numproc=$((numproc+1));
 		echo "">>$ENTRADA2
@@ -2293,16 +2299,55 @@ function CrearFicheroRangos {
 function tablaRangos {
 		echo "Resumen de los datos introducidos"
 		echo "------------------------------------------------------------------------"
-		echo "Minimo del rango del numero de particiones $cantidadMinParticion y máximo $cantidadMaxParticion"
-		echo "Minimo del rango del tamaño de las particiones $tamanoMinParticion y máximo $tamanoMaxParticion"
-		echo "Minimo de la prioridad de los procesos $prioMin y máximo $prioMax"
-		echo "Minimo del rango del numero de procesos $cantidadMinProcesos y máximo $cantidadMaxProcesos"
-		echo "Minimo del rango del tiempo de llegada $tiempoMinLlegada y máximo $tiempoMaxLlegada"
-		echo "Minimo del rango del rango del tiempo de ejecucion $tiempoMinEjecucion máximo $tiempoMaxEjecucion"
-		echo "Minimo del rango de memoria de proceso $tamanoMinProceso y máximo $tamanoMaxProceso"
+		echo "Rango del numero de particiones $cantidadMinParticion - $cantidadMaxParticion"
+		echo "Rango del tamaño de las particiones $tamanoMinParticion - $tamanoMaxParticion"
+		echo "Rango prioridad de los procesos $prioMin - $prioMax"
+		echo "Rango del numero de procesos $cantidadMinProcesos - $cantidadMaxProcesos"
+		echo "Rango del tiempo de llegada $tiempoMinLlegada - $tiempoMaxLlegada"
+		echo "Rango del rango del tiempo de ejecucion $tiempoMinEjecucion - $tiempoMaxEjecucion"
+		echo "Rango de memoria de proceso $tamanoMinProceso - $tamanoMaxProceso"
 		echo "-------------------------------------------------------------------------"
 		echo ""
+
+		echo -e "" >> informeColor.txt
+		echo "Resumen de los datos introducidos">> informeColor.txt
+		echo "------------------------------------------------------------------------">> informeColor.txt
+		echo "Rango del numero de particiones $cantidadMinParticion - $cantidadMaxParticion">> informeColor.txt
+		echo "Rango del tamaño de las particiones $tamanoMinParticion - $tamanoMaxParticion">> informeColor.txt
+		echo "Rango prioridad de los procesos $prioMin - $prioMax">> informeColor.txt
+		echo "Rango del numero de procesos $cantidadMinProcesos - $cantidadMaxProcesos">> informeColor.txt
+		echo "Rango del tiempo de llegada $tiempoMinLlegada - $tiempoMaxLlegada">> informeColor.txt
+		echo "Rango del rango del tiempo de ejecucion $tiempoMinEjecucion - $tiempoMaxEjecucion">> informeColor.txt
+		echo "Rango de memoria de proceso $tamanoMinProceso - $tamanoMaxProceso">> informeColor.txt
+		echo "-------------------------------------------------------------------------">> informeColor.txt
+		echo -e "" >> informeColor.txt
+
+		echo -e "" >> informeBN.txt
+		echo "Resumen de los datos introducidos">> informeBN.txt
+		echo "------------------------------------------------------------------------">> informeBN.txt
+		echo "Rango del numero de particiones $cantidadMinParticion - $cantidadMaxParticion">> informeBN.txt
+		echo "Rango del tamaño de las particiones $tamanoMinParticion - $tamanoMaxParticion">> informeBN.txt
+		echo "Rango prioridad de los procesos $prioMin - $prioMax">> informeBN.txt
+		echo "Rango del numero de procesos $cantidadMinProcesos - $cantidadMaxProcesos">> informeBN.txt
+		echo "Rango del tiempo de llegada $tiempoMinLlegada - $tiempoMaxLlegada">> informeBN.txt
+		echo "Rango del rango del tiempo de ejecucion $tiempoMinEjecucion - $tiempoMaxEjecucion">> informeBN.txt
+		echo "Rango de memoria de proceso $tamanoMinProceso - $tamanoMaxProceso">> informeBN.txt
+		echo "-------------------------------------------------------------------------">> informeBN.txt
+		echo -e "" >> informeBN.txt
 }
+function guardarRangos {
+
+		echo "$cantidadMinParticion;$cantidadMaxParticion;" >> $ENTRADA3
+		echo "$tamanoMinParticion;$tamanoMaxParticion;" >> $ENTRADA3
+		echo "$prioMin;$prioMax;" >> $ENTRADA3
+		echo "$cantidadMinProcesos;$cantidadMaxProcesos;" >> $ENTRADA3
+		echo "$tiempoMinLlegada;$tiempoMaxLlegada;" >> $ENTRADA3
+		echo "$tiempoMinEjecucion;$tiempoMaxEjecucion;" >> $ENTRADA3
+		echo "$tamanoMinProceso;$tamanoMaxProceso;" >> $ENTRADA3
+}
+
+
+#Comienzo del programa
 
 #Comienzo del programa
 
@@ -2315,23 +2360,23 @@ echo -e "#                 SA - Compartir Igual (SA)                #"
 echo -e "############################################################" 
 echo ""
 
-echo -e "############################################################" > informePrioridadColor.txt
-echo -e "#                    Creative Commons                      #" >> informePrioridadColor.txt
-echo -e "#                                                          #" >> informePrioridadColor.txt
-echo -e "#                   BY - Atribución (BY)                   #" >> informePrioridadColor.txt
-echo -e "#                 NC - No uso Comercial (NC)               #" >> informePrioridadColor.txt
-echo -e "#                 SA - Compartir Igual (SA)                #" >> informePrioridadColor.txt
-echo -e "############################################################" >> informePrioridadColor.txt
-echo "" >> informePrioridadColor.txt
+echo -e "############################################################" > informeColor.txt
+echo -e "#                    Creative Commons                      #" >> informeColor.txt
+echo -e "#                                                          #" >> informeColor.txt
+echo -e "#                   BY - Atribución (BY)                   #" >> informeColor.txt
+echo -e "#                 NC - No uso Comercial (NC)               #" >> informeColor.txt
+echo -e "#                 SA - Compartir Igual (SA)                #" >> informeColor.txt
+echo -e "############################################################" >> informeColor.txt
+echo -e "" >> informeColor.txt
 
-echo -e "############################################################" > informePrioridadMenor.txt
-echo -e "#                    Creative Commons                      #" >> informePrioridadMenor.txt
-echo -e "#                                                          #" >> informePrioridadMenor.txt
-echo -e "#                   BY - Atribución (BY)                   #" >> informePrioridadMenor.txt
-echo -e "#                 NC - No uso Comercial (NC)               #" >> informePrioridadMenor.txt
-echo -e "#                 SA - Compartir Igual (SA)                #" >> informePrioridadMenor.txt
-echo -e "############################################################" >> informePrioridadMenor.txt
-echo "" >> informePrioridadMenor.txt
+echo -e "############################################################" > informeBN.txt
+echo -e "#                    Creative Commons                      #" >> informeBN.txt
+echo -e "#                                                          #" >> informeBN.txt
+echo -e "#                   BY - Atribución (BY)                   #" >> informeBN.txt
+echo -e "#                 NC - No uso Comercial (NC)               #" >> informeBN.txt
+echo -e "#                 SA - Compartir Igual (SA)                #" >> informeBN.txt
+echo -e "############################################################" >> informeBN.txt
+echo -e "" >> informeBN.txt
 
 echo -e "############################################################"
 echo -e "#                                                          #"
@@ -2350,39 +2395,39 @@ echo -e "#  Adrián Núñez Martínez (2022)                            #"
 echo -e "############################################################"
 echo ""
 
-echo -e "############################################################" >> informePrioridadColor.txt 
-echo -e "#                                                          #" >> informePrioridadColor.txt
-echo -e "#                  INFORME DE PRÁCTICA                     #" >> informePrioridadColor.txt 
-echo -e "#                   GESTIÓN DE MEMORIA                     #" >> informePrioridadColor.txt 
-echo -e "#            -----------------------------                 #" >> informePrioridadColor.txt 
-echo -e "#     ALGORITMO DE GESTIÓN DE MEMORIA: PRIORIDAD MENOR     #" >> informePrioridadColor.txt 
-echo -e "#      PARTICIONES FIJAS Y NO IGUALES - PRIMER AJUSTE      #" >> informePrioridadColor.txt 
-echo -e "#                                                          #" >> informePrioridadColor.txt 
-echo -e "#                                                          #" >> informePrioridadColor.txt 
-echo -e "#  ANTIGUOS ALUMNOS:                                       #" >> informePrioridadColor.txt 
-echo -e "#  Gonzalo Murillo Montes y Gonzalo Cuesta Marín (2017)    #" >> informePrioridadColor.txt 
-echo -e "#  Álvaro Manjón Vara (2020)                               #" >> informePrioridadColor.txt 
-echo -e "#  NUEVOS ALUMNOS:                                         #" >> informePrioridadColor.txt 
-echo -e "#  Adrián Núñez Martínez (2022)                            #" >> informePrioridadColor.txt 
-echo -e "############################################################" >> informePrioridadColor.txt 
-echo "" >> informePrioridadColor.txt 
+echo -e "############################################################" >> informeColor.txt 
+echo -e "#                                                          #" >> informeColor.txt
+echo -e "#                  INFORME DE PRÁCTICA                     #" >> informeColor.txt 
+echo -e "#                   GESTIÓN DE MEMORIA                     #" >> informeColor.txt 
+echo -e "#            -----------------------------                 #" >> informeColor.txt 
+echo -e "#     ALGORITMO DE GESTIÓN DE MEMORIA: PRIORIDAD MENOR     #" >> informeColor.txt 
+echo -e "#      PARTICIONES FIJAS Y NO IGUALES - PRIMER AJUSTE      #" >> informeColor.txt 
+echo -e "#                                                          #" >> informeColor.txt 
+echo -e "#                                                          #" >> informeColor.txt 
+echo -e "#  ANTIGUOS ALUMNOS:                                       #" >> informeColor.txt 
+echo -e "#  Gonzalo Murillo Montes y Gonzalo Cuesta Marín (2017)    #" >> informeColor.txt 
+echo -e "#  Álvaro Manjón Vara (2020)                               #" >> informeColor.txt 
+echo -e "#  NUEVOS ALUMNOS:                                         #" >> informeColor.txt 
+echo -e "#  Adrián Núñez Martínez (2022)                            #" >> informeColor.txt 
+echo -e "############################################################" >> informeColor.txt 
+echo -e "" >> informeColor.txt
 
-echo -e "############################################################" >> informePrioridadMenor.txt 
-echo -e "#                                                          #" >> informePrioridadMenor.txt 
-echo -e "#                  INFORME DE PRÁCTICA                     #" >> informePrioridadMenor.txt 
-echo -e "#                   GESTIÓN DE MEMORIA                     #" >> informePrioridadMenor.txt 
-echo -e "#            -----------------------------                 #" >> informePrioridadMenor.txt 
-echo -e "#     ALGORITMO DE GESTIÓN DE MEMORIA: PRIORIDAD MENOR     #" >> informePrioridadMenor.txt 
-echo -e "#      PARTICIONES FIJAS Y NO IGUALES - PRIMER AJUSTE      #" >> informePrioridadMenor.txt 
-echo -e "#                                                          #" >> informePrioridadMenor.txt 
-echo -e "#                                                          #" >> informePrioridadMenor.txt 
-echo -e "#  ANTIGUOS ALUMNOS:                                       #" >> informePrioridadMenor.txt 
-echo -e "#  Gonzalo Murillo Montes y Gonzalo Cuesta Marín (2017)    #" >> informePrioridadMenor.txt 
-echo -e "#  Álvaro Manjón Vara (2020)                               #" >> informePrioridadMenor.txt 
-echo -e "#  NUEVOS ALUMNOS:                                         #" >> informePrioridadMenor.txt 
-echo -e "#  Adrián Núñez Martínez (2022)                            #" >> informePrioridadMenor.txt 
-echo -e "############################################################" >> informePrioridadMenor.txt 
-echo "" >> informePrioridadMenor.txt 
+echo -e "############################################################" >> informeBN.txt 
+echo -e "#                                                          #" >> informeBN.txt 
+echo -e "#                  INFORME DE PRÁCTICA                     #" >> informeBN.txt 
+echo -e "#                   GESTIÓN DE MEMORIA                     #" >> informeBN.txt 
+echo -e "#            -----------------------------                 #" >> informeBN.txt 
+echo -e "#     ALGORITMO DE GESTIÓN DE MEMORIA: PRIORIDAD MENOR     #" >> informeBN.txt 
+echo -e "#      PARTICIONES FIJAS Y NO IGUALES - PRIMER AJUSTE      #" >> informeBN.txt 
+echo -e "#                                                          #" >> informeBN.txt 
+echo -e "#                                                          #" >> informeBN.txt 
+echo -e "#  ANTIGUOS ALUMNOS:                                       #" >> informeBN.txt 
+echo -e "#  Gonzalo Murillo Montes y Gonzalo Cuesta Marín (2017)    #" >> informeBN.txt 
+echo -e "#  Álvaro Manjón Vara (2020)                               #" >> informeBN.txt 
+echo -e "#  NUEVOS ALUMNOS:                                         #" >> informeBN.txt 
+echo -e "#  Adrián Núñez Martínez (2022)                            #" >> informeBN.txt 
+echo -e "############################################################" >> informeBN.txt 
+echo -e "" >> informeBN.txt
 
 
 p=0;	#contador para los procesos introducidos de forma manual
@@ -2410,6 +2455,29 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 	echo -e "6 - Otro fichero de rangos"
 	echo -e "############################################################"
 	echo ""
+
+	echo -e "">> informeColor.txt 
+	echo -e "############################################################"	>> informeColor.txt 	
+	echo -e "1 - Introducir los datos de forma manual">> informeColor.txt 
+	echo -e "2 - Fichero de datos de ultima ejecucion (datos.txt)">> informeColor.txt 
+	echo -e "3 - Otro fichero de datos">> informeColor.txt 
+	echo -e "4 - Introduccion de rangos manualmente">> informeColor.txt 
+	echo -e "5 - Fichero de rangos de ultima ejecucion (datosrangos.txt)">> informeColor.txt 
+	echo -e "6 - Otro fichero de rangos">> informeColor.txt 
+	echo -e "############################################################">> informeColor.txt 
+	echo -e "">> informeColor.txt 
+
+	echo -e "">> informeBN.txt 
+	echo -e "############################################################">> informeBN.txt 
+	echo -e "1 - Introducir los datos de forma manual">> informeBN.txt 
+	echo -e "2 - Fichero de datos de ultima ejecucion (datos.txt)">> informeBN.txt 
+	echo -e "3 - Otro fichero de datos">> informeBN.txt 
+	echo -e "4 - Introduccion de rangos manualmente">> informeBN.txt 
+	echo -e "5 - Fichero de rangos de ultima ejecucion (datosrangos.txt)">> informeBN.txt 
+	echo -e "6 - Otro fichero de rangos">> informeBN.txt 
+	echo -e "############################################################">> informeBN.txt 
+	echo -e "">> informeBN.txt 
+
 	read opcion	#variable que almacena la opción leída
 	ComprobarPalabras $opcion
 	while [ $opcion != "1" -a $opcion != "2" -a $opcion != "3" -a $opcion != "4" -a $opcion != "5" -a $opcion != "6" ];do
@@ -2418,18 +2486,42 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 		read opcion
 	done
 
+	echo -e "$opcion">> informeBN.txt 
+	echo -e "$opcion">> informeColor.txt 
+
 	if [ $opcion = 1 ];then
 		echo -e "############################################################"
 		echo "Elige el fichero donde quieres guardar los datos:"
 		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)"
 		echo "2 - Otro fichero de datos"
 		echo -e "############################################################"
+
+		echo -e "############################################################">> informeColor.txt 
+		echo "Elige el fichero donde quieres guardar los datos:">> informeColor.txt 
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)">> informeColor.txt 
+		echo "2 - Otro fichero de datos">> informeColor.txt 
+		echo -e "############################################################">> informeColor.txt 
+
+		echo -e "############################################################">> informeBN.txt 
+		echo "Elige el fichero donde quieres guardar los datos:">> informeBN.txt 
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)">> informeBN.txt 
+		echo "2 - Otro fichero de datos">> informeBN.txt 
+		echo -e "############################################################">> informeBN.txt 
+
 		read lekt
+
+		echo -e "$lekt">> informeBN.txt 
+		echo -e "$lekt">> informeColor.txt 
+
 		if [ $lekt = 1 ];then
 			ENTRADA=FicherosDatos/datos.txt
 			rm FicherosDatos/datos.txt > /dev/null 2>&1
 		else
 				rutaFich=0
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeColor.txt 
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeBN.txt 
+				echo -e "" >> informeColor.txt
+				echo -e "" >> informeBN.txt
 				cd FicherosDatos
 				echo "En que fichero quieres guardar los datos? Si no existe, se creará."
 				echo ""
@@ -2439,13 +2531,19 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 				ENTRADA=FicherosDatos/$rutaFich
 				cd ..
 				rm FicherosDatos/$rutaFich > /dev/null 2>&1
+				echo -e "$rutaFich" >> informeColor.txt
+				echo -e "$rutaFich" >> informeBN.txt
 		fi
 	fi
 
 	if [ $opcion = 3 ];then
-			mkdir -p FicherosDatos
+		mkdir -p FicherosDatos
 		echo ""
 		rutaFich=0
+		echo "Introduce el nombre o ruta del fichero a leer :">> informeColor.txt 
+		echo "Introduce el nombre o ruta del fichero a leer :">> informeBN.txt 
+		echo -e "" >> informeColor.txt
+		echo -e "" >> informeBN.txt
 		cd FicherosDatos
 		echo "Introduce el nombre o ruta del fichero a leer :"
 		echo ""
@@ -2455,39 +2553,121 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 		rutaFich=FicherosDatos/$rutaFich
 		echo "$rutaFich"
 		cd ..
+		echo -e "$rutaFich" >> informeColor.txt
+		echo -e "$rutaFich" >> informeBN.txt
 	fi
 
 
 	if [ $opcion = 4 ];then
 		echo -e "############################################################"
-		echo "Elige el fichero donde quieres guardar los datos:"
-		echo "1 - Fichero de datos de ultima ejecucion (datosrangos.txt)"
-		echo "2 - Otro fichero de datos"
+		echo "Elige el fichero donde quieres guardar los rangos:"
+		echo "1 - Fichero de rangos de ultima ejecucion (datosrangos.txt)"
+		echo "2 - Otro fichero de rangos"
 		echo -e "############################################################"
+		echo ""
+
+		echo -e "############################################################" >> informeColor.txt
+		echo "Elige el fichero donde quieres guardar los datos:" >> informeColor.txt
+		echo "1 - Fichero de rangos de ultima ejecucion (datosrangos.txt)" >> informeColor.txt
+		echo "2 - Otro fichero de rangos" >> informeColor.txt
+		echo -e "############################################################" >> informeColor.txt
+
+		echo -e "############################################################" >> informeBN.txt 
+		echo "Elige el fichero donde quieres guardar los datos:" >> informeBN.txt 
+		echo "1 - Fichero de rangos de ultima ejecucion (datosrangos.txt)" >> informeBN.txt 
+		echo "2 - Otro fichero de rangos" >> informeBN.txt 
+		echo -e "############################################################" >> informeBN.txt 
+
 		read lekt
+
+		echo -e "$lekt">> informeBN.txt 
+		echo -e "$lekt">> informeColor.txt 
+
 		if [ $lekt = 1 ];then
-			ENTRADA2=FicherosRangos/datosrangos.txt
+			ENTRADA3=FicherosRangos/datosrangos.txt
 			rm FicherosRangos/datosrangos.txt > /dev/null 2>&1
 		else
 				rutaFich=0
+								echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeColor.txt 
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeBN.txt 
+				
+				echo -e "" >> informeBN.txt 
+				echo -e "" >> informeColor.txt 
 				cd FicherosRangos
 				echo "En que fichero quieres guardar los datos? Si no existe, se creará."
+
+
+				ls *.txt 2>/dev/null
+				echo ""
+
+				read rutaFich
+				ENTRADA3=FicherosRangos/$rutaFich
+				cd ..
+				rm FicherosRangos/$rutaFich > /dev/null 2>&1
+				echo -e "$rutaFich" >> informeColor.txt
+				echo -e "$rutaFich" >> informeBN.txt
+		fi
+
+		echo ""
+		echo -e "############################################################"
+		echo "Elige el fichero donde quieres guardar los datos:"
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)"
+		echo "2 - Otro fichero de datos"
+		echo -e "############################################################"
+		echo ""
+
+		echo -e "############################################################">> informeColor.txt 
+		echo "Elige el fichero donde quieres guardar los datos:">> informeColor.txt 
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)">> informeColor.txt 
+		echo "2 - Otro fichero de datos">> informeColor.txt 
+		echo -e "############################################################">> informeColor.txt 
+
+		echo -e "############################################################">> informeBN.txt 
+		echo "Elige el fichero donde quieres guardar los datos:">> informeBN.txt 
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)">> informeBN.txt 
+		echo "2 - Otro fichero de datos">> informeBN.txt 
+		echo -e "############################################################">> informeBN.txt 
+
+		read lekt
+
+		echo -e "$lekt">> informeBN.txt 
+		echo -e "$lekt">> informeColor.txt 
+
+		if [ $lekt = 1 ];then
+			ENTRADA2=FicherosDatos/datos.txt
+			rm FicherosDatos/datos.txt > /dev/null 2>&1
+		else
+				rutaFich=0
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeColor.txt 
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeBN.txt 
+				echo -e "" >> informeColor.txt
+				echo -e "" >> informeBN.txt
+				cd FicherosDatos
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará."
+
 				echo ""
 				ls *.txt 2>/dev/null
 				echo ""
 				read rutaFich
-				ENTRADA2=FicherosRangos/$rutaFich
+				ENTRADA2=FicherosDatos/$rutaFich
 				cd ..
-				rm FicherosRangos/$rutaFich > /dev/null 2>&1
+				rm FicherosDatos/$rutaFich > /dev/null 2>&1
+				echo -e "$rutaFich" >> informeColor.txt
+				echo -e "$rutaFich" >> informeBN.txt
 		fi
+
 	fi
 
 	if [ $opcion = 6 ];then
 		mkdir -p FicherosRangos
 		echo ""
 		rutaFich=0
+		echo "Introduce el nombre o ruta del fichero a leer :" >>informeColor.txt
+		echo "Introduce el nombre o ruta del fichero a leer :" >> informeBN.txt 
+		echo -e "" >> informeColor.txt
+		echo -e "" >> informeBN.txt
 		cd FicherosRangos
-		echo "Introduce el nombre o ruta del fichero a leer :"
+		echo "Introduce el nombre o ruta del fichero a leer :"	
 		echo ""
 		ls *.txt 2>/dev/null
 		echo ""
@@ -2495,6 +2675,8 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 		rutaFich=FicherosRangos/$rutaFich
 		echo "$rutaFich"
 		cd ..
+		echo -e "$rutaFich" >> informeColor.txt
+		echo -e "$rutaFich" >> informeBN.txt
 	fi
 
 
@@ -2509,6 +2691,25 @@ if [ $p2 = 0 ];then #condición para preguntar la forma a leer los datos
 	echo -e "4 - Resumen final."
 	echo -e "############################################################"
 	echo ""
+
+	echo -e "">>informeColor.txt
+	echo -e "############################################################">>informeColor.txt
+	echo -e "1 - Por eventos (presionando enter).">>informeColor.txt
+	echo -e "2 - Eventos automáticos (introduciendo segundos de espera).">>informeColor.txt
+	echo -e "3 - Completa (sin tiempos de espera).">>informeColor.txt
+	echo -e "4 - Resumen final.">>informeColor.txt
+	echo -e "############################################################">>informeColor.txt
+	echo -e "">>informeColor.txt
+
+	echo -e "" >> informeBN.txt
+	echo -e "############################################################">> informeBN.txt
+	echo -e "1 - Por eventos (presionando enter).">> informeBN.txt
+	echo -e "2 - Eventos automáticos (introduciendo segundos de espera).">> informeBN.txt
+	echo -e "3 - Completa (sin tiempos de espera).">> informeBN.txt
+	echo -e "4 - Resumen final.">> informeBN.txt
+	echo -e "############################################################">> informeBN.txt
+	echo -e "" >> informeBN.txt
+
 	read opcion2	#variable que almacena la opción leída
 	ComprobarPalabras $opcion2
 	while [ $opcion2 != "1" -a $opcion2 != "2" -a $opcion2 != "3"  -a $opcion2 != "4" ];do
@@ -2516,6 +2717,8 @@ if [ $p2 = 0 ];then #condición para preguntar la forma a leer los datos
 		echo -e "${azulR}Vuelve a introducir una opción${NC}"
 		read opcion2
 	done
+	echo -e "$opcion2" >> informeColor.txt
+	echo -e "$opcion2" >> informeBN.txt
 fi
 
 
@@ -2567,8 +2770,8 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 			read temp
 		done
 	
-		echo -e "Tiempo de llegada del proceso $ppp: $temp " >> informePrioridadColor.txt
-		echo -e "Tiempo de llegada del proceso $ppp: $temp " >> informePrioridadMenor.txt
+		echo -e "Tiempo de llegada del proceso $ppp: $temp " >> informeColor.txt
+		echo -e "Tiempo de llegada del proceso $ppp: $temp " >> informeBN.txt
 		templl[$p]=$temp;   #añado al vector ese numero
 		clear
 		printf "Ref Tll Tej Mem Pri\n"
@@ -2595,8 +2798,8 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 			echo -e "${NC}Introduce un nuevo tiempo de ejecución:"
 			read tiemp
 		done
-		echo -e "Tiempo de ejecución del proceso $ppp: $tiemp" >> informePrioridadColor.txt
-		echo -e "Tiempo de ejecución del proceso $ppp: $tiemp"	>> informePrioridadMenor.txt
+		echo -e "Tiempo de ejecución del proceso $ppp: $tiemp" >> informeColor.txt
+		echo -e "Tiempo de ejecución del proceso $ppp: $tiemp"	>> informeBN.txt
 		tiempo[$p]=$tiemp;   #añado al vector ese numero
 		tiempofijo[$p]=$tiemp;
 		clear
@@ -2625,8 +2828,8 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 			echo -e "${NC}Introduce de nuevo la memoria que ocupa:"
 			read memor
 		done
-		echo -e "Memoria que ocupa el proceso $ppp: $memor" >> informePrioridadColor.txt
-		echo -e "Memoria que ocupa el proceso $ppp: $memor" >> informePrioridadMenor.txt
+		echo -e "Memoria que ocupa el proceso $ppp: $memor" >> informeColor.txt
+		echo -e "Memoria que ocupa el proceso $ppp: $memor" 	>> informeBN.txt
 		memori[$p]=$memor;
 		clear
 		printf "Ref Tll Tej Mem Pri\n"
@@ -2663,8 +2866,8 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 				dato_correcto=1
 			fi
 		done
-		echo -e "Prioridad del proceso $ppp: $priorida" >> informePrioridadColor.txt
-		echo -e "Prioridad del proceso $ppp: $priorida" >> informePrioridadMenor.txt
+		echo -e "Prioridad del proceso $ppp: $priorida" >> informeColor.txt
+		echo -e "Prioridad del proceso $ppp: $priorida" >> informeBN.txt
 		prioridad[$p]=$priorida;   #añado al vector ese numero
 		dato_prioridad[$p]=$dato_priorid
 		clear
@@ -2696,25 +2899,25 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]}
 			echo ""
 		done
-		echo "" >> informePrioridadColor.txt
-		printf "Ref Tll Tej Mem Pri\n" >> informePrioridadColor.txt
+		echo "" >> informeColor.txt
+		printf "Ref Tll Tej Mem Pri\n" >> informeColor.txt
 		for ((i=0;i<${#tiempo[@]};i++));do
-			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informePrioridadColor.txt
-			echo "" >> informePrioridadColor.txt
+			printf "${colores[$i]}%s${NC} " ${procesosc[$i]}>> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informeColor.txt
+			echo "" >> informeColor.txt
 		done
-		echo "" >> informePrioridadMenor.txt
-		printf "Ref Tll Tej Mem Pri\n" >> informePrioridadMenor.txt
+		echo "" >> informeBN.txt
+		printf "Ref Tll Tej Mem Pri\n" >> informeBN.txt
 		for ((i=0;i<${#tiempo[@]};i++));do
-			printf "%s " ${procesosc[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${templl[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${tiempofijo[$i]} >> informePrioridadMenor.txt
-			printf "%3d "	${memori[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${prioridad[$i]} >> informePrioridadMenor.txt
-			echo "" >> informePrioridadMenor.txt
+			printf "%s " ${procesosc[$i]} >> informeBN.txt
+			printf "%3d " ${templl[$i]} >> informeBN.txt
+			printf "%3d " ${tiempofijo[$i]} >> informeBN.txt
+			printf "%3d "	${memori[$i]} >> informeBN.txt
+			printf "%3d " ${prioridad[$i]} >> informeBN.txt
+			echo "" >> informeBN.txt
 		done
 		let "i2++"
 		while [ $pl -eq 0 ];do
@@ -2732,12 +2935,12 @@ if [ $opcion = 1 ];then	#si el usuario desea introducir los datos de forma manua
 			"n") mas=1;;
 			*);;
 		esac
-		echo "" >> informePrioridadColor.txt
-		echo -e "¿Desea introducir otro proceso? (s/n) $opp" >> informePrioridadColor.txt
-		echo "" >> informePrioridadColor.txt
-		echo "" >> informePrioridadMenor.txt
-		echo -e "¿Desea introducir otro proceso? (s/n) $opp" >> informePrioridadMenor.txt
-		echo "" >> informePrioridadMenor.txt
+		echo "" >> informeColor.txt
+		echo -e "¿Desea introducir otro proceso? (s/n) $opp" >> informeColor.txt
+		echo "" >> informeColor.txt
+		echo "" >> informeBN.txt
+		echo -e "¿Desea introducir otro proceso? (s/n) $opp" >> informeBN.txt
+		echo "" >> informeBN.txt
 	done
 fi
 
@@ -2771,29 +2974,29 @@ if [ $opcion = 2 ];then #leer fichero de datos
 		echo -e "Las particiones empiezan en	${part_init[@]}"
 		echo -e "Las particiones acaban en	${part_fin[@]}"
 		echo -e "Tamaño completo de la memoria	$cap_memoria"
-		echo -e "" >> informePrioridadColor.txt
-		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informePrioridadColor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadColor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadColor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadColor.txt
-		echo -e "" >> informePrioridadMenor.txt
-		echo -e "Todas las particiones estan creadas" >> informePrioridadMenor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadMenor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadMenor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadMenor.txt
+		echo -e "" >> informeColor.txt
+		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informeColor.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeColor.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeColor.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeColor.txt
+		echo -e "" >> informeBN.txt
+		echo -e "Todas las particiones estan creadas" >> informeBN.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeBN.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeBN.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeBN.txt
 		
 		echo ""
 		printf "La prioridad mínima es\t%2d\n" "$pri_minima"
 		printf "La prioridad máxima es\t%2d\n" "$pri_maxima"
 		echo ""
-		echo "" >> informePrioridadColor.txt
-		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informePrioridadColor.txt
-		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informePrioridadColor.txt
-		echo "" >> informePrioridadColor.txt
-		echo "" >> informePrioridadMenor.txt
-		echo -e "La prioridad mínima es	$pri_minima" >> informePrioridadMenor.txt
-		echo -e "La prioridad máxima es	$pri_maxima" >> informePrioridadMenor.txt
-		echo "" >> informePrioridadMenor.txt
+		echo "" >> informeColor.txt
+		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informeColor.txt
+		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informeColor.txt
+		echo "" >> informeColor.txt
+		echo "" >> informeBN.txt
+		echo -e "La prioridad mínima es	$pri_minima" >> informeBN.txt
+		echo -e "La prioridad máxima es	$pri_maxima" >> informeBN.txt
+		echo "" >> informeBN.txt
 	fi
 	
 	for ((p=0;p<$num_proc;p++));do
@@ -2825,8 +3028,8 @@ if [ $opcion = 2 ];then #leer fichero de datos
 		prioridad[$p]=$priorida
 		dato_prioridad[$p]=$dato_priorid
 		let pp++
-		echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
-		echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
+		echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informeColor.txt
+		echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informeBN.txt	
 		let ppp++
 		Ordenar
 	done
@@ -2841,23 +3044,23 @@ if [ $opcion = 2 ];then #leer fichero de datos
 			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]}
 			echo ""
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadColor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeColor.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informePrioridadColor.txt
-			echo "" >> informePrioridadColor.txt
+			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informeColor.txt
+			echo "" >> informeColor.txt
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadMenor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeBN.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "%s " ${procesosc[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${templl[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${tiempofijo[$i]} >> informePrioridadMenor.txt
-			printf "%3d "	${memori[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${prioridad[$i]} >> informePrioridadMenor.txt
-			echo "" >> informePrioridadMenor.txt
+			printf "%s " ${procesosc[$i]} >> informeBN.txt
+			printf "%3d " ${templl[$i]} >> informeBN.txt
+			printf "%3d " ${tiempofijo[$i]} >> informeBN.txt
+			printf "%3d "	${memori[$i]} >> informeBN.txt
+			printf "%3d " ${prioridad[$i]} >> informeBN.txt
+			echo "" >> informeBN.txt
 	done
 fi
 
@@ -2889,29 +3092,29 @@ if [ $opcion = 3 ];then #leer fichero intrudocido a mano
 		echo -e "Las particiones empiezan en	${part_init[@]}"
 		echo -e "Las particiones acaban en	${part_fin[@]}"
 		echo -e "Tamaño completo de la memoria	$cap_memoria"
-		echo -e "" >> informePrioridadColor.txt
-		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informePrioridadColor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadColor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadColor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadColor.txt
-		echo -e "" >> informePrioridadMenor.txt
-		echo -e "Todas las particiones estan creadas" >> informePrioridadMenor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadMenor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadMenor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadMenor.txt
+		echo -e "" >> informeColor.txt
+		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informeColor.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeColor.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeColor.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeColor.txt
+		echo -e "" >> informeBN.txt
+		echo -e "Todas las particiones estan creadas" >> informeBN.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeBN.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeBN.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeBN.txt
 		
 		echo ""
 		printf "La prioridad mínima es\t%2d\n" "$pri_minima"
 		printf "La prioridad máxima es\t%2d\n" "$pri_maxima"
 		echo ""
-		echo "" >> informePrioridadColor.txt
-		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informePrioridadColor.txt
-		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informePrioridadColor.txt
-		echo "" >> informePrioridadColor.txt
-		echo "" >> informePrioridadMenor.txt
-		echo -e "La prioridad mínima es	$pri_minima" >> informePrioridadMenor.txt
-		echo -e "La prioridad máxima es	$pri_maxima" >> informePrioridadMenor.txt
-		echo "" >> informePrioridadMenor.txt
+		echo "" >> informeColor.txt
+		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informeColor.txt
+		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informeColor.txt
+		echo "" >> informeColor.txt
+		echo "" >> informeBN.txt
+		echo -e "La prioridad mínima es	$pri_minima" >> informeBN.txt
+		echo -e "La prioridad máxima es	$pri_maxima" >> informeBN.txt
+		echo "" >> informeBN.txt
 	fi
 	for ((p=0;p<$num_proc;p++));do
 		if [ $ppp -lt 10 ]; then
@@ -2942,8 +3145,8 @@ if [ $opcion = 3 ];then #leer fichero intrudocido a mano
 		prioridad[$p]=$priorida
 		dato_prioridad[$p]=$dato_priorid
 		#let pp++
-		#echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
-		#echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
+		#echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informeColor.txt
+		#echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informeBN.txt	
 		let ppp++
 		#Ordenar
 	done
@@ -2958,29 +3161,29 @@ if [ $opcion = 3 ];then #leer fichero intrudocido a mano
 			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]}
 			echo ""
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadColor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeColor.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informePrioridadColor.txt
-			echo "" >> informePrioridadColor.txt
+			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informeColor.txt
+			echo "" >> informeColor.txt
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadMenor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeBN.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "%s " ${procesosc[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${templl[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${tiempofijo[$i]} >> informePrioridadMenor.txt
-			printf "%3d "	${memori[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${prioridad[$i]} >> informePrioridadMenor.txt
-			echo "" >> informePrioridadMenor.txt
+			printf "%s " ${procesosc[$i]} >> informeBN.txt
+			printf "%3d " ${templl[$i]} >> informeBN.txt
+			printf "%3d " ${tiempofijo[$i]} >> informeBN.txt
+			printf "%3d "	${memori[$i]} >> informeBN.txt
+			printf "%3d " ${prioridad[$i]} >> informeBN.txt
+			echo "" >> informeBN.txt
 	done
 fi
 
 if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 	CrearFicheroRangos
-
+	guardarRangos
 
 	esunsi=0
 	sed "/^ *$/d" $ENTRADA2 > datos.txt
@@ -3009,29 +3212,29 @@ if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 		echo -e "Las particiones empiezan en	${part_init[@]}"
 		echo -e "Las particiones acaban en	${part_fin[@]}"
 		echo -e "Tamaño completo de la memoria	$cap_memoria"
-		echo -e "" >> informePrioridadColor.txt
-		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informePrioridadColor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadColor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadColor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadColor.txt
-		echo -e "" >> informePrioridadMenor.txt
-		echo -e "Todas las particiones estan creadas" >> informePrioridadMenor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadMenor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadMenor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadMenor.txt
+		echo -e "" >> informeColor.txt
+		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informeColor.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeColor.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeColor.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeColor.txt
+		echo -e "" >> informeBN.txt
+		echo -e "Todas las particiones estan creadas" >> informeBN.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeBN.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeBN.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeBN.txt
 		
 		echo ""
 		printf "La prioridad mínima es\t%2d\n" "$pri_minima"
 		printf "La prioridad máxima es\t%2d\n" "$pri_maxima"
 		echo ""
-		echo "" >> informePrioridadColor.txt
-		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informePrioridadColor.txt
-		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informePrioridadColor.txt
-		echo "" >> informePrioridadColor.txt
-		echo "" >> informePrioridadMenor.txt
-		echo -e "La prioridad mínima es	$pri_minima" >> informePrioridadMenor.txt
-		echo -e "La prioridad máxima es	$pri_maxima" >> informePrioridadMenor.txt
-		echo "" >> informePrioridadMenor.txt
+		echo "" >> informeColor.txt
+		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informeColor.txt
+		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informeColor.txt
+		echo "" >> informeColor.txt
+		echo "" >> informeBN.txt
+		echo -e "La prioridad mínima es	$pri_minima" >> informeBN.txt
+		echo -e "La prioridad máxima es	$pri_maxima" >> informeBN.txt
+		echo "" >> informeBN.txt
 	fi
 	for ((p=0;p<$num_proc;p++));do
 		if [ $ppp -lt 10 ]; then
@@ -3062,8 +3265,8 @@ if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 		prioridad[$p]=$priorida
 		dato_prioridad[$p]=$dato_priorid
 		#let pp++
-		#echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
-		#echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
+		#echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informeColor.txt
+		#echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informeBN.txt	
 		let ppp++
 		#Ordenar
 	done
@@ -3078,23 +3281,23 @@ if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]}
 			echo ""
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadColor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeColor.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informePrioridadColor.txt
-			echo "" >> informePrioridadColor.txt
+			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informeColor.txt
+			echo "" >> informeColor.txt
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadMenor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeBN.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "%s " ${procesosc[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${templl[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${tiempofijo[$i]} >> informePrioridadMenor.txt
-			printf "%3d "	${memori[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${prioridad[$i]} >> informePrioridadMenor.txt
-			echo "" >> informePrioridadMenor.txt
+			printf "%s " ${procesosc[$i]} >> informeBN.txt
+			printf "%3d " ${templl[$i]} >> informeBN.txt
+			printf "%3d " ${tiempofijo[$i]} >> informeBN.txt
+			printf "%3d "	${memori[$i]} >> informeBN.txt
+			printf "%3d " ${prioridad[$i]} >> informeBN.txt
+			echo "" >> informeBN.txt
 	done
 fi
 
@@ -3128,29 +3331,29 @@ if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 		echo -e "Las particiones empiezan en	${part_init[@]}"
 		echo -e "Las particiones acaban en	${part_fin[@]}"
 		echo -e "Tamaño completo de la memoria	$cap_memoria"
-		echo -e "" >> informePrioridadColor.txt
-		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informePrioridadColor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadColor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadColor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadColor.txt
-		echo -e "" >> informePrioridadMenor.txt
-		echo -e "Todas las particiones estan creadas" >> informePrioridadMenor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadMenor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadMenor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadMenor.txt
+		echo -e "" >> informeColor.txt
+		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informeColor.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeColor.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeColor.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeColor.txt
+		echo -e "" >> informeBN.txt
+		echo -e "Todas las particiones estan creadas" >> informeBN.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeBN.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeBN.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeBN.txt
 		
 		echo ""
 		printf "La prioridad mínima es\t%2d\n" "$pri_minima"
 		printf "La prioridad máxima es\t%2d\n" "$pri_maxima"
 		echo ""
-		echo "" >> informePrioridadColor.txt
-		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informePrioridadColor.txt
-		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informePrioridadColor.txt
-		echo "" >> informePrioridadColor.txt
-		echo "" >> informePrioridadMenor.txt
-		echo -e "La prioridad mínima es	$pri_minima" >> informePrioridadMenor.txt
-		echo -e "La prioridad máxima es	$pri_maxima" >> informePrioridadMenor.txt
-		echo "" >> informePrioridadMenor.txt
+		echo "" >> informeColor.txt
+		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informeColor.txt
+		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informeColor.txt
+		echo "" >> informeColor.txt
+		echo "" >> informeBN.txt
+		echo -e "La prioridad mínima es	$pri_minima" >> informeBN.txt
+		echo -e "La prioridad máxima es	$pri_maxima" >> informeBN.txt
+		echo "" >> informeBN.txt
 	fi
 	
 	for ((p=0;p<$num_proc;p++));do
@@ -3182,8 +3385,8 @@ if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 		prioridad[$p]=$priorida
 		dato_prioridad[$p]=$dato_priorid
 		let pp++
-		echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
-		echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
+		echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informeColor.txt
+		echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informeBN.txt	
 		let ppp++
 		Ordenar
 	done
@@ -3198,23 +3401,23 @@ if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]}
 			echo ""
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadColor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeColor.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informePrioridadColor.txt
-			echo "" >> informePrioridadColor.txt
+			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informeColor.txt
+			echo "" >> informeColor.txt
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadMenor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeBN.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "%s " ${procesosc[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${templl[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${tiempofijo[$i]} >> informePrioridadMenor.txt
-			printf "%3d "	${memori[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${prioridad[$i]} >> informePrioridadMenor.txt
-			echo "" >> informePrioridadMenor.txt
+			printf "%s " ${procesosc[$i]} >> informeBN.txt
+			printf "%3d " ${templl[$i]} >> informeBN.txt
+			printf "%3d " ${tiempofijo[$i]} >> informeBN.txt
+			printf "%3d "	${memori[$i]} >> informeBN.txt
+			printf "%3d " ${prioridad[$i]} >> informeBN.txt
+			echo "" >> informeBN.txt
 	done
 fi
 
@@ -3248,29 +3451,29 @@ if [ $opcion = 6 ];then #leer fichero intrudocido a mano
 		echo -e "Las particiones empiezan en	${part_init[@]}"
 		echo -e "Las particiones acaban en	${part_fin[@]}"
 		echo -e "Tamaño completo de la memoria	$cap_memoria"
-		echo -e "" >> informePrioridadColor.txt
-		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informePrioridadColor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadColor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadColor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadColor.txt
-		echo -e "" >> informePrioridadMenor.txt
-		echo -e "Todas las particiones estan creadas" >> informePrioridadMenor.txt
-		echo -e "Las particiones empiezan en	${part_init[@]}" >> informePrioridadMenor.txt
-		echo -e "Las particiones acaban en	${part_fin[@]}" >> informePrioridadMenor.txt
-		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informePrioridadMenor.txt
+		echo -e "" >> informeColor.txt
+		echo -e "${verdeR}Todas las particiones estan creadas${NC}" >> informeColor.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeColor.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeColor.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeColor.txt
+		echo -e "" >> informeBN.txt
+		echo -e "Todas las particiones estan creadas" >> informeBN.txt
+		echo -e "Las particiones empiezan en	${part_init[@]}" >> informeBN.txt
+		echo -e "Las particiones acaban en	${part_fin[@]}" >> informeBN.txt
+		echo -e "Tamaño completo de la memoria	$cap_memoria" >> informeBN.txt
 		
 		echo ""
 		printf "La prioridad mínima es\t%2d\n" "$pri_minima"
 		printf "La prioridad máxima es\t%2d\n" "$pri_maxima"
 		echo ""
-		echo "" >> informePrioridadColor.txt
-		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informePrioridadColor.txt
-		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informePrioridadColor.txt
-		echo "" >> informePrioridadColor.txt
-		echo "" >> informePrioridadMenor.txt
-		echo -e "La prioridad mínima es	$pri_minima" >> informePrioridadMenor.txt
-		echo -e "La prioridad máxima es	$pri_maxima" >> informePrioridadMenor.txt
-		echo "" >> informePrioridadMenor.txt
+		echo "" >> informeColor.txt
+		printf "La prioridad mínima es\t%2d\n" "$pri_minima" >> informeColor.txt
+		printf "La prioridad máxima es\t%2d\n" "$pri_maxima" >> informeColor.txt
+		echo "" >> informeColor.txt
+		echo "" >> informeBN.txt
+		echo -e "La prioridad mínima es	$pri_minima" >> informeBN.txt
+		echo -e "La prioridad máxima es	$pri_maxima" >> informeBN.txt
+		echo "" >> informeBN.txt
 	fi
 	for ((p=0;p<$num_proc;p++));do
 		if [ $ppp -lt 10 ]; then
@@ -3301,8 +3504,8 @@ if [ $opcion = 6 ];then #leer fichero intrudocido a mano
 		prioridad[$p]=$priorida
 		dato_prioridad[$p]=$dato_priorid
 		#let pp++
-		#echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informePrioridadColor.txt
-		#echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informePrioridadMenor.txt	
+		#echo -e "${verdeR}Proceso: ${verde}$nombre ${verdeR}Tiempo de llegada: ${verde}$temp ${verdeR}Tiempo de ejecución: ${verde}$tiemp ${verdeR}Prioridad de Proceso: ${verde}$priorida ${verdeR}Memoria que ocupa: ${verde}$memor"  >> informeColor.txt
+		#echo "Proceso: $nombre Tiempo de llegada: $temp Tiempo de ejecución: $tiemp Prioridad de Proceso: $priorida Memoria que ocupa: $memor"  >> informeBN.txt	
 		let ppp++
 		#Ordenar
 	done
@@ -3317,33 +3520,33 @@ if [ $opcion = 6 ];then #leer fichero intrudocido a mano
 			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]}
 			echo ""
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadColor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeColor.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informePrioridadColor.txt
-			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informePrioridadColor.txt
-			echo "" >> informePrioridadColor.txt
+			printf "${colores[$i]}%s${NC} " ${procesosc[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${templl[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${tiempofijo[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} "	${memori[$i]} >> informeColor.txt
+			printf "${colores[$i]}%3d${NC} " ${prioridad[$i]} >> informeColor.txt
+			echo "" >> informeColor.txt
 	done
-	printf "Ref Tll Tej Mem Pri\n" >> informePrioridadMenor.txt
+	printf "Ref Tll Tej Mem Pri\n" >> informeBN.txt
 	for ((i=0;i<${#tiempo[@]};i++));do
-			printf "%s " ${procesosc[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${templl[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${tiempofijo[$i]} >> informePrioridadMenor.txt
-			printf "%3d "	${memori[$i]} >> informePrioridadMenor.txt
-			printf "%3d " ${prioridad[$i]} >> informePrioridadMenor.txt
-			echo "" >> informePrioridadMenor.txt
+			printf "%s " ${procesosc[$i]} >> informeBN.txt
+			printf "%3d " ${templl[$i]} >> informeBN.txt
+			printf "%3d " ${tiempofijo[$i]} >> informeBN.txt
+			printf "%3d "	${memori[$i]} >> informeBN.txt
+			printf "%3d " ${prioridad[$i]} >> informeBN.txt
+			echo "" >> informeBN.txt
 	done
 fi
 
 
-echo "" >> informePrioridadColor.txt
-echo -e "COMIENZO DE EJECUCIÓN" >> informePrioridadColor.txt
-echo "" >> informePrioridadColor.txt
-echo "" >> informePrioridadMenor.txt
-echo -e "COMIENZO DE EJECUCIÓN" >> informePrioridadMenor.txt
-echo "" >> informePrioridadMenor.txt
+echo "" >> informeColor.txt
+echo -e "COMIENZO DE EJECUCIÓN" >> informeColor.txt
+echo "" >> informeColor.txt
+echo "" >>informeBN.txt
+echo -e "COMIENZO DE EJECUCIÓN" >>informeBN.txt
+echo "" >>informeBN.txt
 
 
 for ((i=0;i<$num_proc;i++));do
@@ -3401,11 +3604,11 @@ fi
 
 #Gráfica que indica la ejecución de cada uno de los procesos respecto al tiempo.
 echo -e "RESUMEN DE LA EJECUCIÓN"
-echo -e "RESUMEN DE LA EJECUCIÓN" >> informePrioridadColor.txt
-echo -e "RESUMEN DE LA EJECUCIÓN" >> informePrioridadMenor.txt
+echo -e "RESUMEN DE LA EJECUCIÓN" >> informeColor.txt
+echo -e "RESUMEN DE LA EJECUCIÓN" >>informeBN.txt
 printf "\n"
-printf "\n" >> informePrioridadColor.txt
-printf "\n" >> informePrioridadMenor.txt
+printf "\n" >> informeColor.txt
+printf "\n" >>informeBN.txt
 je1=0
 carac1=5
 wr1=0
@@ -3420,13 +3623,13 @@ imprimir_status=-1
 while [[ $terminar -eq 0 ]];do
 	ImprimeProcesos
 	printf "\n"
-	printf "\n" >> informePrioridadColor.txt
+	printf "\n" >> informeColor.txt
 	ImprimeGrafica
 	printf "\n"
-	printf "\n" >> informePrioridadColor.txt
+	printf "\n" >> informeColor.txt
 	ImprimeLineaTemporal
 	printf "\n"
-	printf "\n" >> informePrioridadColor.txt
+	printf "\n" >> informeColor.txt
 	carac1=5
 	carac2=5
 	carac3=5
@@ -3444,11 +3647,11 @@ terminar=0
 imprimir_status=-1
 while [[ $terminar -eq 0 ]];do
 	ImprimeProcesosBW
-	printf "\n" >> informePrioridadMenor.txt
+	printf "\n" >>informeBN.txt
 	ImprimeGraficaBW
-	printf "\n" >> informePrioridadMenor.txt
+	printf "\n" >>informeBN.txt
 	ImprimeLineaTemporalBW
-	echo "" >> informePrioridadMenor.txt
+	echo "" >>informeBN.txt
 	carac1=5
 	carac2=5
 	carac3=5
@@ -3459,14 +3662,14 @@ echo ""
 printf "Tiempo medio de espera=$medEspera\t" 
 printf " Tiempo medio de retorno=$medRetorno"
 echo ""
-echo "" >> informePrioridadColor.txt
-printf "Tiempo medio de espera=$medEspera\t" >> informePrioridadColor.txt
-printf " Tiempo medio de retorno=$medRetorno" >> informePrioridadColor.txt
-echo "" >> informePrioridadColor.txt
-echo "" >> informePrioridadMenor.txt
-printf "Tiempo medio de espera=$medEspera\t" >> informePrioridadMenor.txt
-printf " Tiempo medio de retorno=$medRetorno" >> informePrioridadMenor.txt
-echo "" >> informePrioridadMenor.txt
+echo "" >> informeColor.txt
+printf "Tiempo medio de espera=$medEspera\t" >> informeColor.txt
+printf " Tiempo medio de retorno=$medRetorno" >> informeColor.txt
+echo "" >> informeColor.txt
+echo "" >>informeBN.txt
+printf "Tiempo medio de espera=$medEspera\t" >>informeBN.txt
+printf " Tiempo medio de retorno=$medRetorno" >>informeBN.txt
+echo "" >>informeBN.txt
 
 #apertura del informe final
 echo ""
@@ -3483,7 +3686,7 @@ while [ "${datos}" != "s" -a "${datos}" != "n" -a "${datos}" != "S" -a "${datos}
 	fi
 done
 if [ $datos = "s" ] || [ $datos = "S" ];then
-	cat informePrioridadColor.txt
+	cat informeColor.txt
 else
 	printf "¿Quieres abrir el informe (.txt)? (s/n): "
 	read datosdos
@@ -3498,7 +3701,7 @@ else
 		fi
 	done
 	if [ $datosdos = "s" ] || [ $datosdos = "S" ];then
-		gedit informePrioridadMenor.txt
+		gediinformeBN.txt
 	fi
 fi
 echo -ne "\x1B]111\a"

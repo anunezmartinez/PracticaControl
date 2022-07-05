@@ -1,0 +1,126 @@
+############################################################
+#                    Creative Commons                      #
+#                                                          #
+#                   BY - Atribución (BY)                   #
+#                 NC - No uso Comercial (NC)               #
+#                 SA - Compartir Igual (SA)                #
+############################################################
+
+############################################################
+#                                                          #
+#                  INFORME DE PRÁCTICA                     #
+#                   GESTIÓN DE MEMORIA                     #
+#            -----------------------------                 #
+#     ALGORITMO DE GESTIÓN DE MEMORIA: PRIORIDAD MENOR     #
+#      PARTICIONES FIJAS Y NO IGUALES - PRIMER AJUSTE      #
+#                                                          #
+#                                                          #
+#  ANTIGUOS ALUMNOS:                                       #
+#  Gonzalo Murillo Montes y Gonzalo Cuesta Marín (2017)    #
+#  Álvaro Manjón Vara (2020)                               #
+#  NUEVOS ALUMNOS:                                         #
+#  Adrián Núñez Martínez (2022)                            #
+############################################################
+
+
+############################################################
+1 - Introducir los datos de forma manual
+2 - Fichero de datos de ultima ejecucion (datos.txt)
+3 - Otro fichero de datos
+4 - Introduccion de rangos manualmente
+5 - Fichero de rangos de ultima ejecucion (datosrangos.txt)
+6 - Otro fichero de rangos
+############################################################
+
+2
+
+############################################################
+1 - Por eventos (presionando enter).
+2 - Eventos automáticos (introduciendo segundos de espera).
+3 - Completa (sin tiempos de espera).
+4 - Resumen final.
+############################################################
+
+3
+
+Todas las particiones estan creadas
+Las particiones empiezan en	0 20
+Las particiones acaban en	19 29
+Tamaño completo de la memoria	30
+
+La prioridad mínima es	-10
+La prioridad máxima es	10
+
+Proceso: P01 Tiempo de llegada: 2 Tiempo de ejecución: 5 Prioridad de Proceso: 5 Memoria que ocupa: 3
+Proceso: P02 Tiempo de llegada: 3 Tiempo de ejecución: 3 Prioridad de Proceso: 6 Memoria que ocupa: 5
+Proceso: P03 Tiempo de llegada: 5 Tiempo de ejecución: 4 Prioridad de Proceso: 1 Memoria que ocupa: 4
+Ref Tll Tej Mem Pri
+P01   2   5   3   5 
+P02   3   3   5   6 
+P03   5   4   4   1 
+
+COMIENZO DE EJECUCIÓN
+
+ PriMenor-FNI-Primer
+ T=0	Part=20-10	Rango de pri=(-10,10)
+Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
+ P01   2   5   3   5 -    -    -    - Fuera del sistema
+ P02   3   3   5   6 -    -    -    - Fuera del sistema
+ P03   5   4   4   1 -    -    -    - Fuera del sistema
+ Tiempo medio de espera=0.00	Tiempo medio de retorno=0.00
+    |                                                                                             
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
+    |  0                                                             20                           
+    |   
+ BT |   |T=  0
+    |  0
+
+ PriMenor-FNI-Primer
+ T=2	Part=20-10	Rango de pri=(-10,10)
+Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
+ P01   2   5   3   5    0    0    5    0 En ejecución
+ P02   3   3   5   6 -    -    -    - Fuera del sistema
+ P03   5   4   4   1 -    -    -    - Fuera del sistema
+ Tiempo medio de espera=0.000000	Tiempo medio de retorno=0.000000
+    |P01                                                                                          
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
+    |  0        3                                                    20                           
+    |      P01
+ BT |██████   |T=  2
+    |  0     2
+
+ PriMenor-FNI-Primer
+ T=3	Part=20-10	Rango de pri=(-10,10)
+Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
+ P01   2   5   3   5    0    1    4    0 En ejecución
+ P02   3   3   5   6    0    0    3    1 En memoria  
+ P03   5   4   4   1 -    -    -    - Fuera del sistema
+ Tiempo medio de espera=0.000000	Tiempo medio de retorno=0.500000
+    |P01                                                            P02                           
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
+    |  0        3                                                    20             25            
+    |      P01   
+ BT |█████████   |T=  3
+    |  0     2   
+
+ PriMenor-FNI-Primer
+ T=5	Part=20-10	Rango de pri=(-10,10)
+Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
+ P01   2   5   3   5    0    3    2    0 En ejecución
+ P02   3   3   5   6    2    2    3    1 En memoria  
+ P03   5   4   4   1    0    0    -    - En espera        
+ Tiempo medio de espera=0.666667	Tiempo medio de retorno=1.666667
+    |P01                                                            P02                           
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████|
+    |  0        3                                                    20             25            
+    |      P01         
+ BT |███████████████   |T=  5
+    |  0     2         
+
+ PriMenor-FNI-Primer
+ T=7	Part=20-10	Rango de pri=(-10,10)
+Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
+ P01   2   5   3   5    0    5    -    - Terminado        
+ P02   3   3   5   6    4    4    3    1 En memoria  
+ P03   5   4   4   1    2    2    4    0 En ejecución
+ Tiempo medio de espera=2.000000	Tiempo medio de retorno=3.666667
