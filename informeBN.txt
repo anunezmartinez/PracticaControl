@@ -73,7 +73,7 @@ Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Esta
     |  0                                                             20                               30            
     |   
  BT |   |T=  0
-    |  0
+    |0
 
  PriMenor-FNI-Primer
  T=2	Part=20-10-5	Rango de pri=(-10,10)
@@ -87,7 +87,7 @@ Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Esta
     |  0        3                                                    20                               30            
     |      P01
  BT |██████   |T=  2
-    |  0     2
+    |0     2
 
  PriMenor-FNI-Primer
  T=3	Part=20-10-5	Rango de pri=(-10,10)
@@ -101,7 +101,7 @@ Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Esta
     |  0        3                                                    20             25                30            
     |      P01   
  BT |█████████   |T=  3
-    |  0     2   
+    |0     2   
 
  PriMenor-FNI-Primer
  T=5	Part=20-10-5	Rango de pri=(-10,10)
@@ -115,5 +115,40 @@ Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Esta
     |  0        3                                                    20             25                30          34
     |      P01         
  BT |███████████████   |T=  5
-    |  0     2         
+    |0     2         
 
+ PriMenor-FNI-Primer
+ T=7	Part=20-10-5	Rango de pri=(-10,10)
+Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
+ P01   2   5   3   5    0    5    -    - Terminado        
+ P02   3   3   5   6    4    4    3    1 En memoria  
+ P03   5   4   4   1    2    2    4    2 En ejecución
+ Tiempo medio de espera=2.000000	Tiempo medio de retorno=3.666667
+    |                                                               P02                              P03            
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████ | ███████████████|
+    |  0                                                             20             25                30          34
+    |      P01            P03
+ BT |█████████████████████   |T=  7
+    |0     2              7
+
+ PriMenor-FNI-Primer
+ T=11	Part=20-10-5	Rango de pri=(-10,10)
+Ref │ Tll │ Tej │ Mem │ Pri │ Tesp │ Tret │ Trej │ Part │ Estado 
+ P01   2   5   3   5    0    5    -    - Terminado        
+ P02   3   3   5   6    8    8    3    1 En ejecución
+ P03   5   4   4   1    2    6    -    - Terminado        
+ Tiempo medio de espera=3.333333	Tiempo medio de retorno=6.333333
+    |                                                               P02                                             
+ BM |████████████████████████████████████████████████████████████ | ██████████████████████████████ | ███████████████|
+    |  0                                                             20             25                30            
+    |      P01            P03         P02
+ BT |█████████████████████████████████   |T= 11
+    |0     2              7          11
+
+RESUMEN DE LA EJECUCIÓN
+
+    |      P01            P03         P02         
+ BT |██████████████████████████████████████████   |T= 14
+    |0     2              7          11         
+
+Tiempo medio de espera=3.333333	 Tiempo medio de retorno=7.000000

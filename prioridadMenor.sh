@@ -631,9 +631,9 @@ function ImprimeLineaTemporal {
 	printf "    |"
 	printf "|" >> informeColor.txt
     for (( je3;je3<=$clock;je3++ ));do
-		let carac3=carac3+3
+		let carac3=carac3+1
 		if [[ `expr longitud-carac3` -ge 0 ]];then
-			if [[ ${mapnum[$je3]} -ne "   " ]];then
+			if [[ ${mapnum[$je3]} -ne "" ]];then
         		printf "%3d" "${mapnum[$je3]}"
         		printf "%3d" "${mapnum[$je3]}" >> informeColor.txt    
 			else
@@ -798,9 +798,9 @@ function mapatiempos {
 #Función encargada de añadir los números que deben de aparecer en las unidades de la banda de tiempo
 function ocupamapatiempos {
 	if [[ $clock -lt 10 ]];then
-		mapnum[$1]="  $1"
+		mapnum[$1]="$1"
 	elif [[ $clock -lt 100 ]];then
-		mapnum[$1]=" $1"
+		mapnum[$1]="$1"
 	else
 		mapnum[$1]=$1
 	fi
@@ -2367,6 +2367,7 @@ function guardarRangos {
 		echo "$tiempoMinEjecucion;$tiempoMaxEjecucion;" >> $ENTRADA3
 		echo "$tamanoMinProceso;$tamanoMaxProceso;" >> $ENTRADA3
 }
+
 
 
 #Comienzo del programa
