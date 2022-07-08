@@ -1,5 +1,4 @@
-# Prioridad-Menor-Primer-Ajuste
-Algoritmo Prioridad Menor con Primer Ajuste
+## Algoritmo Prioridad Menor con Primer Ajuste
 
 ![1](https://github.com/anunezmartinez/Prioridad-Menor-Primer-Ajuste/blob/main/READMEfiles/N%C3%BA%C3%B1ez_Mart%C3%ADnez_Adri%C3%A1n_Informe_Pr%C3%A1ctica_Control-01.jpg)
 ![2](https://github.com/anunezmartinez/Prioridad-Menor-Primer-Ajuste/blob/main/READMEfiles/N%C3%BA%C3%B1ez_Mart%C3%ADnez_Adri%C3%A1n_Informe_Pr%C3%A1ctica_Control-02.jpg)
