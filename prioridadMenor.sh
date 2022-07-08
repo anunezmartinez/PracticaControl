@@ -380,7 +380,7 @@ function ImprimeLineaFinal {
 			if [ "${part_init[$wr3]}" -eq 0 ];then
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "%1d" "${part_init[0]}"
+					printf "%3d" "${part_init[0]}"
 					printf "%3d" "${part_init[0]}" >> informeColor.txt
 				else
 					break;
@@ -388,14 +388,14 @@ function ImprimeLineaFinal {
 			else
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf ""
+					printf "   "
 					printf "   " >> informeColor.txt
 				else
 					break;
 				fi
 				let carac3=carac3+3
 				if [[ `expr longitud-carac3` -ge 0 ]];then
-					printf "%4d" "${part_init[$wr3]}"
+					printf "%3d" "${part_init[$wr3]}"
 					printf "%3d" "${part_init[$wr3]}" >> informeColor.txt
 				else
 					break;
@@ -627,13 +627,13 @@ function ImprimeGraficaBW {
 
 #Función encargada de asociar el tiempo a la gráfica del tiempo.
 function ImprimeLineaTemporal {
-	l=0
+		l=0
 	printf "    |"
 	printf "|" >> informeColor.txt
     for (( je3;je3<=$clock;je3++ ));do
-		let carac3=carac3+1
+		let carac3=carac3+3
 		if [[ `expr longitud-carac3` -ge 0 ]];then
-			if [[ ${mapnum[$je3]} -ne "" ]];then
+			if [[ ${mapnum[$je3]} -ne "   " ]];then
         		printf "%3d" "${mapnum[$je3]}"
         		printf "%3d" "${mapnum[$je3]}" >> informeColor.txt    
 			else
@@ -798,13 +798,14 @@ function mapatiempos {
 #Función encargada de añadir los números que deben de aparecer en las unidades de la banda de tiempo
 function ocupamapatiempos {
 	if [[ $clock -lt 10 ]];then
-		mapnum[$1]="$1"
+		mapnum[$1]="  $1"
 	elif [[ $clock -lt 100 ]];then
-		mapnum[$1]="$1"
+		mapnum[$1]=" $1"
 	else
 		mapnum[$1]=$1
 	fi
 }
+
 
 #Función encargada de ocupar con los procesos las particiones gráficamente sustituyendo el caracter que simboliza el tamaño de la partición (█) por el color asociado al proceso.
 function OcupaMemoria() {
@@ -2243,6 +2244,19 @@ function CrearFicheroRangos {
 		tablaRangos
 
 		cantPart="$(seq $cantidadMinParticion $cantidadMaxParticion | shuf -n 1)"
+		echo $cantidadMinParticion
+		echo $cantPart
+		echo $((cantPart*2))
+		while [[ $((tamanoMinParticion - 2 * $cantPart)) < '2' ]];do
+			echo "La cantidad minima de memoria de las particiones no es lo suficiente grade."
+			echo "La cantidad minima de memoria de las particiones tiene que ser superior a : $((($cantPart * 2) + 1 ))"
+			echo "Vuelve a introducir una cantidad minima de memoria de las particiones"
+			read tamanoMinParticion
+			echo "Vuelve a introducir una cantidad maxima de memoria de las particiones"
+			read tamanoMaxParticion
+			
+			clear
+		done
 
 
     	val1="$(seq $tamanoMinParticion $tamanoMaxParticion | shuf -n 1)"
@@ -2318,6 +2332,84 @@ function CrearFicheroRangos {
 		done
 
 }
+function LeerFicheroRangos {
+
+	cantidadMinParticion=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 1p`	
+	cantidadMaxParticion=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 1p`
+	tamanoMinParticion=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 2p`
+	tamanoMinParticion=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 2p`
+	prioMin=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 3p`
+	prioMax=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 3p`
+	cantidadMinProcesos=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 4p`
+	cantidadMaxProcesos=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 4p`
+	tiempoMinLlegada=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 5p`
+	tiempoMaxLlegada=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 5p`
+	tiempoMinEjecucion=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 6p`
+	tiempoMaxEjecucion=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 6p`
+	tamanoMinProceso=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 7p`
+	tamanoMaxProceso=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 7p`	
+}
+function CrearFicheroRangos2 {
+		#cantidadMinParticion=■
+		#cantidadMaxParticion=■
+		#tamanoMinParticion=■
+		#tamanoMaxParticion=■
+		#prioMin=■
+		#prioMax=■
+		#cantidadMinProcesos=■
+		#cantidadMaxProcesos=■
+		#tiempoMinLlegada=■
+		#tiempoMaxLlegada=■
+		#tiempoMinEjecucion=■
+		#tiempoMaxEjecucion=■
+		#tamanoMinProceso=■
+		#tamanoMaxProceso=■
+
+
+		cantPart="$(seq $cantidadMinParticion $cantidadMaxParticion | shuf -n 1)"
+		echo $cantidadMinParticion $cantidadMaxParticion
+		echo $cantPart
+		sleep 10
+    	val1="$(seq $tamanoMinParticion $tamanoMaxParticion | shuf -n 1)"
+
+
+		contadorsinmas=0; while [[ $contadorsinmas -lt $cantPart ]];do
+
+		val1=$((val1-2))
+
+		echo -n "$val1;" >> $ENTRADA2
+
+        contadorsinmas=$((contadorsinmas+1));
+    	done
+
+		printf "\n" >> $ENTRADA2
+
+
+		prioMed=$((prioMax/2));
+		
+		valPrio1="$(seq $prioMin $prioMed | shuf -n 1)"
+		valPrio2="$(seq $prioMed $prioMax | shuf -n 1)"
+
+		echo -n "$valPrio1;" >> $ENTRADA2
+		echo -n "$valPrio2;" >> $ENTRADA2
+		
+
+
+		numProcesos="$(seq $cantidadMinProcesos $cantidadMaxProcesos | shuf -n 1)"
+		clear
+
+
+		printf "\n" >> $ENTRADA2
+
+		numproc=0; while [[ $numproc -lt $numProcesos ]]; do 
+		prioproc="$(seq $valPrio1 $valPrio2 | shuf -n 1)"
+    	echo "$(seq $tiempoMinLlegada $tiempoMaxLlegada | shuf -n 1);$(seq $tiempoMinEjecucion $tiempoMaxEjecucion | shuf -n 1);$(seq $tamanoMinProceso $tamanoMaxProceso | shuf -n 1);$prioproc;" >> $ENTRADA2
+		
+    	numproc=$((numproc+1));
+		echo "">>$ENTRADA2
+		done
+}
+
 function tablaRangos {
 		echo "Resumen de los datos introducidos"
 		echo "------------------------------------------------------------------------"
@@ -2611,7 +2703,7 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 			rm FicherosRangos/datosrangos.txt > /dev/null 2>&1
 		else
 				rutaFich=0
-								echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeColor.txt 
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeColor.txt 
 				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeBN.txt 
 				
 				echo -e "" >> informeBN.txt 
@@ -2680,30 +2772,140 @@ if [ $p = 0	 ];then #condición para preguntar la forma a leer los datos
 		fi
 
 	fi
+	if [ $opcion = 5 ];then
+		ENTRADA3=FicherosRangos/datosrangos.txt
+		
+		echo -e "############################################################"
+		echo "Elige el fichero donde quieres guardar los datos:"
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)"
+		echo "2 - Otro fichero de datos"
+		echo -e "############################################################"
+		echo ""
 
-	if [ $opcion = 6 ];then
-		mkdir -p FicherosRangos
-		echo ""
-		rutaFich=0
-		echo "Introduce el nombre o ruta del fichero a leer :" >>informeColor.txt
-		echo "Introduce el nombre o ruta del fichero a leer :" >> informeBN.txt 
-		echo -e "" >> informeColor.txt
-		echo -e "" >> informeBN.txt
-		cd FicherosRangos
-		echo "Introduce el nombre o ruta del fichero a leer :"	
-		echo ""
-		ls *.txt 2>/dev/null
-		echo ""
-		read rutaFich
-		rutaFich=FicherosRangos/$rutaFich
-		echo "$rutaFich"
-		cd ..
-		echo -e "$rutaFich" >> informeColor.txt
-		echo -e "$rutaFich" >> informeBN.txt
+		echo -e "############################################################">> informeColor.txt 
+		echo "Elige el fichero donde quieres guardar los datos:">> informeColor.txt 
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)">> informeColor.txt 
+		echo "2 - Otro fichero de datos">> informeColor.txt 
+		echo -e "############################################################">> informeColor.txt 
+
+		echo -e "############################################################">> informeBN.txt 
+		echo "Elige el fichero donde quieres guardar los datos:">> informeBN.txt 
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)">> informeBN.txt 
+		echo "2 - Otro fichero de datos">> informeBN.txt 
+		echo -e "############################################################">> informeBN.txt 
+
+		read lekt
+
+		echo -e "$lekt">> informeBN.txt 
+		echo -e "$lekt">> informeColor.txt 
+
+		if [ $lekt = 1 ];then
+			ENTRADA2=FicherosDatos/datos.txt
+			rm FicherosDatos/datos.txt > /dev/null 2>&1
+		else
+				rutaFich=0
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeColor.txt 
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeBN.txt 
+				echo -e "" >> informeColor.txt
+				echo -e "" >> informeBN.txt
+
+				cd FicherosDatos
+
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará."
+
+				echo ""
+				ls *.txt 2>/dev/null
+				echo ""
+				read rutaFich
+				ENTRADA2=FicherosDatos/$rutaFich
+				cd ..
+				rm FicherosDatos/$rutaFich > /dev/null 2>&1
+				echo -e "$rutaFich" >> informeColor.txt
+				echo -e "$rutaFich" >> informeBN.txt
+		fi
+
 	fi
+	if [ $opcion = 6 ];then
+
+				rutaFich=0
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeColor.txt 
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeBN.txt 
+				
+				echo -e "" >> informeBN.txt 
+				echo -e "" >> informeColor.txt 
+				cd FicherosRangos
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará."
 
 
-fi
+				ls *.txt 2>/dev/null
+				echo ""
+
+				read rutaFich
+				ENTRADA3=FicherosRangos/$rutaFich
+				cd ..
+				#rm FicherosRangos/$rutaFich > /dev/null 2>&1
+				echo -e "$rutaFich" >> informeColor.txt
+				echo -e "$rutaFich" >> informeBN.txt
+
+				echo -e "############################################################"
+		echo "Elige el fichero donde quieres guardar los datos:"
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)"
+		echo "2 - Otro fichero de datos"
+		echo -e "############################################################"
+		echo ""
+
+		echo -e "############################################################">> informeColor.txt 
+		echo "Elige el fichero donde quieres guardar los datos:">> informeColor.txt 
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)">> informeColor.txt 
+		echo "2 - Otro fichero de datos">> informeColor.txt 
+		echo -e "############################################################">> informeColor.txt 
+
+		echo -e "############################################################">> informeBN.txt 
+		echo "Elige el fichero donde quieres guardar los datos:">> informeBN.txt 
+		echo "1 - Fichero de datos de ultima ejecucion (datos.txt)">> informeBN.txt 
+		echo "2 - Otro fichero de datos">> informeBN.txt 
+		echo -e "############################################################">> informeBN.txt 
+
+		read lekt
+
+		echo -e "$lekt">> informeBN.txt 
+		echo -e "$lekt">> informeColor.txt 
+
+		if [ $lekt = 1 ];then
+			ENTRADA2=FicherosDatos/datos.txt
+			rm FicherosDatos/datos.txt > /dev/null 2>&1
+		else
+				rutaFich=0
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeColor.txt 
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará.">> informeBN.txt 
+				echo -e "" >> informeColor.txt
+				echo -e "" >> informeBN.txt
+
+				cd FicherosDatos
+
+				echo "En que fichero quieres guardar los datos? Si no existe, se creará."
+
+				echo ""
+				ls *.txt 2>/dev/null
+				echo ""
+				read rutaFich
+				ENTRADA2=FicherosDatos/$rutaFich
+				cd ..
+				rm FicherosDatos/$rutaFich > /dev/null 2>&1
+				echo -e "$rutaFich" >> informeColor.txt
+				echo -e "$rutaFich" >> informeBN.txt
+		fi
+
+		fi
+
+
+		
+
+	fi
+	
+
+
+
 
 if [ $p2 = 0 ];then #condición para preguntar la forma a leer los datos	
 	echo ""
@@ -3325,21 +3527,27 @@ if [ $opcion = 4 ];then #crea un fichero de rangos de forma automatica y lo lee
 fi
 
 if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
-	mkdir -p FicherosRangos
+
+	LeerFicheroRangos
+	CrearFicheroRangos2
+
+
+
+	mkdir -p FicherosDatos
 
 	esunsi=0
-	sed "/^ *$/d" FicherosRangos/datosrangos.txt > datos.txt
-	mv datos.txt FicherosRangos/datosrangos.txt
-	num_proc=`expr $(cat FicherosRangos/datosrangos.txt | wc -l) - 2`
+	sed "/^ *$/d" $ENTRADA2 > datos.txt
+	mv datos.txt $ENTRADA2
+	num_proc=`expr $(cat $ENTRADA2 | wc -l) - 2`
 	if [ $p = 0 ];then
-		pri_minima=`cat FicherosRangos/datosrangos.txt| cut -f 1 -d";" | sed -n 2p`
-		pri_maxima=`cat FicherosRangos/datosrangos.txt | cut -f 2 -d";" | sed -n 2p`
-		n_particiones=`cat FicherosRangos/datosrangos.txt | sed -n 1p | grep -o ";" | wc -l`
+		pri_minima=`cat $ENTRADA2 | cut -f 1 -d";" | sed -n 2p`
+		pri_maxima=`cat $ENTRADA2 | cut -f 2 -d";" | sed -n 2p`
+		n_particiones=`cat $ENTRADA2 | sed -n 1p | grep -o ";" | wc -l`
 
 		calcularTipoPrioridad $pri_minima $pri_maxima
 
 		for (( jka=0; jka<n_particiones; jka++ ));do
-			part_cap[$jka]=$(cat FicherosRangos/datosrangos.txt | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
+			part_cap[$jka]=$(cat $ENTRADA2 | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
 			let cap_memoria=cap_memoria+part_cap[$jka]
 			if [ $jka -eq 0 ];then
 				part_init[$jka]=0
@@ -3392,17 +3600,17 @@ if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 		let contar_lineas=p+3
 		contar_lineas_p=$contar_lineas'p'
 		pp=1
-		temp=`cat FicherosRangos/datosrangos.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		temp=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		templl[$p]=$temp
 		let pp++		
-		tiemp=`cat FicherosRangos/datosrangos.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		tiemp=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		tiempo[$p]="$tiemp"
 		tiempofijo[$p]="$tiemp"
 		let pp++			
-		memor=`cat FicherosRangos/datosrangos.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		memor=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		memori[$p]=$memor
 		let pp++
-		priorida=`cat FicherosRangos/datosrangos.txt | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		priorida=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		dato_priorid=$(calculoSegunTipoPrioridad $tipo_prioridad $priorida)
 		ComprobarPrioridad
 		prioridad[$p]=$priorida
@@ -3445,21 +3653,23 @@ if [ $opcion = 5 ];then #leer ultima ejecucion del fichero de rangos automatico
 fi
 
 if [ $opcion = 6 ];then #leer fichero intrudocido a mano
-	
+
+	LeerFicheroRangos
+	CrearFicheroRangos2
 
 	esunsi=0
-	sed "/^ *$/d" $rutaFich > datos.txt
-	mv datos.txt $rutaFich
-	num_proc=`expr $(cat $rutaFich | wc -l) - 2`
+	sed "/^ *$/d" $ENTRADA2 > datos.txt
+	mv datos.txt $ENTRADA2
+	num_proc=`expr $(cat $ENTRADA2 | wc -l) - 2`
 	if [ $p = 0 ];then
-		pri_minima=`cat $rutaFich | cut -f 1 -d";" | sed -n 2p`
-		pri_maxima=`cat $rutaFich | cut -f 2 -d";" | sed -n 2p`
-		n_particiones=`cat $rutaFich | sed -n 1p | grep -o ";" | wc -l`
+		pri_minima=`cat $ENTRADA2 | cut -f 1 -d";" | sed -n 2p`
+		pri_maxima=`cat $ENTRADA2 | cut -f 2 -d";" | sed -n 2p`
+		n_particiones=`cat $ENTRADA2 | sed -n 1p | grep -o ";" | wc -l`
 
 		calcularTipoPrioridad $pri_minima $pri_maxima
 
 		for (( jka=0; jka<n_particiones; jka++ ));do
-			part_cap[$jka]=$(cat $rutaFich | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
+			part_cap[$jka]=$(cat $ENTRADA2 | cut -f$(expr $jka + 1) -d";" | sed -n 1p)
 			let cap_memoria=cap_memoria+part_cap[$jka]
 			if [ $jka -eq 0 ];then
 				part_init[$jka]=0
@@ -3511,17 +3721,17 @@ if [ $opcion = 6 ];then #leer fichero intrudocido a mano
 		let contar_lineas=p+3
 		contar_lineas_p=$contar_lineas'p'
 		pp=1
-		temp=`cat $rutaFich | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		temp=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		templl[$p]=$temp
 		let pp++		
-		tiemp=`cat $rutaFich | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		tiemp=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		tiempo[$p]="$tiemp"
 		tiempofijo[$p]="$tiemp"
 		let pp++			
-		memor=`cat $rutaFich | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		memor=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		memori[$p]=$memor
 		let pp++
-		priorida=`cat $rutaFich | cut -d ";" -f $pp | sed -n $contar_lineas_p`
+		priorida=`cat $ENTRADA2 | cut -d ";" -f $pp | sed -n $contar_lineas_p`
 		dato_priorid=$(calculoSegunTipoPrioridad $tipo_prioridad $priorida)
 		ComprobarPrioridad
 		prioridad[$p]=$priorida
