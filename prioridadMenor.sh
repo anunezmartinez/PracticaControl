@@ -2244,10 +2244,7 @@ function CrearFicheroRangos {
 		tablaRangos
 
 		cantPart="$(seq $cantidadMinParticion $cantidadMaxParticion | shuf -n 1)"
-		echo $cantidadMinParticion
-		echo $cantPart
-		echo $((cantPart*2))
-		while [[ $((tamanoMinParticion - 2 * $cantPart)) < '2' ]];do
+		while [[ $((tamanoMinParticion - 2 * $cantPart)) -lt 2 ]];do
 			echo "La cantidad minima de memoria de las particiones no es lo suficiente grade."
 			echo "La cantidad minima de memoria de las particiones tiene que ser superior a : $((($cantPart * 2) + 1 ))"
 			echo "Vuelve a introducir una cantidad minima de memoria de las particiones"
@@ -2337,7 +2334,7 @@ function LeerFicheroRangos {
 	cantidadMinParticion=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 1p`	
 	cantidadMaxParticion=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 1p`
 	tamanoMinParticion=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 2p`
-	tamanoMinParticion=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 2p`
+	tamanoMaxParticion=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 2p`
 	prioMin=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 3p`
 	prioMax=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 3p`
 	cantidadMinProcesos=`cat $ENTRADA3 | cut -f 1 -d";" | sed -n 4p`
@@ -2350,27 +2347,23 @@ function LeerFicheroRangos {
 	tamanoMaxProceso=`cat $ENTRADA3 | cut -f 2 -d";" | sed -n 7p`	
 }
 function CrearFicheroRangos2 {
-		#cantidadMinParticion=■
-		#cantidadMaxParticion=■
-		#tamanoMinParticion=■
-		#tamanoMaxParticion=■
-		#prioMin=■
-		#prioMax=■
-		#cantidadMinProcesos=■
-		#cantidadMaxProcesos=■
-		#tiempoMinLlegada=■
-		#tiempoMaxLlegada=■
-		#tiempoMinEjecucion=■
-		#tiempoMaxEjecucion=■
-		#tamanoMinProceso=■
-		#tamanoMaxProceso=■
-
 
 		cantPart="$(seq $cantidadMinParticion $cantidadMaxParticion | shuf -n 1)"
-		echo $cantidadMinParticion $cantidadMaxParticion
-		echo $cantPart
-		sleep 10
+
+		while [[ $((tamanoMinParticion - 2 * $cantPart)) -lt 2 ]];do
+			echo "La cantidad minima de memoria de las particiones no es lo suficiente grade."
+			echo "La cantidad minima de memoria de las particiones tiene que ser superior a : $((($cantPart * 2) + 1 ))"
+			echo "Vuelve a introducir una cantidad minima de memoria de las particiones"
+			read tamanoMinParticion
+			echo "Vuelve a introducir una cantidad maxima de memoria de las particiones"
+			read tamanoMaxParticion
+			
+			clear
+		done
+
     	val1="$(seq $tamanoMinParticion $tamanoMaxParticion | shuf -n 1)"
+		echo $val1
+		sleep 5
 
 
 		contadorsinmas=0; while [[ $contadorsinmas -lt $cantPart ]];do

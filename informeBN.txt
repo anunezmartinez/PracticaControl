@@ -32,13 +32,10 @@
 6 - Otro fichero de rangos
 ############################################################
 
-4
-############################################################
-Elige el fichero donde quieres guardar los datos:
-1 - Fichero de rangos de ultima ejecucion (datosrangos.txt)
-2 - Otro fichero de rangos
-############################################################
-1
+6
+En que fichero quieres guardar los datos? Si no existe, se creará.
+
+datosrangos.txt
 ############################################################
 Elige el fichero donde quieres guardar los datos:
 1 - Fichero de datos de ultima ejecucion (datos.txt)
@@ -54,39 +51,3 @@ Elige el fichero donde quieres guardar los datos:
 ############################################################
 
 1
-
-Resumen de los datos introducidos
-------------------------------------------------------------------------
-Rango del numero de particiones ■ - ■
-Rango del tamaño de las particiones ■ - ■
-Rango prioridad de los procesos ■ - ■
-Rango del numero de procesos ■ - ■
-Rango del tiempo de llegada ■ - ■
-Rango del rango del tiempo de ejecucion ■ - ■
-Rango de memoria de proceso ■ - ■
--------------------------------------------------------------------------
-
-
-Resumen de los datos introducidos
-------------------------------------------------------------------------
-Rango del numero de particiones 4 - 8
-Rango del tamaño de las particiones ■ - ■
-Rango prioridad de los procesos ■ - ■
-Rango del numero de procesos ■ - ■
-Rango del tiempo de llegada ■ - ■
-Rango del rango del tiempo de ejecucion ■ - ■
-Rango de memoria de proceso ■ - ■
--------------------------------------------------------------------------
-
-
-Resumen de los datos introducidos
-------------------------------------------------------------------------
-Rango del numero de particiones 4 - 8
-Rango del tamaño de las particiones 4 - 8
-Rango prioridad de los procesos ■ - ■
-Rango del numero de procesos ■ - ■
-Rango del tiempo de llegada ■ - ■
-Rango del rango del tiempo de ejecucion ■ - ■
-Rango de memoria de proceso ■ - ■
--------------------------------------------------------------------------
-
